@@ -35,7 +35,7 @@ addLayer("p", {
             done() {return player.p.best.gte(1)},
         },
     },
-    ugrades: {
+    upgrades: {
         11: {
             description: "Square milestone effect",
             cost: (new Decimal(3)),
