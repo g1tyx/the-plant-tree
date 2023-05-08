@@ -84,7 +84,7 @@ addLayer("p", {
         23: {
             description: "Plant costs divided by plants, only goes up at intervals of 10",
             cost: (new Decimal(40)),
-            effect() {return player.p.points.dividedBy(10).floor().times(10)},
+            effect() {return player.p.points.dividedBy(10).floor().times(10).add(1)},
             effectDisplay() {return "/"+format(upgradeEffect('p', 23))},
             tooltip: "Floor(plants / 10) x 10",
         },
