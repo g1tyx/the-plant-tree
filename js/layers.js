@@ -22,6 +22,7 @@ addLayer("p", {
         if(hasUpgrade('p', 13)) mult=mult.dividedBy(upgradeEffect('p', 13))
         if(hasUpgrade('p', 21)) mult=mult.dividedBy(upgradeEffect('p', 21))
         if(hasUpgrade('p', 22)) mult=mult.dividedBy(upgradeEffect('p', 22))
+        if(hasUpgrade('p', 23)) mult=mult.dividedBy(upgradeEffect('p', 23))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -70,7 +71,7 @@ addLayer("p", {
             description: "Plant costs are divided by points",
             cost: (new Decimal(25)),
             effect() {return player.points.add(1).pow(0.1)},
-            effectDisplay() {return "x"+format(upgradeEffect('p', 21))},
+            effectDisplay() {return "/"+format(upgradeEffect('p', 21))},
             tooltip: "Points ^ 0.1",
         },
         22: {
@@ -79,6 +80,13 @@ addLayer("p", {
             effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
+        },
+        23: {
+            description: "Plant costs divided by plants, only goes up at intervals of 10",
+            cost: (new Decimal(40)),
+            effect() {return player.p.points.dividedBy(10).floor().times(10)},
+            effectDisplay() {return "/"+format(upgradeEffect('p', 23))},
+            tooltip: "Floor(plants / 10) x 10",
         },
     },
 })
