@@ -57,5 +57,12 @@ addLayer("p", {
             effect() {return player.p.points.add(1)},
             effectDisplay() {return "/"+format(upgradeEffect('p', 13))},
         },
+        14: {
+            description: "Points are multiplied based on magnitude",
+            cost: (new Decimal(18)),
+            effect() {return new Decimal(2).pow(floor(player.points.log(10)))},
+            effectDisplay() {return "x"+format(upgradeEffect('p', 14))},
+            tooltip: "2 ^ Floor(log10(Points))",
+        },
     },
 })
