@@ -21,6 +21,7 @@ addLayer("p", {
         mult = new Decimal(1)
         if(hasUpgrade('p', 13)) mult=mult.dividedBy(upgradeEffect('p', 13))
         if(hasUpgrade('p', 21)) mult=mult.dividedBy(upgradeEffect('p', 21))
+        if(hasUpgrade('p', 22)) mult=mult.dividedBy(upgradeEffect('p', 22))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -71,6 +72,13 @@ addLayer("p", {
             effect() {return player.points.add(1).pow(0.1)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 21))},
             tooltip: "Points ^ 0.1",
+        },
+        22: {
+            description: "Plant costs are divided based on magnitude",
+            cost: (new Decimal(30)),
+            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
+            effectDisplay() {return "/"+format(upgradeEffect('p', 22))},
+            tooltip: "2 ^ Floor(log10(Points))",
         },
     },
 })
