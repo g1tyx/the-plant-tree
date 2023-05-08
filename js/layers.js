@@ -90,7 +90,7 @@ addLayer("p", {
         },
         24: {
             description: "Unlock Gardens and double point gain",
-            cost: (new Decimal(40)),
+            cost: (new Decimal(50)),
             effectDisplay() {return "2"},
         },
     },
@@ -121,7 +121,7 @@ addLayer("g", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
+    row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "g", description: "G: Reset for Gardens", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
