@@ -45,10 +45,10 @@ addLayer("p", {
         },
         12: {
             description: "Multiply point gain based on points",
-            cost: (new Decimal(3)),
-            effect() {return player.points.add(1).log(2)},
+            cost: (new Decimal(5)),
+            effect() {return player.points.add(2).log(2)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 12))},
-            tooltip: "log2(Points)"
+            tooltip: "log2(Points + 2)"
         }
     },
 })
