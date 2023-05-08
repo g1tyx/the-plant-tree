@@ -14,7 +14,7 @@ addLayer("p", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 1, // Prestige currency exponent
     base() {return 2},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -31,7 +31,7 @@ addLayer("p", {
     milestones: {
         0: {
             requirementDescription: "1 Plant",
-            effectDescription() {return "Multiply Point gain by plants. Currently: "+format(player.p.points.add(1))},
+            effectDescription() {return "Multiply Point gain by plants. Currently: x"+format(player.p.points.add(1))},
             done() {return player.p.best.gte(1)},
         },
     },
