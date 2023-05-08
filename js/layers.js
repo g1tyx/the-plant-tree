@@ -35,4 +35,12 @@ addLayer("p", {
             done() {return player.p.best.gte(1)},
         },
     },
+    ugrades: {
+        11: {
+            description: "Square milestone effect",
+            cost: (new Decimal(3)),
+            effect() {return player.p.points.add(1)},
+            effectDisplay() {return "^2"},
+        },
+    },
 })
