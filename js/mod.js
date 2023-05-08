@@ -43,6 +43,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if(done('p', 0)) gain=gain.times(player.p.points.add(1))
 	return gain
 }
 

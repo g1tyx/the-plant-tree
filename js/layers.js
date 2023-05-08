@@ -32,7 +32,7 @@ addLayer("p", {
         0: {
             requirementDescription: "1 Plant",
             effectDescription() {return "Multiply Point gain by plants. Currently: "+format(player.p.points.add(1))},
-            done() {return player.e.best.gte(1)},
+            done() {return player.p.best.gte(1)},
         },
     },
 })
