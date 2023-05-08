@@ -69,8 +69,8 @@ addLayer("p", {
             description: "Plant costs are divided by points",
             cost: (new Decimal(25)),
             effect() {return player.points.add(1).pow(0.1)},
-            effectDisplay() {return upgradeEffect('p', 21)},
-            tooltip: "Points ^ 0.3",
+            effectDisplay() {return "x"+format(upgradeEffect('p', 21))},
+            tooltip: "Points ^ 0.1",
         },
     },
 })
