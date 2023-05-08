@@ -16,6 +16,7 @@ addLayer("p", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
     base() {return 2},
+    canBuyMax: true,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -45,7 +46,7 @@ addLayer("p", {
         12: {
             description: "Multiply point gain based on points",
             cost: (new Decimal(3)),
-            effect() {return player.points.log(2)},
+            effect() {return player.points.add(1).log(2)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 12))},
             tooltip: "log2(Points)"
         }
