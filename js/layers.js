@@ -65,7 +65,7 @@ addLayer("p", {
         14: {
             description: "Points are multiplied based on magnitude",
             cost: (new Decimal(18)),
-            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.points.add(10).log(10).floor())},
             effectDisplay() {return "x"+format(upgradeEffect('p', 14))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -79,7 +79,7 @@ addLayer("p", {
         22: {
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
-            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.points.add(10).log(10).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -98,7 +98,9 @@ addLayer("p", {
     },
     buyables: {
         11: {
-            cost(x) {return new Decimal(10).times(new Decimal(2).pow(x))},
+            cost(x) {let cost = new Decimal(10).times(new Decimal(2).pow(x))
+            if(hasUpgrade('g', 14)) cost=cost.dividedBy(upgradeEffect('g', 14))
+            return cost},
             display() { return "Multiply point gain and divide plant costs by 5. Shift to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
@@ -159,6 +161,14 @@ addLayer("g", {
             description: "Garden upgrade 1-1 also divides plant costs",
             cost: (new Decimal(2)),
             unlocked() {return hasUpgrade('g', 12)},
+        },
+        14: {
+            description: "Divide buyable cost based on magnitude of plants",
+            cost: (new Decimal(2)),
+            unlocked() {return hasUpgrade('g', 13)},
+            effect() {return new Decimal(2).pow(player.p.points.add(10).log(10).floor())},
+            effectDisplay() {return "/"+format(upgradeEffect('g', 14))},
+            tooltip: "2 ^ Floor(log10(Plants))",
         },
     },
 })
