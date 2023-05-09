@@ -103,7 +103,7 @@ addLayer("p", {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('g', 12)},
-            effect() {return new Decimal(2).pow(getBuyableAmount(this.id, this.layer))},
+            effect() {return new Decimal(2).pow(getBuyableAmount('p', 11))},
             buyMax() {return shiftDown},
         },
     },
