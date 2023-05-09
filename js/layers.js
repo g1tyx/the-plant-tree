@@ -94,6 +94,19 @@ addLayer("p", {
             effectDisplay() {return "2"},
         },
     },
+    buyables: {
+        11: {
+            cost(x) {return new Decimal(10).times(new Decimal(2).pow(x))},
+            display() { return "Multiply point gain by 2. Shift to buy max. Cost: "+format(this.cost()) },
+            canAfford() { return player.p.points.gte(this.cost()) },
+            buy() {
+                player[this.layer].points = player[this.layer].points.sub(this.cost())
+                addBuyables(this.layer, this.id, 1)},
+            unlocked() {return hasUpgrade('g', 12)},
+            effect() {return new Decimal(2).pow(this.amount)},
+            buyMax() {return shiftDown},
+        },
+    },
 }),
 addLayer("g", {
     name: "gardens", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -134,6 +147,11 @@ addLayer("g", {
             effect() {return player.g.points.add(1).times(player.p.points.add(1))},
             effectDisplay() {return "x"+format(upgradeEffect('g', 11))},
             tooltip: "(Gardens + 1) x (Plants + 1)",
+        },
+        12: {
+            description: "Unlock a Plant buyable",
+            cost: (new Decimal(1)),
+            unlocked() {return hasUpgrade('g', 11)},
         },
     },
 })
