@@ -129,11 +129,11 @@ addLayer("g", {
 
     upgrades: {
         11: {
-            description: "Multiply point gain by Gardens",
+            description: "Multiply point gain based on Gardens and Plants",
             cost: (new Decimal(1)),
-            effect() {return player.g.points.add(2)},
+            effect() {return player.g.points.add(1).times(player.p.points.add(1))},
             effectDisplay() {return "x"+format(upgradeEffect('g', 11))},
-            tooltip: "Gardens + 2",
-        }
-    }
+            tooltip: "(Gardens + 1) x (Plants + 1)",
+        },
+    },
 })
