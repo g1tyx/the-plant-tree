@@ -23,6 +23,7 @@ addLayer("p", {
         if(hasUpgrade('p', 21)) mult=mult.dividedBy(upgradeEffect('p', 21))
         if(hasUpgrade('p', 22)) mult=mult.dividedBy(upgradeEffect('p', 22))
         if(hasUpgrade('p', 23)) mult=mult.dividedBy(upgradeEffect('p', 23))
+        if(hasUpgrade('g', 12)) mult=mult.dividedBy(buyableEffect('p', 11))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -97,7 +98,7 @@ addLayer("p", {
     buyables: {
         11: {
             cost(x) {return new Decimal(10).times(new Decimal(2).pow(x))},
-            display() { return "Multiply point gain by 5. Shift to buy max. Cost: "+format(this.cost()) },
+            display() { return "Multiply point gain and divide plant costs by 5. Shift to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
