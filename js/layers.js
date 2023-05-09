@@ -24,6 +24,7 @@ addLayer("p", {
         if(hasUpgrade('p', 22)) mult=mult.dividedBy(upgradeEffect('p', 22))
         if(hasUpgrade('p', 23)) mult=mult.dividedBy(upgradeEffect('p', 23))
         if(hasUpgrade('g', 12)) mult=mult.dividedBy(buyableEffect('p', 11))
+        if(hasUpgrade('g', 13)) mult=mult.dividedBy(upgradeEffect('g', 11))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -153,6 +154,11 @@ addLayer("g", {
             description: "Unlock a Plant buyable",
             cost: (new Decimal(1)),
             unlocked() {return hasUpgrade('g', 11)},
+        },
+        13: {
+            description: "Garden upgrade 1-1 also divides plant costs",
+            cost: (new Decimal(2)),
+            unlocked() {return hasUpgrade('g', 12)},
         },
     },
 })
