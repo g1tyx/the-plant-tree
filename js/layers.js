@@ -25,6 +25,7 @@ addLayer("p", {
         if(hasUpgrade('p', 23)) mult=mult.dividedBy(upgradeEffect('p', 23))
         if(hasUpgrade('g', 12)) mult=mult.dividedBy(buyableEffect('p', 11))
         if(hasUpgrade('g', 13)) mult=mult.dividedBy(upgradeEffect('g', 11))
+        if(hasUpgrade('g', 21)) mult=mult.dividedBy(buyableEffect('p', 12))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -110,6 +111,18 @@ addLayer("p", {
             effect() {return new Decimal(5).pow(getBuyableAmount('p', 11))},
             buyMax() {return shiftDown},
         },
+        12: {
+            cost(x) {let cost = new Decimal(1000).pow(x)
+            return cost},
+            display() { return "Divide plant costs by 10. Shift to buy max. Cost: "+format(this.cost()) },
+            canAfford() { return player.points.gte(this.cost()) },
+            buy() {
+                player.points = player.points.sub(this.cost())
+                addBuyables(this.layer, this.id, 1)},
+            unlocked() {return hasUpgrade('g', 21)},
+            effect() {return new Decimal(10).pow(getBuyableAmount('p', 12))},
+            buyMax() {return shiftDown},
+            },
     },
 }),
 addLayer("g", {
@@ -128,7 +141,7 @@ addLayer("g", {
     baseResource: "plants", // Name of resource prestige is based on
     baseAmount() {return player.p.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.4, // Prestige currency exponent
     base() {return 2},
     canBuyMax: true,
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -169,6 +182,11 @@ addLayer("g", {
             effect() {return new Decimal(2).pow(player.p.points.add(10).log(10).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('g', 14))},
             tooltip: "2 ^ Floor(log10(Plants))",
+        },
+        21: {
+            description: "Unlock another buyable",
+            cost: (new Decimal(3)),
+            unlocked() {return hasUpgrade('g', 14)},
         },
     },
 })
