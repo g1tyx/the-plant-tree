@@ -97,13 +97,13 @@ addLayer("p", {
     buyables: {
         11: {
             cost(x) {return new Decimal(10).times(new Decimal(2).pow(x))},
-            display() { return "Multiply point gain by 2. Shift to buy max. Cost: "+format(this.cost()) },
+            display() { return "Multiply point gain by 3. Shift to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('g', 12)},
-            effect() {return new Decimal(2).pow(getBuyableAmount('p', 11))},
+            effect() {return new Decimal(3).pow(getBuyableAmount('p', 11))},
             buyMax() {return shiftDown},
         },
     },
