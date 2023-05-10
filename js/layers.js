@@ -113,6 +113,14 @@ addLayer("p", {
             unlocked() {return hasUpgrade('p', 31)},
             tooltip: "log10 -> log5",
         },
+        33: {
+            description: "Divide Garden costs based on points",
+            cost: (new Decimal(195)),
+            unlocked() {return hasUpgrade('p', 32)},
+            effect() {return player.points.log(10).pow(0.1)},
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 33))},
+            tooltip: "(log10(Points)) ^ 0.1",
+        },
     },
     buyables: {
         11: {
@@ -164,6 +172,7 @@ addLayer("g", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if(hasUpgrade('g', 22)) mult=mult.dividedBy(upgradeEffect('g', 22))
+        if(hasUpgrade('p', 33)) mult=mult.dividedBy(upgradeEffect('p', 33))
                return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
