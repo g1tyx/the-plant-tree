@@ -44,13 +44,13 @@ function getPointGen() {
 
 	let gain = new Decimal(1)
 	if(hasMilestone('p', 0)) gain=gain.times(player.p.points.add(1))
-	gainUpgradeEffect('p', 11)
-	gainUpgradeEffect('p', 12)
-	gainUpgradeEffect('p', 14)
+	gain=gain.times(gainUpgradeEffect('p', 11))
+	gain=gain.times(gainUpgradeEffect('p', 12))
+	gain=gain.times(gainUpgradeEffect('p', 14))
 	if(hasUpgrade('p', 24)) gain=gain.times(2)
-	gainUpgradeEffect('g', 11)
+	gain=gain.times(gainUpgradeEffect('g', 11))
 	if(hasUpgrade('g', 12)) gain=gain.times(buyableEffect('p', 11))
-	gainUpgradeEffect('p', 31)
+	gain=gain.times(gainUpgradeEffect('p', 31))
 	return gain
 }
 
@@ -88,5 +88,7 @@ function fixOldSave(oldVersion){
 
 // Functions I have created:
 function gainUpgradeEffect(x, y) {
+	let gain=new Decimal(1)
 	if(hasUpgrade(x, y)) gain=gain.times(upgradeEffect(x, y))
+	return gain
 }
