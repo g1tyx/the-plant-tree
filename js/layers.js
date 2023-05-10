@@ -96,7 +96,14 @@ addLayer("p", {
         24: {
             description: "Unlock Gardens and double point gain",
             cost: (new Decimal(50)),
-            effectDisplay() {return "2"},
+            effectDisplay() {return "x2"},
+        },
+        31: {
+            description: "Plants multiply point gain slightly",
+            cost: (new Decimal(155)),
+            effect() {return player.p.points.pow(0.5)},
+            effectDisplay() {return "x"+format(upgradeEffect('p', 31))},
+            tooltip: "Plants ^ 0.5",
         },
     },
     buyables: {
