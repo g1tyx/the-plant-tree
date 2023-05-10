@@ -101,9 +101,16 @@ addLayer("p", {
         31: {
             description: "Plants multiply point gain slightly",
             cost: (new Decimal(155)),
+            unlocked() {return hasMilestone('g', 0)},
             effect() {return player.p.points.pow(0.5)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 31))},
             tooltip: "Plants ^ 0.5",
+        },
+        32: {
+            description: "Garden upgrade 1-4's effect is better",
+            cost: (new Decimal(180)),
+            unlocked() {return hasUpgrade('p', 31)},
+            tooltip: "log10 -> log5",
         },
     },
     buyables: {
@@ -189,7 +196,9 @@ addLayer("g", {
             description: "Divide buyable cost based on magnitude of plants",
             cost: (new Decimal(2)),
             unlocked() {return hasUpgrade('g', 13)},
-            effect() {return new Decimal(2).pow(player.p.points.add(1).log(10).floor())},
+            effect() {
+                if(hasUpgrade('p', 32)) {var base = new Decimal(5)} else {var base = new Decimal(10)}
+                return new Decimal(2).pow(player.p.points.add(1).log(base).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('g', 14))},
             tooltip: "2 ^ Floor(log10(Plants))",
         },
