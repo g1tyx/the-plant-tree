@@ -17,6 +17,8 @@ addLayer("p", {
     exponent: 1, // Prestige currency exponent
     base() {return 2},
     canBuyMax: true,
+    autoPrestige() {return hasMilestone('g', 0)},
+    resetsNothing() {return hasMilestone('g', 0)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if(hasUpgrade('p', 13)) mult=mult.dividedBy(upgradeEffect('p', 13))
@@ -196,6 +198,13 @@ addLayer("g", {
             effect() {return new Decimal(1.1).pow(player.p.points.add(1).log(10).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('g', 22))},
             tooltip: "1.1 ^ Floor(log10(Plants))",
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "7 Gardens",
+            effectDescription: "Plants don't reset anything, automatically reset for plants and unlock a new row of Plant upgrades",
+            done() {return player.g.points.gte(7)},
         },
     },
 })
