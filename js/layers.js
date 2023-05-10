@@ -66,7 +66,7 @@ addLayer("p", {
         14: {
             description: "Points are multiplied based on magnitude",
             cost: (new Decimal(18)),
-            effect() {return new Decimal(2).pow(player.points.add(10).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
             effectDisplay() {return "x"+format(upgradeEffect('p', 14))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -80,7 +80,7 @@ addLayer("p", {
         22: {
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
-            effect() {return new Decimal(2).pow(player.points.add(10).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -122,7 +122,7 @@ addLayer("p", {
             unlocked() {return hasUpgrade('g', 21)},
             effect() {return new Decimal(10).pow(getBuyableAmount('p', 12))},
             buyMax() {return shiftDown},
-            },
+        },
     },
 }),
 addLayer("g", {
@@ -146,6 +146,7 @@ addLayer("g", {
     canBuyMax: true,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if(hasUpgrade('g', 22)) mult=mult.dividedBy(upgradeEffect('g', 22))
                return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -179,7 +180,7 @@ addLayer("g", {
             description: "Divide buyable cost based on magnitude of plants",
             cost: (new Decimal(2)),
             unlocked() {return hasUpgrade('g', 13)},
-            effect() {return new Decimal(2).pow(player.p.points.add(10).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.p.points.add(1).log(10).floor())},
             effectDisplay() {return "/"+format(upgradeEffect('g', 14))},
             tooltip: "2 ^ Floor(log10(Plants))",
         },
@@ -187,6 +188,14 @@ addLayer("g", {
             description: "Unlock another buyable",
             cost: (new Decimal(3)),
             unlocked() {return hasUpgrade('g', 14)},
+        },
+        22: {
+            description: "Divide Garden costs based on Magnitude of Plants",
+            cost: (new Decimal(5)),
+            unlocked() {return hasUpgrade('g', 21)},
+            effect() {return new Decimal(1.1).pow(player.p.points.add(1).log(10).floor())},
+            effectDisplay() {return "/"+format(upgradeEffect('g', 22))},
+            tooltip: "1.1 ^ Floor(log10(Plants))",
         },
     },
 })
