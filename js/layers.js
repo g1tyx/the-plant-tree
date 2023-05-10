@@ -28,6 +28,7 @@ addLayer("p", {
         if(hasUpgrade('g', 12)) mult=mult.dividedBy(buyableEffect('p', 11))
         if(hasUpgrade('g', 13)) mult=mult.dividedBy(upgradeEffect('g', 11))
         if(hasUpgrade('g', 21)) mult=mult.dividedBy(buyableEffect('p', 12))
+        if(hasUpgrade('g', 23)) mult=mult.dividedBy(player.g.points.add(1))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -63,7 +64,7 @@ addLayer("p", {
             description: "Plant costs are divided by plants",
             cost: (new Decimal(12)),
             effect() {return player.p.points.add(1)},
-            effectDisplay() {return "/"+format(upgradeEffect('p', 13))},
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 13))},
         },
         14: {
             description: "Points are multiplied based on magnitude",
@@ -76,22 +77,22 @@ addLayer("p", {
             description: "Plant costs are divided by points",
             cost: (new Decimal(25)),
             effect() {return player.points.add(1).pow(0.1)},
-            effectDisplay() {return "/"+format(upgradeEffect('p', 21))},
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 21))},
             tooltip: "Points ^ 0.1",
         },
         22: {
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
             effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
-            effectDisplay() {return "/"+format(upgradeEffect('p', 22))},
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
         23: {
             description: "Plant costs divided by plants, only goes up at intervals of 10",
             cost: (new Decimal(40)),
             effect() {return player.p.points.dividedBy(10).floor().times(10).add(1)},
-            effectDisplay() {return "/"+format(upgradeEffect('p', 23))},
-            tooltip: "Floor(plants / 10) x 10",
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 23))},
+            tooltip: "Floor(plants ÷ 10) x 10",
         },
         24: {
             description: "Unlock Gardens and double point gain",
@@ -199,7 +200,7 @@ addLayer("g", {
             effect() {
                 if(hasUpgrade('p', 32)) {var base = new Decimal(5)} else {var base = new Decimal(10)}
                 return new Decimal(2).pow(player.p.points.add(1).log(base).floor())},
-            effectDisplay() {return "/"+format(upgradeEffect('g', 14))},
+            effectDisplay() {return "÷"+format(upgradeEffect('g', 14))},
             tooltip: "2 ^ Floor(log10(Plants))",
         },
         21: {
@@ -212,8 +213,15 @@ addLayer("g", {
             cost: (new Decimal(5)),
             unlocked() {return hasUpgrade('g', 21)},
             effect() {return new Decimal(1.1).pow(player.p.points.add(1).log(10).floor())},
-            effectDisplay() {return "/"+format(upgradeEffect('g', 22))},
+            effectDisplay() {return "÷"+format(upgradeEffect('g', 22))},
             tooltip: "1.1 ^ Floor(log10(Plants))",
+        },
+        23: {
+            description: "Divide plant costs by gardens",
+            cost: (new Decimal(8)),
+            unlocked() {return hasUpgrade('g', 22)},
+            effectDisplay() {return "÷"+format(player.g.points.add(1))},
+            tooltip: "Gardens + 1",
         },
     },
     milestones: {
