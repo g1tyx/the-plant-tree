@@ -69,7 +69,7 @@ addLayer("p", {
         14: {
             description: "Points are multiplied based on magnitude",
             cost: (new Decimal(18)),
-            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.points.add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
             effectDisplay() {return "x"+format(upgradeEffect('p', 14))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -83,7 +83,7 @@ addLayer("p", {
         22: {
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
-            effect() {return new Decimal(2).pow(player.points.add(1).log(10).floor())},
+            effect() {return new Decimal(2).pow(player.points.add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -120,6 +120,13 @@ addLayer("p", {
             effect() {return player.points.log(10).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 33))},
             tooltip: "(log10(Points)) ^ 0.1",
+        },
+        34: {
+            description: "Previous Plant upgrades based on magnitude are better",
+            cost: (new Decimal(200)),
+            unlocked() {return hasUpgrade('p', 33)},
+            effect() {if(hasUpgrade('p', 34)){return -5}else{return 0}},
+            tooltip: "log10 -> log5",
         },
     },
     buyables: {
