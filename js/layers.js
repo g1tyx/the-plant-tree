@@ -48,12 +48,14 @@ addLayer("p", {
     },
     upgrades: {
         11: {
+            title: "Sedum",
             description: "Square milestone effect",
             cost: (new Decimal(3)),
             effect() {return player.p.points.add(1)},
             effectDisplay() {return "^2"},
         },
         12: {
+            title: "Bear-Paw Succulent",
             description: "Multiply point gain based on points",
             cost: (new Decimal(5)),
             effect() {return player.points.add(2).log(2)},
@@ -61,12 +63,14 @@ addLayer("p", {
             tooltip: "log2(Points + 2)"
         },
         13: {
+            title: "Jade Plant",
             description: "Plant costs are divided by plants",
             cost: (new Decimal(12)),
             effect() {return player.p.points.add(1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 13))},
         },
         14: {
+            title: "Snake Plant",
             description: "Points are multiplied based on magnitude",
             cost: (new Decimal(18)),
             effect() {return new Decimal(2).pow(player.points.add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
@@ -74,6 +78,7 @@ addLayer("p", {
             tooltip: "2 ^ Floor(log10(Points))",
         },
         21: {
+            title: "Philodendron",
             description: "Plant costs are divided by points",
             cost: (new Decimal(25)),
             effect() {return player.points.add(1).pow(0.1)},
@@ -81,6 +86,7 @@ addLayer("p", {
             tooltip: "Points ^ 0.1",
         },
         22: {
+            title: "Anthurium",
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
             effect() {return new Decimal(2).pow(player.points.add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
@@ -88,6 +94,7 @@ addLayer("p", {
             tooltip: "2 ^ Floor(log10(Points))",
         },
         23: {
+            title: "Yucca",
             description: "Plant costs divided by plants, only goes up at intervals of 10",
             cost: (new Decimal(40)),
             effect() {return player.p.points.dividedBy(10).floor().times(10).add(1)},
@@ -95,6 +102,7 @@ addLayer("p", {
             tooltip: "Floor(plants ÷ 10) x 10",
         },
         24: {
+            title: "Coconut Palm",
             description: "Unlock Gardens and double point gain",
             cost: (new Decimal(50)),
             effectDisplay() {return "x2"},
@@ -131,6 +139,7 @@ addLayer("p", {
     },
     buyables: {
         11: {
+            title: "Prickly Pear",
             cost(x) {let cost = new Decimal(10).times(new Decimal(2).pow(x))
             if(hasUpgrade('g', 14)) cost=cost.dividedBy(upgradeEffect('g', 14))
             return cost},
@@ -144,6 +153,7 @@ addLayer("p", {
             buyMax() {return shiftDown},
         },
         12: {
+            title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
             return cost},
             display() { return "Divide plant costs by 10. Shift to buy max. Cost: "+format(this.cost()) },
