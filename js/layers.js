@@ -1,3 +1,50 @@
+addLayer("ach", {
+    name: "achievements", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: "?",
+    }},
+    color: "#FFFF00",
+    resource: "Achievements", // Name of prestige currency
+    type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    row: "side", // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return true},
+    achievements: {
+        11: {
+            name: "1st Plant!",
+            done() {return player.p.points.gte(1)},
+            tooltip: "Buy your first Plant",
+        },
+        12: {
+            name: "Combined",
+            done() {return hasUpgrade('p', 11)},
+            tooltip: "Buy a Sedum Succulent",
+        },
+        13: {
+            name: "What does Magnitude mean?",
+            done() {return hasUpgrade('p', 14)},
+            tooltip: `Buy a Snake Plant <br>
+            Magnitude of x: log10(x)`,
+        },
+        14: {
+            name: "What does divided mean",
+            done() {return hasUpgrade('p', 23)},
+            tooltip: "Buy an Anthurium",
+        },
+        15: {
+            name: "MORE SPACE",
+            done() {return player.g.points.gte(1)},
+            tooltip: "Get a new Garden",
+        },
+        16: {
+            name: "Costco sells plants now!",
+            done() {return getResetGain('p').gte(50)},
+            tooltip: "Bulk buy 50 Plants at once",
+        },
+    },
+}),
 addLayer("p", {
     name: "plants", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
