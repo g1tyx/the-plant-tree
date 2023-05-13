@@ -46,8 +46,8 @@ addLayer("ach", {
         22: {
             name: "Prickly Pears from IKEA",
             done() {return tmp.p.buyables[11].cost.lte(3)},
-            tooltip: "Make Prickly Pears cheaper than 3 Plants",
-        }
+            tooltip: "Make Prickly Pears cheaper than 3 Plants. Reward: Keep plant upgrades on reset",
+        },
     },
 }),
 addLayer("p", {
@@ -71,6 +71,13 @@ addLayer("p", {
     canBuyMax: true,
     autoPrestige() {return hasMilestone('g', 0)},
     resetsNothing() {return hasMilestone('g', 0)},
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return; // just necessary boilerplate
+        
+        let keep = [];
+        if (hasAchievement('a', 22)) keep.push("upgrades");
+        layerDataReset(this.layer, keep);
+    },      
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if(hasUpgrade('p', 13)) mult=mult.dividedBy(upgradeEffect('p', 13))
