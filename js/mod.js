@@ -13,14 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "1",
+	name: "Plants & Gardens I",
 }
 
-let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+let changelog = `<h1>Version History:</h1><br>
+	<h3>v1</h3><br>
+		Plants - Added with 12 Upgrades and 2 Buyables.<br>
+		Gardens - Added with 8 Upgrades.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 

@@ -29,7 +29,7 @@ addLayer("ach", {
             Magnitude of x: log10(x)`,
         },
         14: {
-            name: "What does divided mean",
+            name: "What does divided mean?",
             done() {return hasUpgrade('p', 23)},
             tooltip: "Buy an Anthurium",
         },
@@ -38,7 +38,7 @@ addLayer("ach", {
             done() {return player.g.points.gte(1)},
             tooltip: "Get a new Garden",
         },
-        16: {
+        21: {
             name: "Costco sells plants now!",
             done() {return getResetGain('p').gte(50)},
             tooltip: "Bulk buy 50 Plants at once",
@@ -295,6 +295,11 @@ addLayer("g", {
             unlocked() {return hasUpgrade('g', 22)},
             effectDisplay() {return "÷"+format(player.g.points.add(1))},
             tooltip: "Gardens + 1",
+        },
+        24: {
+            description: "Coming soon...",
+            cost: (new Decimal(18)),
+            tooltip: "Current end of game, will do something in a future update",
         },
     },
     milestones: {
