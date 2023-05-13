@@ -45,7 +45,7 @@ addLayer("ach", {
         },
         22: {
             name: "Prickly Pears from IKEA",
-            done() {return tmp.p.buyables.11.cost.lte(3)},
+            done() {return tmp.p.buyables[11].cost.lte(3)},
             tooltip: "Make Prickly Pears cheaper than 3 Plants",
         }
     },
