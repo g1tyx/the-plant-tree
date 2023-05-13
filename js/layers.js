@@ -299,6 +299,7 @@ addLayer("g", {
         24: {
             description: "Coming soon...",
             cost: (new Decimal(18)),
+            unlocked() {return hasUpgrade('g', 23)}
             tooltip: "Current end of game, will do something in a future update",
         },
     },
