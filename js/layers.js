@@ -170,7 +170,7 @@ addLayer("p", {
             description: "Plants multiply point gain slightly",
             cost: (new Decimal(155)),
             unlocked() {return hasMilestone('g', 0)},
-            effect() {return player.p.points.pow(0.5)},
+            effect() {return player.p.points.add(1).pow(0.5)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 31))},
             tooltip: "Plants ^ 0.5",
         },

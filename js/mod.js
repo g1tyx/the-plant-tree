@@ -13,11 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1",
+	num: "1.1",
 	name: "Plants & Gardens I",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+	<h3>v1.1</h3><br>
+		Achievements - 1 Achievement with reward.<br>
 	<h3>v1</h3><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
