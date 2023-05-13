@@ -43,6 +43,11 @@ addLayer("ach", {
             done() {return getResetGain('p').gte(50)},
             tooltip: "Bulk buy 50 Plants at once",
         },
+        22: {
+            name: "Prickly Pears from IKEA",
+            done() {return tmp.p.buyables.11.cost.lte(3)},
+            tooltip: "Make Prickly Pears cheaper than 3 Plants",
+        }
     },
 }),
 addLayer("p", {
