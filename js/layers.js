@@ -231,12 +231,12 @@ addLayer("g", {
     symbol: "G", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
         best: new Decimal(0),
         total: new Decimal(0),
     }},
-    color: "#27B000",
+    color: "#FF8800",
     requires: new Decimal(50), // Can be a function that takes requirement increases into account
     resource: "gardens", // Name of prestige currency
     baseResource: "plants", // Name of resource prestige is based on
@@ -309,7 +309,7 @@ addLayer("g", {
             tooltip: "Gardens + 1",
         },
         24: {
-            description: "Coming soon...",
+            description: "Unlock Zones",
             cost: (new Decimal(18)),
             unlocked() {return hasUpgrade('g', 23)},
             tooltip: "Current end of game, will do something in a future update",
@@ -323,4 +323,36 @@ addLayer("g", {
             unlocked() {return hasAchievement('a', 21)},
         },
     },
+}),
+addLayer("z", {
+    name: "zones", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "Z", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+        best: new Decimal(0),
+        total: new Decimal(0),
+    }},
+    color: "#00AAFF",
+    requires: new Decimal(250), // Can be a function that takes requirement increases into account
+    resource: "zones", // Name of prestige currency
+    baseResource: "plants", // Name of resource prestige is based on
+    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.9, // Prestige currency exponent
+    base() {return 2},
+    canBuyMax: true,
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+               return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "z", description: "Z: Reset for Zones", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+    ],
+    layerShown(){return hasUpgrade('g', 24)||player.z.best.gte(1)},
 })
