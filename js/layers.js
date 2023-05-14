@@ -178,13 +178,13 @@ addLayer("p", {
         32: {
             description: "Garden upgrade 1-4's effect is better",
             cost: (new Decimal(180)),
-            unlocked() {return hasUpgrade('p', 31)},
+            unlocked() {return hasMilestone('g', 0)},
             tooltip: "log10 -> log5",
         },
         33: {
             description: "Divide Garden costs based on points",
             cost: (new Decimal(195)),
-            unlocked() {return hasUpgrade('p', 32)},
+            unlocked() {return hasMilestone('g', 0)},
             effect() {return player.points.log(10).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 33))},
             tooltip: "(log10(Points)) ^ 0.1",
@@ -192,7 +192,7 @@ addLayer("p", {
         34: {
             description: "Previous Plant upgrades based on magnitude are better",
             cost: (new Decimal(200)),
-            unlocked() {return hasUpgrade('p', 33)},
+            unlocked() {return hasMilestone('g', 0)},
             effect() {if(hasUpgrade('p', 34)){return -5}else{return 0}},
             tooltip: "log10 -> log5",
         },
@@ -273,7 +273,9 @@ addLayer("g", {
         11: {
             description: "Multiply point gain based on Gardens and Plants",
             cost: (new Decimal(1)),
-            effect() {return player.g.points.add(1).times(player.p.points.add(1))},
+            effect() {let effect = player.g.points.add(1).times(player.p.points.add(1))
+                if(hasUpgrade('g', 31)) {effect=effect.times(player.z.points.add(1))}
+            return effect},
             effectDisplay() {return "x"+format(upgradeEffect('g', 11))},
             tooltip: "(Gardens + 1) x (Plants + 1)",
         },
@@ -322,6 +324,11 @@ addLayer("g", {
             cost: (new Decimal(18)),
             unlocked() {return hasUpgrade('g', 23)},
             tooltip: "Current end of game, will do something in a future update",
+        },
+        31: {
+            description: "Garden Upgrade 1-1 Uses Zones as well",
+            cost: (new Decimal(20)),
+            unlocked() {return hasUpgrade('g', 24)},
         },
     },
     milestones: {
