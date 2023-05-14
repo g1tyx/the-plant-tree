@@ -355,4 +355,22 @@ addLayer("z", {
         {key: "z", description: "Z: Reset for Zones", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
     layerShown(){return hasUpgrade('g', 24)||player.z.best.gte(1)},
+
+    milestones: {
+        0: {
+            requirementDescription: "1 Zone",
+            effectDescription: "Unlock 1: The Tropical Zone",
+            done() {return player.z.points.gte(1)},
+        },
+    },
+    challenges: {
+        11: {
+            name: "The Tropical Zone",
+            challengeDescription: "Divide point gain by Plants",
+            goalDescription() {return format(new Decimal(100).times(challengeCompletions('z', 11)))+" Plants. ("+format(challengeCompletions('z', 11))+"/3.00)"},
+            rewardDescription: "Unlock new Content",
+            completionLimit: 3,
+            canComplete() {return player.p.points.gte(new Decimal(100).times(challengeCompletions('z', 11)))},
+        },
+    },
 })
