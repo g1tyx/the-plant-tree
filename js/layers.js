@@ -41,7 +41,7 @@ addLayer("a", {
         21: {
             name: "Costco sells plants now!",
             done() {return getResetGain('p').gte(50)},
-            tooltip: "Bulk buy 50 Plants at once",
+            tooltip: "Bulk buy 50 Plants at once. Reward: Unlock a Garden Milestone",
         },
         22: {
             name: "Prickly Pears from IKEA",
