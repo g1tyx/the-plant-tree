@@ -370,7 +370,7 @@ addLayer("z", {
             goalDescription() {return format(new Decimal(50).times(challengeCompletions('z', 11)).add(150))+" Plants. ("+format(challengeCompletions('z', 11))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
-            canComplete() {return player.p.points.gte(new Decimal(50).times(challengeCompletions('z', 11))).add(150)},
+            canComplete() {return player.p.points.gte(new Decimal(50).times(challengeCompletions('z', 11)).add(150))},
         },
     },
 })
