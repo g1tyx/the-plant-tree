@@ -319,7 +319,8 @@ addLayer("g", {
         0: {
             requirementDescription: "7 Gardens",
             effectDescription: "Plants don't reset anything, automatically reset for plants and unlock a new row of Plant upgrades",
-            done() {return player.g.points.gte(7)},
+            done() {return player.g.points.gte(7) && hasAchievement('a', 21)},
+            unlocked() {return hasAchievement('a', 21)},
         },
     },
 })
