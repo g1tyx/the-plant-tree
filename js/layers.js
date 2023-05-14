@@ -200,9 +200,9 @@ addLayer("p", {
             description: "Divide Plant costs based on Points",
             cost: (new Decimal(250)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(1)},
-            effect() {return player.points.add(10).log(2)},
+            effect() {return player.points.add(1).pow(0.2)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 41))},
-            tooltip: "log2(Points)",
+            tooltip: "Points ^ 0.2",
         }
     },
     buyables: {
