@@ -88,6 +88,7 @@ addLayer("p", {
         if(hasUpgrade('g', 13)) mult=mult.dividedBy(upgradeEffect('g', 11))
         if(hasUpgrade('g', 21)) mult=mult.dividedBy(buyableEffect('p', 12))
         if(hasUpgrade('g', 23)) mult=mult.dividedBy(player.g.points.add(1))
+        if(hasUpgrade('p', 41)) mult=mult.dividedBy(upgradeEffect('p', 41))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
