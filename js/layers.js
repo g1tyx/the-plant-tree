@@ -209,9 +209,9 @@ addLayer("p", {
             description: "Multiply Point gain based on Tropical Zone completions and Zones",
             cost: (new Decimal(300)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(2)},
-            effect() {return player.z.points.add(1).times(new Decimal(challengeCompletions('z', 11)).add(1))},
+            effect() {return player.z.points.add(1).times(new Decimal(challengeCompletions('z', 11)).add(1)).pow(2)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 42))},
-            tooltip: "(Completions + 1) x (Zones + 1)",
+            tooltip: "((Completions + 1) x (Zones + 1)) ^ 2",
         },
     },
     buyables: {
