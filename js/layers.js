@@ -67,7 +67,9 @@ addLayer("p", {
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
-    base() {return 2},
+    base() {let base = 2
+    if(hasUpgrade('p', 43)){base -= 0.01}
+    return base},
     canBuyMax: true,
     autoPrestige() {return hasMilestone('g', 0)},
     resetsNothing() {return hasMilestone('g', 0)},
@@ -213,6 +215,11 @@ addLayer("p", {
             effectDisplay() {return "x"+format(upgradeEffect('p', 42))},
             tooltip: "((Completions + 1) x (Zones + 1)) ^ 2",
         },
+        43: {
+            description: "Reduce the Plant Cost base by 0.01",
+            cost: (new Decimal(340)),
+            unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
+        },
     },
     buyables: {
         11: {
@@ -227,7 +234,6 @@ addLayer("p", {
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('g', 12)},
             effect() {return new Decimal(5).pow(getBuyableAmount('p', 11))},
-            buyMax() {return shiftDown},
         },
         12: {
             title: "Saguaro",
@@ -240,7 +246,6 @@ addLayer("p", {
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('g', 21)},
             effect() {return new Decimal(10).pow(getBuyableAmount('p', 12))},
-            buyMax() {return shiftDown},
         },
     },
 }),
@@ -333,7 +338,6 @@ addLayer("g", {
             description: "Unlock Zones",
             cost: (new Decimal(18)),
             unlocked() {return hasUpgrade('g', 23)},
-            tooltip: "Current end of game, will do something in a future update",
         },
         31: {
             description: "Garden Upgrade 1-1 Uses Zones as well",
