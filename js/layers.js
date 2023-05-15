@@ -205,6 +205,14 @@ addLayer("p", {
             effectDisplay() {return "÷"+format(upgradeEffect('p', 41))},
             tooltip: "Points x (Plants ^ 3) ^ 0.2",
         },
+        42: {
+            description: "Multiply Point gain based on Tropical Zone completions and Zones",
+            cost: (new Decimal(300)),
+            unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(2)},
+            effect() {return player.z.points.add(1).times(new Decimal(challengeCompletions('z', 11).add(1)))},
+            effectDisplay() {return "x"+format(upgradeEffect('p', 42))},
+            tooltip: "(Completions + 1) x (Zones + 1)",
+        },
     },
     buyables: {
         11: {
@@ -340,11 +348,13 @@ addLayer("g", {
             tooltip: "log10 -> log5",
         },
         33: {
-            description: "Multiply point gain by 10",
+            description: "Multiply point gain based on Gardens",
             cost: (new Decimal(23)),
             unlocked() {return hasUpgrade('g', 32)},
-            effect() {return 10}
-        }
+            effect() {return player.g.points.dividedBy(2).add(1)},
+            effectDisplay() {return "x"+format(upgradeEffect('g', 33))},
+            tooltip: "(Gardens ÷ 2) + 1",
+        },
     },
     milestones: {
         0: {
