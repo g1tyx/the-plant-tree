@@ -360,6 +360,14 @@ addLayer("g", {
             effectDisplay() {return "x"+format(upgradeEffect('g', 33))},
             tooltip: "(Gardens ÷ 2) + 1",
         },
+        34: {
+            description: "Divide Garden costs based on Points",
+            cost: (new Decimal(30)),
+            unlocked() {return hasUpgrade('g', 33)},
+            effect() {return player.points.log(5).pow(0.05)},
+            effectDisplay() {return "÷"+format(upgradeEffect('g', 34))},
+            tooltip: "log5(Points) ^ 0.05"
+        }
     },
     milestones: {
         0: {
