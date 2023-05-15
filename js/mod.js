@@ -53,6 +53,7 @@ function getPointGen() {
 	gain=gain.times(gainUpgradeEffect('g', 11))
 	if(hasUpgrade('g', 12)) gain=gain.times(buyableEffect('p', 11))
 	gain=gain.times(gainUpgradeEffect('p', 31))
+	gain=gain.times(gainUpgradeEffect('g', 33))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	return gain
 }

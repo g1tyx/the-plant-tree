@@ -339,6 +339,12 @@ addLayer("g", {
             effect() {if(hasUpgrade('g', 32)){return -5}else{return 0}},
             tooltip: "log10 -> log5",
         },
+        33: {
+            description: "Multiply point gain by 10",
+            cost: (new Decimal(23)),
+            unlocked() {return hasUpgrade('g', 32)},
+            effect() {return 10}
+        }
     },
     milestones: {
         0: {
