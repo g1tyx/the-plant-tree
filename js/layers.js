@@ -274,6 +274,7 @@ addLayer("g", {
         mult = new Decimal(1)
         if(hasUpgrade('g', 22)) mult=mult.dividedBy(upgradeEffect('g', 22))
         if(hasUpgrade('p', 33)) mult=mult.dividedBy(upgradeEffect('p', 33))
+        if(hasUpgrade('g', 34)) mult=mult.dividedBy(upgradeEffect('g', 34))
                return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
