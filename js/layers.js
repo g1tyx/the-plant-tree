@@ -68,14 +68,14 @@ addLayer("p", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
     base() {let base = 2
-    if(hasUpgrade('p', 43)){base -= 0.03}
+    if(hasUpgrade('p', 43)){base -= 0.1}
     return base},
     canBuyMax: true,
     autoPrestige() {return hasMilestone('g', 0)},
     resetsNothing() {return hasMilestone('g', 0)},
     branches: ['g', 'z'],
     doReset(resettingLayer) {
-        if (layers[resettingLayer].row <= layers[this.layer].row) return; // just necessary boilerplate
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
         let keep = [];
         if (hasAchievement('a', 22) && resettingLayer==='g') keep.push("upgrades");
@@ -216,9 +216,10 @@ addLayer("p", {
             tooltip: "((Completions + 1) x (Zones + 1)) ^ 2",
         },
         43: {
-            description: "Reduce the Plant Cost base by 0.03",
+            description: "Reduce the Plant Cost base by 0.1",
             cost: (new Decimal(340)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
+            tooltip: "Plant cost formula: Base (2->1.9) ^ Plants ^ Exponent (1)"
         },
     },
     buyables: {
