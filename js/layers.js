@@ -71,6 +71,7 @@ addLayer("p", {
     canBuyMax: true,
     autoPrestige() {return hasMilestone('g', 0)},
     resetsNothing() {return hasMilestone('g', 0)},
+    branches: ['g', 'z'],
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return; // just necessary boilerplate
         
@@ -254,6 +255,7 @@ addLayer("g", {
     exponent: 0.4, // Prestige currency exponent
     base() {return 2},
     canBuyMax: true,
+    branches: ['p', 'z'],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if(hasUpgrade('g', 22)) mult=mult.dividedBy(upgradeEffect('g', 22))
@@ -359,6 +361,7 @@ addLayer("z", {
     exponent: 0.9, // Prestige currency exponent
     base() {return 2},
     canBuyMax: true,
+    branches: ['p', 'g'],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
                return mult
@@ -386,6 +389,7 @@ addLayer("z", {
             goalDescription() {return format(new Decimal(50).times(challengeCompletions('z', 11)).add(150))+" Plants. ("+format(challengeCompletions('z', 11))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
+            unlocked() {return hasMilestone('z', 0)},
             canComplete() {return player.p.points.gte(new Decimal(50).times(challengeCompletions('z', 11)).add(150))},
         },
     },
