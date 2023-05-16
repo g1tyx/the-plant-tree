@@ -233,7 +233,9 @@ addLayer("p", {
     buyables: {
         11: {
             title: "Prickly Pear",
-            cost(x) {let cost = new Decimal(10).times(new Decimal(2).pow(x))
+            cost(x) {let base = new Decimal(2)
+            if(hasMilestone('g', 1)) base=base.sub(0.1)
+                let cost = new Decimal(10).times(new Decimal(base).pow(x))
             if(hasUpgrade('g', 14)) cost=cost.dividedBy(upgradeEffect('g', 14))
             if(hasUpgrade('p', 44)) cost=cost.dividedBy(upgradeEffect('p', 44))
             return cost},
@@ -386,6 +388,12 @@ addLayer("g", {
             effectDescription: "Plants don't reset anything, automatically reset for plants and unlock a new row of Plant upgrades",
             done() {return player.g.points.gte(7) && hasAchievement('a', 21)},
             unlocked() {return hasAchievement('a', 21)},
+        },
+        1: {
+            requirementDescription: "45 Gardens",
+            effectDescription: "Reduce \"Prickly Pear\" base by 0.1",
+            done() {return player.g.points.gte(45)},
+            unlocked() {return hasMilestone('g', 0)},
         },
     },
 }),
