@@ -248,7 +248,7 @@ addLayer("p", {
         12: {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
-                if(hasUpgrade('p', 44)) cost=cost.dividedBy(getBuyableAmount('p', 12))
+                if(hasUpgrade('p', 44)) cost=cost.dividedBy(getBuyableAmount('p', 12).add(1))
             return cost},
             display() { return "Divide plant costs by 10. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.points.gte(this.cost()) },
@@ -427,6 +427,11 @@ addLayer("z", {
             requirementDescription: "1 Zone",
             effectDescription: "Unlock 1: The Tropical Zone",
             done() {return player.z.points.gte(1)},
+        },
+        1: {
+            requirementDescription: "2 Zones",
+            effectDescription: "Unlock 2: The Alpine Zone",
+            done() {return player.z.points.gte(2)},
         },
     },
     challenges: {
