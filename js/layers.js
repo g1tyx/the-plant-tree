@@ -222,7 +222,7 @@ addLayer("p", {
             tooltip: "Plant cost formula: Base (2->1.9) ^ Plants ^ Exponent (1)"
         },
         44: {
-            description: "Divide \"Prickly Pear\" cost based on Plants",
+            description: "Divide \"Prickly Pear\" cost based on Plants and divide \"Saguaro\" costs by it's amount",
             cost: (new Decimal(380)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
             effect() {return player.p.points.add(1).pow(0.75)},
@@ -248,6 +248,7 @@ addLayer("p", {
         12: {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
+                if(hasUpgrade('p', 44)) cost=cost.dividedBy(getBuyableAmount('p', 12))
             return cost},
             display() { return "Divide plant costs by 10. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.points.gte(this.cost()) },
