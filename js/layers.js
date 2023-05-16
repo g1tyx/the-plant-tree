@@ -221,14 +221,23 @@ addLayer("p", {
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
             tooltip: "Plant cost formula: Base (2->1.9) ^ Plants ^ Exponent (1)"
         },
+        44: {
+            description: "Divide \"Prickly Pear\" cost based on Plants",
+            cost: (new Decimal(380)),
+            unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
+            effect() {return player.p.points.add(1).pow(0.5)},
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 44))},
+            tooltip: "Plants ^ 0.5",
+        },
     },
     buyables: {
         11: {
             title: "Prickly Pear",
             cost(x) {let cost = new Decimal(10).times(new Decimal(2).pow(x))
             if(hasUpgrade('g', 14)) cost=cost.dividedBy(upgradeEffect('g', 14))
+            if(hasUpgrade('p', 44)) cost=cost.dividedBy(upgradeEffect('p', 44))
             return cost},
-            display() { return "Multiply point gain and divide plant costs by 5. Shift to buy max. Cost: "+format(this.cost()) },
+            display() { return "Multiply point gain and divide plant costs by 5. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
@@ -240,7 +249,7 @@ addLayer("p", {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
             return cost},
-            display() { return "Divide plant costs by 10. Shift to buy max. Cost: "+format(this.cost()) },
+            display() { return "Divide plant costs by 10. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
                 player.points = player.points.sub(this.cost())
