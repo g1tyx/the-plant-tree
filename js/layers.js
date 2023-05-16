@@ -324,7 +324,7 @@ addLayer("g", {
             unlocked() {return hasUpgrade('g', 13)},
             effect() {
                 if(hasUpgrade('p', 32)) {var base = new Decimal(5)} else {var base = new Decimal(10)}
-                return new Decimal(2).pow(player.p.points.add(1).log(base).floor())},
+                return new Decimal(2).pow(player.p.points.add(10).log(base).floor())},
             effectDisplay() {return "÷"+format(upgradeEffect('g', 14))},
             tooltip: "2 ^ Floor(log10(Plants))",
         },
