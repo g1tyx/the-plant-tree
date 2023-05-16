@@ -225,9 +225,9 @@ addLayer("p", {
             description: "Divide \"Prickly Pear\" cost based on Plants and divide \"Saguaro\" costs by it's amount",
             cost: (new Decimal(380)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
-            effect() {return player.p.points.add(1).pow(0.75)},
+            effect() {return player.p.points.add(1).pow(0.8)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 44))},
-            tooltip: "Plants ^ 0.75",
+            tooltip: "Plants ^ 0.8",
         },
     },
     buyables: {
