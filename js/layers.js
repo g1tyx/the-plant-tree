@@ -225,9 +225,9 @@ addLayer("p", {
             description: "Divide \"Prickly Pear\" cost based on Plants",
             cost: (new Decimal(380)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(3)},
-            effect() {return player.p.points.add(1).pow(0.6)},
+            effect() {return player.p.points.add(1).pow(0.75)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 44))},
-            tooltip: "Plants ^ 0.6",
+            tooltip: "Plants ^ 0.75",
         },
     },
     buyables: {
