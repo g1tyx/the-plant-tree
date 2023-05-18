@@ -457,7 +457,7 @@ addLayer("z", {
         },
         12: {
             name: "The Alpine Zone",
-            challengeDescription: "Gain is log2(Gain) and you lose all of your points every second",
+            challengeDescription: "Gain is raised to ^ 0.1 and you lose all of your points every second",
             goalDescription() {return format(new Decimal(10).times(challengeCompletions('z', 12)).add(50))+" Plants. ("+format(challengeCompletions('z', 12))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
