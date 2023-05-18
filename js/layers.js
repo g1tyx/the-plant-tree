@@ -470,12 +470,12 @@ addLayer("z", {
         },
         12: {
             name: "The Alpine Zone",
-            challengeDescription: "Gain is log1.1(Gain) and you lose all of your points every second",
+            challengeDescription: "Gain is cube rooted and you lose all of your points every second",
             goalDescription() {return format(new Decimal(10).times(challengeCompletions('z', 12)).add(50))+" Plants. ("+format(challengeCompletions('z', 12))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
             unlocked() {return hasMilestone('z', 1)},
-            canComplete() {return player.p.points.gte(new Decimal(55).times(challengeCompletions('z', 12)).add(58))},
+            canComplete() {return player.p.points.gte(new Decimal(55).times(challengeCompletions('z', 12)).add(50))},
         },
     },
 })
