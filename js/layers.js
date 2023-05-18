@@ -233,20 +233,23 @@ addLayer("p", {
     buyables: {
         11: {
             title: "Prickly Pear",
-            cost(x) {let base = new Decimal(2)
-            if(hasMilestone('g', 1)) base=base.sub(0.1)
-                let cost = new Decimal(10).times(new Decimal(base).pow(x))
-            if(hasUpgrade('g', 14)) cost=cost.dividedBy(upgradeEffect('g', 14))
-            if(hasUpgrade('p', 44)) cost=cost.dividedBy(upgradeEffect('p', 44))
-            return cost},
-            display() { return "Multiply point gain and divide plant costs by 5. Hold to buy max. Cost: "+format(this.cost()) },
+            cost(x = getBuyableAmount('p', 11)) {
+              let base = new Decimal(2);
+              if (hasMilestone('g', 1)) base = base.minus(0.1);
+              let cost = base.pow(x).times(10);
+              if (hasUpgrade('g', 14)) cost = cost.dividedBy(upgradeEffect('g', 14));
+              if (hasUpgrade('p', 44)) cost = cost.dividedBy(upgradeEffect('p', 44));
+              return cost;
+            },
+            display() { return `Multiply point gain and divide plant costs by 5. Hold to buy max. Cost: ${format(this.cost())}` },
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
-                player[this.layer].points = player[this.layer].points.sub(this.cost())
-                addBuyables(this.layer, this.id, 1)},
-            unlocked() {return hasUpgrade('g', 12)},
-            effect() {return new Decimal(5).pow(getBuyableAmount('p', 11))},
-        },
+              player[this.layer].points = player[this.layer].points.minus(this.cost());
+              addBuyables(this.layer, this.id, 1)
+            },
+            unlocked() { return hasUpgrade('g', 12) },
+            effect() { return getBuyableAmount('p', 11).pow_base(5) }
+          },
         12: {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
@@ -320,14 +323,14 @@ addLayer("g", {
         },
         14: {
             description: "Divide buyable cost based on magnitude of plants",
-            cost: (new Decimal(2)),
-            unlocked() {return hasUpgrade('g', 13)},
+            cost: new Decimal(2),
+            unlocked() { return hasUpgrade('g', 13) },
             effect() {
-                if(hasUpgrade('p', 32)) {var base = new Decimal(5)} else {var base = new Decimal(10)}
-                return new Decimal(2).pow(player.p.points.add(10).log(base).floor())},
-            effectDisplay() {return "÷"+format(upgradeEffect('g', 14))},
-            tooltip: "2 ^ Floor(log10(Plants))",
-        },
+              let base = new Decimal(hasUpgrade('p', 32) ? 5 : 10);
+              return player.p.points.plus(10).log(base).floor().pow_base(2);
+            },
+            effectDisplay() { return `÷${format(upgradeEffect('g', 14))}` }
+          },
         21: {
             description: "Unlock another buyable",
             cost: (new Decimal(3)),
