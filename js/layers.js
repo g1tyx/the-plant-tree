@@ -457,7 +457,7 @@ addLayer("z", {
         },
         12: {
             name: "The Alpine Zone",
-            challengeDescription: "All of your points decay each second",
+            challengeDescription: "All of your points decay 100 times each second",
             goalDescription() {return format(new Decimal(10).times(challengeCompletions('z', 12)).add(50))+" Plants. ("+format(challengeCompletions('z', 12))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
