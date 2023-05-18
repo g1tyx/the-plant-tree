@@ -92,6 +92,7 @@ addLayer("p", {
         if(hasUpgrade('g', 21)) mult=mult.dividedBy(buyableEffect('p', 12))
         if(hasUpgrade('g', 23)) mult=mult.dividedBy(player.g.points.add(1))
         if(hasUpgrade('p', 41)) mult=mult.dividedBy(upgradeEffect('p', 41))
+        if(hasUpgrade('p', 52)) mult=mult.dividedBy(30)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -228,6 +229,18 @@ addLayer("p", {
             effect() {return player.p.points.add(1).pow(0.8)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 44))},
             tooltip: "Plants ^ 0.8",
+        },
+        51: {
+            description: "Multiply Point gain by 20",
+            cost() {if(hasUpgrade('p', 52)){return 520}else{return 500}},
+            unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(1)},
+            tooltip: "Cost increases when Plant Upgrade 5-2 is bought",
+        },
+        52: {
+            description: "Divide Plant costs by 30",
+            cost() {if(hasUpgrade('p', 51)){return 520}else{return 500}},
+            unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(1)},
+            tooltip: "Cost increases when Plant Upgrade 5-1 is bought",
         },
     },
     buyables: {
