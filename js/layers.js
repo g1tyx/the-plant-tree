@@ -455,5 +455,14 @@ addLayer("z", {
             unlocked() {return hasMilestone('z', 0)},
             canComplete() {return player.p.points.gte(new Decimal(50).times(challengeCompletions('z', 11)).add(150))},
         },
+        12: {
+            name: "The Alpine Zone",
+            challengeDescription: "All of your points decay each second",
+            goalDescription() {return format(new Decimal(10).times(challengeCompletions('z', 12)).add(50))+" Plants. ("+format(challengeCompletions('z', 12))+"/3.00)"},
+            rewardDescription: "Unlock new Content",
+            completionLimit: 3,
+            unlocked() {return hasMilestone('z', 1)},
+            canComplete() {return player.p.points.gte(new Decimal(10).times(challengeCompletions('z', 12)).add(50))},
+        }
     },
 })
