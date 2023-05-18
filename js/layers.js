@@ -92,7 +92,6 @@ addLayer("p", {
         if(hasUpgrade('g', 21)) mult=mult.dividedBy(buyableEffect('p', 12))
         if(hasUpgrade('g', 23)) mult=mult.dividedBy(player.g.points.add(1))
         if(hasUpgrade('p', 41)) mult=mult.dividedBy(upgradeEffect('p', 41))
-        if(hasUpgrade('p', 52)) mult=mult.dividedBy(100)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -237,7 +236,7 @@ addLayer("p", {
             tooltip: "Cost increases when Plant Upgrade 5-2 is bought",
         },
         52: {
-            description: "Divide Plant costs by 100",
+            description: "Saguaro cost base is reduced to 500",
             cost() {if(hasUpgrade('p', 51)){return 520}else{return 500}},
             unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(1)},
             tooltip: "Cost increases when Plant Upgrade 5-1 is bought",
@@ -267,6 +266,7 @@ addLayer("p", {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
                 if(hasUpgrade('p', 44)) cost=cost.dividedBy(getBuyableAmount('p', 12).add(1))
+                if(hasUpgrade('p', 52)) cost=cost.dividedBy(new Decimal(2).pow(getBuyableAmount('p', 12)))
             return cost},
             display() { return "Divide plant costs by 10. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.points.gte(this.cost()) },
