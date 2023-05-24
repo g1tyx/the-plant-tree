@@ -688,11 +688,11 @@ addLayer("z", {
         11: {
             name: "The Tropical Zone",
             challengeDescription: "Divide point gain by Plants",
-            goalDescription() {return format(new Decimal(50).times(challengeCompletions('z', 11)).add(150))+" Plants. ("+format(challengeCompletions('z', 11))+"/3.00)"},
+            goalDescription() {return format(new Decimal(60).times(challengeCompletions('z', 11)).add(150))+" Plants. ("+format(challengeCompletions('z', 11))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
             unlocked() {return hasMilestone('z', 0)},
-            canComplete() {return player.p.points.gte(new Decimal(50).times(challengeCompletions('z', 11)).add(150))},
+            canComplete() {return player.p.points.gte(new Decimal(60).times(challengeCompletions('z', 11)).add(150))},
         },
         12: {
             name: "The Alpine Zone",
