@@ -13,11 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.1",
+	num: "2",
 	name: "Plants & Gardens I",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+    <h3>v2</h3><br>
+        Plants - Added Many Upgrades and 1 Buyable.<br>
+        Gardens - Added Upgrades and Milestones.<br>
+        Zones - Added with 4 Challenges and Milestones.<br>
+        Achievements - Added Many more.<br>
 	<h3>v1.1</h3><br>
 		Achievements - 1 Achievement with reward.<br>
 	<h3>v1</h3><br>
@@ -55,9 +60,23 @@ function getPointGen() {
 	gain=gain.times(gainUpgradeEffect('p', 31))
 	gain=gain.times(gainUpgradeEffect('g', 33))
 	gain=gain.times(gainUpgradeEffect('p', 42))
-	if(hasUpgrade('p', 51)) gain=gain.times(20)
+    gain=gain.times(gainUpgradeEffect('p', 51))
+    gain=gain.times(gainUpgradeEffect('p', 53))
+    gain=gain.times(gainUpgradeEffect('p', 54))
+    gain=gain.times(buyableEffect('g', 11))
+    gain=gain.times(buyableEffect('g', 12))
+    gain=gain.times(buyableEffect('g', 13))
+    if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
-	if(inChallenge('z', 12)) {gain=gain.root(3), gain=gain.minus(player.points)}
+	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
+    if(inChallenge('z', 21)) gain=gain.dividedBy(player.points.add(10).log(10))
+    
+    if(gain.gte(new Decimal("1.80e308"))) gain=gain.dividedBy(new Decimal("1.80e308")).pow(0.95).times(new Decimal("1.80e308"))
+    if(false){
+    gain=gain.add(3)
+    gain=new Decimal(1).add(gain.minus(player.points.add(1).pow(0.5)))
+    gain=gain.dividedBy(player.points.add(10).log(10))
+    } //being kept for challenge ideas
 	return gain
 }
 
@@ -69,9 +88,10 @@ function addedPlayerData() { return {
 var displayThings = [
 ]
 
+
 // Determines when the game "ends"
 function isEndgame() {
-	return false
+	return challengeCompletions('z', 22) >= 3
 }
 
 
