@@ -94,6 +94,7 @@ addLayer("p", {
 		points: new Decimal(0),
         best: new Decimal(0),
         total: new Decimal(0),
+        resetTime: 0,
     }},
     color: "#27B000",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -291,7 +292,7 @@ addLayer("p", {
             title: "Sempervivum",
             description: "Prickly Pear cost is divided based on points",
             cost() {if(hasUpgrade('p', 51)){return 600}else{return 500}},
-            effect() {return player.points.log(2)},
+            effect() {return player.points.add(2).log(2)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 52))},
             unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(1)},
             tooltip: "Cost increases when Plant Upgrade 5-1 is bought. Formula: log2(Points)",
@@ -374,7 +375,7 @@ addLayer("p", {
               return cost;
             },
             display() { return `Multiply point gain and divide plant costs by 5. Hold to buy max. Cost: ${format(this.cost())}` },
-            canAfford() { return player.p.points.gt(this.cost()) },
+            canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0},
             buy() {
               player.p.points = player.p.points.minus(this.cost());
               addBuyables(this.layer, this.id, 1)
