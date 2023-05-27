@@ -825,7 +825,7 @@ addLayer("w", {
     },
     wildlifeGen() {
         let gain = new Decimal(0)
-        if(tmp.w.layerShown = true) gain = gain.add(player.p.points.root(hasUpgrade('p', 73) ? 1.5 : 2 ))
+        if(challengeCompletions('z', 22) >= 3) gain = gain.add(player.p.points.root(hasUpgrade('p', 73) ? 1.5 : 2 ))
         if(hasUpgrade('w', 21)) gain = gain.add(player.g.points.root(2))
         
         if(hasUpgrade('w', 12)) gain = gain.times(upgradeEffect('w', 12))
