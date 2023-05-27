@@ -984,7 +984,7 @@ addLayer("w", {
         },
         51: {
             title: "Centipede",
-            description: "Unlock a Larger Wildlife Buyable With a Maximum of 100 Purchases",
+            description: "Unlock a Larger Wildlife Buyable",
             cost: (new Decimal("1e10")),
             unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 23)},
             tooltip: "Requires 'Log Pile' and 'Faster Wildlife'",
@@ -1056,7 +1056,7 @@ addLayer("w", {
                 player.w.large = player.w.large.minus(this.cost().times(0.1))
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('w', 51)},
-            purchaseLimit: 100,
+            purchaseLimit: 30,
             effect() {return player.points.add(1).pow(getBuyableAmount('w', 11).dividedBy(100))},
             tooltip() {return "Points ^ N where N is X ÷ 100. Currently: ÷"+format(buyableEffect('w', 11))},
         },
