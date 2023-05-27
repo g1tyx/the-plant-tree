@@ -13,11 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2",
-	name: "Plants & Gardens I",
+	num: "3",
+	name: "Wildlife",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+    <h3>v3</h3><br>
+        Wildlife - Added with 24 Upgrades and 1 Buyable.<br>
+        Plants - Added 2 Upgrades.<br>
+        Achievements - Added 6 Achievements.<br>
     <h3>v2</h3><br>
         Plants - Added Many Upgrades and 1 Buyable.<br>
         Gardens - Added Upgrades and Milestones.<br>
@@ -66,6 +70,9 @@ function getPointGen() {
     gain=gain.times(buyableEffect('g', 11))
     gain=gain.times(buyableEffect('g', 12))
     gain=gain.times(buyableEffect('g', 13))
+    gain=gain.times(gainUpgradeEffect('w', 11))
+    gain=gain.times(gainUpgradeEffect('w', 41))
+    gain=gain.times(player.w.large.add(1).pow(0.5))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
@@ -91,7 +98,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return challengeCompletions('z', 22) >= 3
+	return false
 }
 
 
@@ -105,7 +112,7 @@ var backgroundStyle = {
 
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
-	return(3600) // Default is 1 hour which is just arbitrarily large
+	return(60) // Default is 1 hour which is just arbitrarily large
 }
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,

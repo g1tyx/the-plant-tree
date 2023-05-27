@@ -56,7 +56,7 @@ addLayer("a", {
         24: {
             name: "\"Having a Garden improves your quality of life\"",
             done() {return hasMilestone('g', 0)},
-            tooltip: "Get a Garden Milestone",
+            tooltip: "Get a Garden Milestone. Reward: Prickly Pears don't use up Plants",
         },
         25: {
             name: "BETTER SPACE",
@@ -82,6 +82,36 @@ addLayer("a", {
             name: "You need more containers",
             done() {return getBuyableAmount('p', 13).gte(100)},
             tooltip: "Reach the Echinocactus Limit. Reward: Keep Plant Buyables on Garden Reset",
+        },
+        35: {
+            name: "Wildlife Central",
+            done() {return player.w.points.gte(100)},
+            tooltip: "Reach 100 Wildlife",
+        },
+        41: {
+            name: "Real Wildlife!",
+            done() {return hasUpgrade('w', 31)},
+            tooltip: "Attract your first Animal to the Garden",
+        },
+        42: {
+            name: "More Resources?",
+            done() {return hasUpgrade('w', 33)},
+            tooltip: "Attract a Bear to your garden",
+        },
+        43: {
+            name: "Habitat Master",
+            done() {return hasUpgrade('w', 14)},
+            tooltip: "Obtain All the Habitats",
+        },
+        44: {
+            name: "Daft Wildlife",
+            done() {return hasUpgrade('w', 24)},
+            tooltip: "Complete the Reference",
+        },
+        45: {
+            name: "Sassy Wildlife",
+            done() {return hasUpgrade('w', 64)},
+            tooltip: "Attract a Fox to your Garden",
         },
     },
 }),
@@ -116,6 +146,7 @@ addLayer("p", {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
         let keep = [];
+        keep.push("milestones");
         if (hasAchievement('a', 23) && resettingLayer==='g') keep.push("upgrades");
         if (hasAchievement('a', 34) && resettingLayer==='g') keep.push("buyables");
         layerDataReset(this.layer, keep);
@@ -132,6 +163,8 @@ addLayer("p", {
         if(hasUpgrade('g', 23)) mult=mult.dividedBy(player.g.points.add(1))
         if(hasUpgrade('p', 41)) mult=mult.dividedBy(upgradeEffect('p', 41))
         if(hasUpgrade('g', 41)) mult=mult.pow(1.1)
+        if(hasUpgrade('w', 31)) mult=mult.dividedBy(player.w.points.add(1))
+        if(hasUpgrade('w', 63)) mult=mult.dividedBy(player.w.large.add(1).pow(0.5))
         if(inChallenge('z', 12)) mult=mult.times((getBuyableAmount('p', 11).add(1)))
         return mult
     },
@@ -144,6 +177,9 @@ addLayer("p", {
         {key: "p", description: "P: Reset for plants", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+    automate() {
+        if(hasUpgrade('w', 42) && (player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).gte(0))) {addBuyables('p', 12, player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).ceil())}
+    },
     milestones: {
         0: {
             requirementDescription: "1 Plant",
@@ -316,7 +352,7 @@ addLayer("p", {
         },
         61: {
             title: "Dianthus",
-            description: "Prickly Pear gives free levels to Saguaro",
+            description: "Prickly Pear gives bonus levels to Saguaro",
             cost() {if(hasUpgrade('p', 62)){return 1325}else{return 1200}},
             unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(3)},
             effectDisplay() {return "+"+format(getBuyableAmount('p', 11))},
@@ -338,7 +374,7 @@ addLayer("p", {
         },
         64: {
             title: "Thrift",
-            description: "Echinocactus gives free levels to Saguaro and Prickly Pear",
+            description: "Echinocactus is 'free' and gives bonus levels to Saguaro and Prickly Pear",
             cost: (new Decimal(1740)),
             unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(3)},
             effectDisplay() {return "+"+format(getBuyableAmount('p', 13))},
@@ -359,6 +395,22 @@ addLayer("p", {
             unlocked() {return new Decimal(challengeCompletions('z', 22)).gte(2)},
             effect() {if(hasUpgrade('p', 72)) {return -10} else {return 0}}, 
         },
+        73: {
+            title: "Bluebells",
+            description: "Base Wildlife Gain uses a Better Formula",
+            cost: (new Decimal(11360)),
+            unlocked() {return new Decimal(challengeCompletions('z', 22)).gte(3)},
+            tooltip: "2rt(Plants) -> 1.5rt(Plants)",
+        },
+        74 :{
+            title: "Filmy Fern",
+            description: "'Nutrients' Divides Prickly Pear Cost at a Reduced Rate",
+            cost: (new Decimal(13300)),
+            unlocked() {return new Decimal(challengeCompletions('z', 22)).gte(3)},
+            effect() {return buyableEffect('w', 11).pow(0.1)},
+            effectDisplay() {return "÷"+format(upgradeEffect('p', 74))},
+            tooltip: "Nutrients ^ 0.1",
+        },
     },
     buyables: {
         11: {
@@ -372,24 +424,28 @@ addLayer("p", {
               if (hasUpgrade('p', 44)) cost = cost.dividedBy(upgradeEffect('p', 44));
               if (hasUpgrade('p', 52)) cost = cost.dividedBy(upgradeEffect('p', 52));
               if (hasUpgrade('p', 62)) cost = cost.dividedBy(getBuyableAmount('p', 12).add(1));
+              if (hasUpgrade('p', 74)) cost = cost.dividedBy(upgradeEffect('p', 74));
               return cost;
             },
             display() { return `Multiply point gain and divide plant costs by 5. Hold to buy max. Cost: ${format(this.cost())}` },
             canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0},
             buy() {
-              player.p.points = player.p.points.minus(this.cost());
+              if(!hasAchievement('a', 24)) {player.p.points = player.p.points.minus(this.cost())};
               addBuyables(this.layer, this.id, 1)
             },
             unlocked() { return hasUpgrade('g', 12) },
             effect() {
                 let extra = new Decimal(0)
                 if(hasUpgrade('p', 64)) extra = extra.add(getBuyableAmount('p', 13))
-                return getBuyableAmount('p', 11).add(extra).pow_base(5) }
+                return getBuyableAmount('p', 11).add(extra).pow_base(5) },
+            tooltip() {return "Total Effect: <br> ×/÷"+format(getBuyableAmount('p', 11).pow_base(5))+" (Before Bonus Levels)"},
           },
         12: {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
                 if(hasUpgrade('p', 44)) cost=cost.dividedBy(getBuyableAmount('p', 12).add(1))
+                if(hasUpgrade('w', 42)) cost=cost.dividedBy(upgradeEffect('w', 42))
+                if(hasUpgrade('w', 51)) cost=cost.dividedBy(buyableEffect('w', 11))
             return cost},
             display() { return "Divide plant costs by 10. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.points.gte(this.cost()) },
@@ -401,7 +457,8 @@ addLayer("p", {
                 let extra = new Decimal(0)
                 if(hasUpgrade('p', 61)) extra = extra.add(getBuyableAmount('p', 11))
                 if(hasUpgrade('p', 64)) extra = extra.add(getBuyableAmount('p', 13))
-                return new Decimal(10).pow(getBuyableAmount('p', 12).add(extra))}
+                return new Decimal(10).pow(getBuyableAmount('p', 12).add(extra))},
+            tooltip() {return "Total Effect: ÷"+format(getBuyableAmount('p', 12).pow_base(10))+" (Before Bonus Levels)"},
             },
         13: {
             title: "Echinocactus",
@@ -410,11 +467,12 @@ addLayer("p", {
             display() { return "Multiply Plant cost base above 1 by 0.99. Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
-                player.p.points = player.p.points.sub(this.cost())
+                if(!hasUpgrade('p', 64)) {player.p.points = player.p.points.sub(this.cost())}
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('p', 63)},
             purchaseLimit: 100,
             effect() {return new Decimal(0.99).pow(getBuyableAmount('p', 13))},
+            tooltip() {return "Total Effect: ×"+format(getBuyableAmount('p', 13).pow_base(0.99))+" (Before Bonus Levels)"},
             },
         },
 }),
@@ -444,6 +502,7 @@ addLayer("g", {
         if(hasUpgrade('p', 33)) mult=mult.dividedBy(upgradeEffect('p', 33))
         if(hasUpgrade('g', 34)) mult=mult.dividedBy(upgradeEffect('g', 34))
         if(hasUpgrade('p', 71)) mult=mult.dividedBy(upgradeEffect('p', 71))
+        if(hasUpgrade('w', 53)) mult=mult.dividedBy(upgradeEffect('w', 53))
                return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -567,7 +626,7 @@ addLayer("g", {
             description: "Reduce Row 1 Garden Buyable Scaling by 3",
             cost: (new Decimal(189)),
             unlocked() {return hasUpgrade('g', 42)},
-            effect() {if(hasUpgrade('g', 43)) {return -3} else {return 0}}
+            effect() {if(hasUpgrade('g', 43)) {return hasUpgrade('w', 43) ? -5 : -3} else {return 0}}
         },
         44: {
             title: "Hot Tub",
@@ -598,34 +657,37 @@ addLayer("g", {
             title: "Water Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(10 + upgradeEffect('g', 43)))
             return cost},
-            display() { return "Multiply Gain by Temperate Zone Completions. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return "Multiply Point Gain by Temperate Zone Completions. (free) Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return new Decimal(challengeCompletions('z', 21)).gte(1)},
             effect() {return new Decimal(challengeCompletions('z', 21)).add(1).pow(getBuyableAmount('g', 11))},
+            tooltip() {return "Temp. Zone Completions + 1 ^ X. Currently Multiplying Point Gain when bought by x"+format(new Decimal(1).add(challengeCompletions('z', 21)))},
             },
         12: {
             title: "Tunnel Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(10 + upgradeEffect('g', 43)))
             return cost},
-            display() { return "Multiply Gain by Zones. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return "Multiply Point Gain by Zones. (free) Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return new Decimal(challengeCompletions('z', 21)).gte(2)},
             effect() {return player.z.points.add(1).pow(getBuyableAmount('g', 12))},
+            tooltip() {return "Zones + 1 ^ X. Currently Multiplying Point Gain when bought by x"+format(player.z.points.add(1))},
             },
         13: {
             title: "Exploration Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(20 + upgradeEffect('g', 43)))
             return cost},
-            display() { return "Multiply Gain based on total first row Garden Buyable Purchases. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return "Multiply Point Gain based on total first row Garden Buyable Purchases. (free) Hold to buy max. Cost: "+format(this.cost()) },
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return new Decimal(challengeCompletions('z', 21)).gte(3)},
             effect() {return getBuyableAmount('g', 11).add(getBuyableAmount('g', 12)).add(getBuyableAmount('g', 13)).root(2).pow(getBuyableAmount('g', 13))},
+            tooltip() {return "(Total Purchases ^ 0.5) ^ X. Currently Multiplying Point Gain when bought by x"+format(getBuyableAmount('g', 11).add(getBuyableAmount('g', 12)).add(getBuyableAmount('g', 13)).root(2))},
             },
         },
 }),
@@ -707,7 +769,7 @@ addLayer("z", {
         },
         21: {
             name: "The Temperate Zone",
-            challengeDescription: "Previous Challenge Effects and Gain is divided by log10 Points",
+            challengeDescription: "Previous Challenge Effects and Point Gain is divided by log10 Points",
             goalDescription() {return format(new Decimal(400).pow(new Decimal(challengeCompletions('z', 21)).root(5)).times(challengeCompletions('z', 21)).add(325))+" Plants. ("+format(challengeCompletions('z', 21))+"/3.00)"},
             rewardDescription: "Unlock new Content",
             completionLimit: 3,
@@ -724,6 +786,279 @@ addLayer("z", {
             unlocked() {return hasMilestone('z', 3)},
             canComplete() {return player.p.points.gte(new Decimal(280).pow(new Decimal(challengeCompletions('z', 22)).root(5)).times(challengeCompletions('z', 22)).add(1100))},
             countsAs: [11, 12, 21],
+        },
+    },
+}),
+addLayer("w", {
+    name: "wildlife", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "W", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+        large: new Decimal(0),
+    }},
+    color: "#0088AA",
+    resource: "wildlife", // Name of prestige currency
+    baseResource: "plants", // Name of resource prestige is based on
+    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    branches: ['p', 'g', 'z'],
+     doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        
+        let keep = [];
+        keep.push("upgrades");
+        layerDataReset(this.layer, keep);
+    },      
+    effectDescription() {let desc = "You are generating "+format(tmp.w.wildlifeGen)+" Wildlife every second. You keep Wildlife Upgrades on reset. "
+        if(hasUpgrade('w', 33)) desc = desc + "You have "+format(player.w.large)+" Larger Wildlife which is Multiplying Point gain by x"+format(player.w.large.add(1).pow(0.5))+" and Wildlife gain by x"+format(player.w.large.add(1).pow(hasUpgrade('w', 54) ? 0.5 : 0.1))+". "
+        return desc
+    },
+    update(diff) {
+        gain = tmp.w.wildlifeGen
+        if(hasUpgrade('w', 33)) {
+            gain=gain.minus(player.w.points.pow(0.1))
+            player.w.large=player.w.large.add(player.w.points.pow(0.1).times(upgradeEffect('w', 14)).minus(player.w.large.times(0.1)).times(diff))
+        }
+        player.w.points=player.w.points.add(gain.times(diff))
+    },
+    wildlifeGen() {
+        let gain = new Decimal(0)
+        if(tmp.w.layerShown = true) gain = gain.add(player.p.points.root(hasUpgrade('p', 73) ? 1.5 : 2 ))
+        if(hasUpgrade('w', 21)) gain = gain.add(player.g.points.root(2))
+        
+        if(hasUpgrade('w', 12)) gain = gain.times(upgradeEffect('w', 12))
+        if(hasUpgrade('w', 32)) gain = gain.times(upgradeEffect('w', 32))
+        if(hasUpgrade('w', 41)) gain = gain.times(upgradeEffect('w', 41))
+        if(hasUpgrade('w', 13)) gain = gain.times(upgradeEffect('w', 13))
+        if(hasUpgrade('w', 33)) gain = gain.times(player.w.large.add(1).pow(hasUpgrade('w', 54) ? 0.5 : 0.1))
+        if(hasUpgrade('w', 23)) gain = gain.times(upgradeEffect('w', 23))
+        if(hasUpgrade('w', 52)) gain = gain.times(upgradeEffect('w', 52))
+        if(hasUpgrade('w', 34)) gain = gain.times(upgradeEffect('w', 34))
+        if(hasUpgrade('w', 44)) gain = gain.times(upgradeEffect('w', 44))
+        if(hasUpgrade('w', 62)) gain = gain.times(upgradeEffect('w', 62))
+        
+        gain=gain.minus(player.w.points.times(upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.1)))
+        return gain.times(tmp.w.wildlifeSpeed)
+    },
+    wildlifeSpeed() {
+        let speed = new Decimal(1)
+        if(hasUpgrade('w', 24)) speed = speed.times(5)
+        if(hasUpgrade('w', 24)) speed = speed.times(2)
+        return speed
+    },
+    row: 0, // Row the layer is in on the tree (0 is the first row)
+    layerShown(){return challengeCompletions('z', 22) >= 3},
+    
+    upgrades: {
+        11: {
+            title: "Log Pile",
+            description: "Multiply Point gain based on Wildlife",
+            cost: (new Decimal(1000)),
+            effect() {return player.w.points.add(1).pow(0.3)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 11))},
+            tooltip: "Wildlife ^ 0.3",
+        },
+        12: {
+            title: "Pond",
+            description: "Wildlife multiplies its own gain",
+            cost: (new Decimal(1000)),
+            unlocked() {return hasUpgrade('w', 11)},
+            effect() {return player.w.points.add(10).log(10)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 12))},
+            tooltip: "log10(Wildlife)",
+        },
+        13: {
+            title: "Cave",
+            description: "Multiply Wildlife Gain based on Magnitude",
+            cost: (new Decimal("1.7e6")),
+            unlocked() {return hasUpgrade('w', 12)},
+            effect() {return player.points.add(10).log(10).floor().pow(0.5)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 13))},
+            tooltip: "Magnitude ^ 0.5",
+        },
+        14: {
+            title: "Meadow",
+            description: "You gain twice as much Larger Wildlife",
+            cost() {return hasUpgrade('w', 24) ? new Decimal("6.75e15") : new Decimal("5.55e11")},
+            unlocked() {return hasUpgrade('w', 13)},
+            effect() {return hasUpgrade('w', 14) ? 2 : 1},
+            tooltip: "Cost Increases when Stronger Wildlife is Bought",
+        },
+        21: {
+            title: "Bigger Wildlife",
+            description: "Wildlife gain increased based on Gardens",
+            cost: (new Decimal(3500)),
+            effectDisplay() {return "+"+format(player.g.points.add(1).pow(0.5))},
+            tooltip: "sqrt(Gardens)",
+        },
+        22: {
+            title: "Longer Wildlife",
+            description: "You lose half as much of your Wildlife every second",
+            cost: (new Decimal(11000)),
+            unlocked() {return hasUpgrade('w', 21)},
+            effect() {if(hasUpgrade('w', 22)) {return new Decimal(0.5)} else {return new Decimal(1)}},
+            tooltip: "10% -> 5%",
+        },
+        23: {
+            title: "Faster Wildlife",
+            description: "Multiply Wildlife gain by 'Exploration Features' Amount",
+            cost: (new Decimal("6e8")),
+            unlocked() {return hasUpgrade('w', 22)},
+            effect() {return getBuyableAmount('g', 13).add(1)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 23))},
+        },
+        24: {
+            title: "Stronger Wildlife",
+            description: "Wildlife Time is 5x as Fast",
+            cost() {return new Decimal(hasUpgrade('w', 14) ? "7.5e15" : "5.55e11")},
+            unlocked() {return hasUpgrade('w', 23)},
+            tooltip: "Wildlife gain x5 <u> after wildlife loss</u>. Cost increases when 'Meadow' is Bought",
+        },
+        31: {
+            title: "Anteater",
+            description: "Plant costs are Divided by Wildlife",
+            cost: (new Decimal(4400)),
+            unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 21)},
+            effectDisplay() {return "÷"+format(player.w.points.add(1))},
+            tooltip: "Requires 'Log Pile' and 'Bigger Wildlife'",
+        },
+        32: {
+            title: "Hedgehog",
+            description: "Multiply Wildlife gain based on Zones",
+            cost: (new Decimal(4500)),
+            unlocked() {return hasUpgrade('w', 12) && hasUpgrade('w', 21)},
+            effect() {return player.z.points.add(1).root(2)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 32))},
+            tooltip: "sqrt(Zones). Requires 'Pond' and 'Bigger Wildlife'",
+        },
+        33: {
+            title: "Bear",
+            description: "Replace ^ 0.1 of Wildlife with Larger Wildlife every second which helps Multiply Point gain and Wildlife Gain",
+            cost: (new Decimal("2.75e8")),
+            unlocked() {return hasUpgrade('w', 13) && hasUpgrade('w', 21)},
+            tooltip: "Point gain mult: LW ^ 0.5. Wildlife gain mult: LW ^ 0.1. Requires 'Cave' and 'Bigger Wildlife'",
+        },
+        34: {
+            title: "Roe Deer",
+            description: "Multiply Wildlife gain Based on Points",
+            cost() {return new Decimal("6.5e11")},
+            unlocked() {return hasUpgrade('w', 14) && hasUpgrade('w', 21)},
+            effect() {return player.points.add(1).log(3).root(3)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 34))},
+            tooltip: "3rt (log3 (Points)). Requires 'Meadow' and 'Bigger Wildlife'",
+        },
+        41: {
+            title: "Woodlice",
+            description: "Multiply Point and Wildlife Gain based on Points and Wildlife",
+            cost: (new Decimal(23000)),
+            unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 22)},
+            effect() {return player.points.add(2).pow(0.05).log(20).times(player.w.points.add(2).pow(0.25).log(4))},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 41))},
+            tooltip: "log20 (Points ^ 0.05) x lo4(Wildlife ^ 0.25). Requires 'Log Pile' and 'Longer Wildlife'",
+        },
+        42: {
+            title: "Dragonfly",
+            description: "Autobuy Saguaro and Divide its cost by Wildlife x Plants x its Amount",
+            cost: (new Decimal("1.5e6")),
+            unlocked() {return hasUpgrade('w', 12) && hasUpgrade('w', 22)},
+            effect() {return player.w.points.add(1).times(player.p.points.add(1)).times(getBuyableAmount('p', 12).add(1))},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 42))},
+            tooltip: "Requires 'Pond' and 'Longer Wildlife'",
+        },
+        43: {
+            title: "Olm",
+            description: "Reduce Garden Buyable Cost scaling by 2",
+            cost: (new Decimal("4e8")),
+            unlocked() {return hasUpgrade('w', 13) && hasUpgrade('w', 22)},
+        },
+        44: {
+            title: "Field Mouse",
+            description: "'Nutrients' affects Wildlife Gain at a Reduced Rate",
+            cost() {return new Decimal("1.11e13")},
+            unlocked() {return hasUpgrade('w', 14) && hasUpgrade('w', 22)},
+            effect() {return buyableEffect('w', 11).add(2).log(2).root(2)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 44))},
+            tooltip: "sqrt (log2 (Effect)). Requires 'Meadow' and 'Longer Wildlife'",
+        },
+        51: {
+            title: "Centipede",
+            description: "Unlock a Larger Wildlife Buyable With a Maximum of 100 Purchases",
+            cost: (new Decimal("1e10")),
+            unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 23)},
+            tooltip: "Requires 'Log Pile' and 'Faster Wildlife'",
+        },
+        52: {
+            title: "Pond Skater",
+            description: "Plants Boost Wildlife Gain",
+            cost: (new Decimal("1.55e10")),
+            unlocked() {return hasUpgrade('w', 12) && hasUpgrade('w', 23)},
+            effect() {return player.p.points.add(1).pow(0.3)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 52))},
+            tooltip: "Plants ^ 0.3. Requires 'Pond' and 'Faster Wildlife'",
+        },
+        53: {
+            title: "Rabbit",
+            description: "Divide Garden Costs based on Wildlife (Boosted by Large Wildlife)",
+            cost: (new Decimal("3.33e11")),
+            unlocked() {return hasUpgrade('w', 13) && hasUpgrade('w', 23)},
+            effect() {return player.w.points.times(player.w.large).log(10).pow(0.1)},
+            effectDisplay() {return "÷"+format(upgradeEffect('w', 53))},
+            tooltip: "(log10 (Wildlife × LW)) ^ 0.1. Requires 'Cave' and 'Faster Wildlife' (R:ab:bit)",
+        },
+        54: {
+            title: "Kestrel",
+            description: "Larger Wildlife -> Wildlife effect is Better",
+            cost() {return new Decimal("3.33e14")},
+            unlocked() {return hasUpgrade('w', 14) && hasUpgrade('w', 23)},
+            tooltip: "^ 0.1 -> ^ 0.5. Requires 'Meadow' and 'Faster Wildlife'",
+        },
+        61: {
+            title: "Wood Ant",
+            description: "Wildlife Time x2 and Lose 20% as much Wildlife",
+            cost() {return new Decimal("6.246e11")},
+            unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 24)},
+            tooltip: "Requires 'Log Pile' and 'Stronger Wildlife'",
+        },
+        62: {
+            title: "Swan",
+            description: "Saguaro Multiplies Wildlife Gain at a Reduced Rate",
+            cost() {return new Decimal("3.5e12")},
+            unlocked() {return hasUpgrade('w', 12) && hasUpgrade('w', 24)},
+            effect() {return buyableEffect('p' ,12).pow(0.5).log(2)},
+            effectDisplay() {return "x"+format(upgradeEffect('w', 62))},
+            tooltip: "log2 (Effect ^ 0.5). Requires 'Pond' and 'Stronger Wildlife'",
+        },
+        63: {
+            title: "Alligator",
+            description: "Larger Wildlife 'Point Mult' also Divides Plant Costs",
+            cost() {return new Decimal("5.75e15")},
+            unlocked() {return hasUpgrade('w', 13) && hasUpgrade('w', 24)},
+            tooltip: "Requires 'Cave' and 'Stronger Wildlife'",
+        },
+        64: {
+            title: "Fox",
+            description: "Coming Soon",
+            cost() {return new Decimal("4.44e20")},
+            unlocked() {return hasUpgrade('w', 14) && hasUpgrade('w', 24)},
+            tooltip: "Requires 'Meadow' and 'Stronger Wildlife'",
+        },
+    },
+    buyables: {
+        11: {
+            title: "Nutrients",
+            cost(x) {let cost = new Decimal(10).times(x.dividedBy(2).add(1).pow(2))
+            return cost},
+            display() { return "Divide Saguaro cost based on points. Only Reduces Large Wildlife by 10% of Cost. Hold to buy max. Cost: "+format(this.cost())+" Larger Wildlife. "+getBuyableAmount('w', 11)+"/100." },
+            canAfford() { return player.w.large.gte(this.cost()) },
+            buy() {
+                player.w.large = player.w.large.minus(this.cost().times(0.1))
+                addBuyables(this.layer, this.id, 1)},
+            unlocked() {return hasUpgrade('w', 51)},
+            purchaseLimit: 100,
+            effect() {return player.points.add(1).pow(getBuyableAmount('w', 11).dividedBy(100))},
+            tooltip() {return "Points ^ N where N is X ÷ 100. Currently: ÷"+format(buyableEffect('w', 11))},
         },
     },
 })
