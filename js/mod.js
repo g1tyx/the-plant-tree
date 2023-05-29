@@ -5,30 +5,31 @@ let modInfo = {
 	pointsName: "Plant Points",
 	modFiles: ["layers.js", "tree.js"],
 
-	discordName: "",
-	discordLink: "",
+	discordName: "The Plant Tree Discussion",
+	discordLink: "https://discord.com/channels/762036407719428096/1106927101300453467",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "3",
-	name: "Wildlife",
+	num: "4",
+	name: "Research",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+    <h3>v4</h3><br>
+        Research - Added with 10 Upgrades and 9 Buyables.<br>
+        Wildlife - Added 8 Upgrades.<br>
+        Zones - Added 1 Milestone.<br>
+        Gardens - Added 1 Buyable.<br>
     <h3>v3</h3><br>
         Wildlife - Added with 24 Upgrades and 1 Buyable.<br>
         Plants - Added 2 Upgrades.<br>
-        Achievements - Added 6 Achievements.<br>
     <h3>v2</h3><br>
         Plants - Added Many Upgrades and 1 Buyable.<br>
         Gardens - Added Upgrades and Milestones.<br>
         Zones - Added with 4 Challenges and Milestones.<br>
-        Achievements - Added Many more.<br>
-	<h3>v1.1</h3><br>
-		Achievements - 1 Achievement with reward.<br>
 	<h3>v1</h3><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
@@ -73,6 +74,8 @@ function getPointGen() {
     gain=gain.times(gainUpgradeEffect('w', 11))
     gain=gain.times(gainUpgradeEffect('w', 41))
     gain=gain.times(player.w.large.add(1).pow(0.5))
+    gain=gain.times(player.r.points.add(1).pow(hasUpgrade('r', 22) ? 100 : 3))
+    gain=gain.times(buyableEffect('g', 21))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
