@@ -1371,7 +1371,7 @@ addLayer("r", {
             title: "Researchers",
             cost(x) {let cost = new Decimal(5 + upgradeEffect('r', 23)).times(x.add(7))
             return cost},
-            display() { return autoThisBuyableDisplay("Find Researchers to help. Researchers Multiply Research Gain by Researchers + 1. Hold to buy max.", this, " Research")},
+            display() { return autoThisBuyableDisplay("Find Researchers to help. Researchers Multiply Research Gain by Researchers + 1. You Have "+format(player.r.researchers)+" Researchers. Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())
