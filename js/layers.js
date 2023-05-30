@@ -452,7 +452,7 @@ addLayer("p", {
               if (hasUpgrade('p', 74)) cost = cost.dividedBy(upgradeEffect('p', 74));
               return cost;
             },
-            display() { return `Multiply point gain and divide plant costs by 5. Hold to buy max. Cost: ${this.cost().lt(0.1)? formatSmall(this.cost()) : format(this.cost())}` },
+            display() { return autoThisBuyableDisplay("Multiply point gain and divide plant costs by 5. Hold to buy max.", this)},
             canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0},
             buy() {
               if(!hasAchievement('a', 24)) {player.p.points = player.p.points.minus(this.cost())};
@@ -472,7 +472,7 @@ addLayer("p", {
                 if(hasUpgrade('w', 42)) cost=cost.dividedBy(upgradeEffect('w', 42))
                 if(hasUpgrade('w', 51)) cost=cost.dividedBy(buyableEffect('w', 11))
             return cost},
-            display() { return "Divide plant costs by 10. Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return autoThisBuyableDisplay("Divide plant costs by 10. Hold to buy max.", this)},
             canAfford() { return player.points.gte(this.cost()) },
             buy() {
                 player.points = player.points.sub(this.cost())
@@ -489,7 +489,7 @@ addLayer("p", {
             title: "Echinocactus",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(new Decimal(100).add(upgradeEffect('p', 72))))
             return cost},
-            display() { return "Multiply Plant cost base above 1 by 0.99. Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return autoThisBuyableDisplay("Multiply Plant cost base above 1 by 0.99. Hold to buy max.", this,"","/100.00")},
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
                 if(!hasUpgrade('p', 64)) {player.p.points = player.p.points.sub(this.cost())}
@@ -684,7 +684,7 @@ addLayer("g", {
             title: "Water Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(10 + upgradeEffect('g', 43)))
             return cost},
-            display() { return "Multiply Point Gain by Temperate Zone Completions. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return autoThisBuyableDisplay("Multiply Point Gain by Temperate Zone Completions. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
@@ -696,7 +696,7 @@ addLayer("g", {
             title: "Tunnel Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(10 + upgradeEffect('g', 43)))
             return cost},
-            display() { return "Multiply Point Gain by Zones. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return autoThisBuyableDisplay("Multiply Point Gain by Zones. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
@@ -708,7 +708,7 @@ addLayer("g", {
             title: "Exploration Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(20 + upgradeEffect('g', 43)))
             return cost},
-            display() { return "Multiply Point Gain based on total first row Garden Buyable Purchases. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return autoThisBuyableDisplay("Multiply Point Gain based on total first row Garden Buyable Purchases. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
@@ -720,7 +720,7 @@ addLayer("g", {
             title: "Educational Features",
             cost(x) {let cost = new Decimal(800).add(new Decimal(x).times(10))
             return cost},
-            display() { return "Multiply Research Speed and Point gain by Research. (free) Hold to buy max. Cost: "+format(this.cost()) },
+            display() { return autoThisBuyableDisplay("Multiply Research Speed and Point gain by Research. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)},
@@ -1167,7 +1167,7 @@ addLayer("w", {
             title: "Nutrients",
             cost(x) {let cost = new Decimal(10).times(x.dividedBy(2).add(1).pow(2))
             return cost},
-            display() { return "Divide Saguaro cost based on points. Only Reduces Large Wildlife by 10% of Cost. Hold to buy max. Cost: "+format(this.cost())+" Larger Wildlife. "+getBuyableAmount('w', 11)+"/30." },
+            display() { return autoThisBuyableDisplay("Divide Saguaro cost based on points. Only Reduces Large Wildlife by 10% of Cost. Hold to buy max.", this, " Larger Wildlife", "/"+format(tmp.w.buyables[11].purchaseLimit))},
             canAfford() { return player.w.large.gte(this.cost()) },
             buy() {
                 player.w.large = player.w.large.minus(this.cost().times(0.1))
@@ -1282,7 +1282,7 @@ addLayer("r", {
             title: "Requirement Reduction",
             cost(x) {let cost = new Decimal(2).times(x.add(1))
             return cost},
-            display() { return "Divide Research Requirement by "+format(getBuyableAmount('r', 23).add(2))+". Hold to buy max. Cost: "+format(this.cost())+" Research." },
+            display() { return autoThisBuyableDisplay("Divide Research Requirement by "+format(getBuyableAmount('r', 23).add(2))+". Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())
@@ -1295,7 +1295,7 @@ addLayer("r", {
             title: "Wildlife Booster",
             cost(x) {let cost = new Decimal(3).times(x.add(2))
             return cost},
-            display() { return "Multiply Wildlife gain by "+format(getBuyableAmount('r', 23).add(2))+".<br> Unlocks more Wildlife Upgrades after 2 Purchases.<br> Hold to buy max. Cost: "+format(this.cost())+" Research. Amount: "+format(getBuyableAmount('r', 12)) },
+            display() { return autoThisBuyableDisplay("Multiply Wildlife gain by "+format(getBuyableAmount('r', 23).add(2))+".<br> Unlocks more Wildlife Upgrades after 2 Purchases.<br> Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())
@@ -1308,7 +1308,7 @@ addLayer("r", {
             title: "Requirement Reduction II",
             cost(x) {let cost = new Decimal(2).times(x.add(2))
             return cost},
-            display() { return "Divide Research Requirement by Research. Hold to buy max. Cost: "+format(this.cost())+" Research." },
+            display() { return autoThisBuyableDisplay("Divide Research Requirement by Research. Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())
@@ -1321,7 +1321,7 @@ addLayer("r", {
             title: "Time Speed Increase",
             cost(x) {let cost = new Decimal(5).times(x.add(1))
             return cost},
-            display() { return "Multiply Research Time Gain by "+format(getBuyableAmount('r', 31).times(2).add(3))+". Hold to buy max. Cost: "+format(this.cost())+" Research. Amount: "+format(getBuyableAmount('r', 21)) },
+            display() { return autoThisBuyableDisplay("Multiply Research Time Gain by "+format(getBuyableAmount('r', 31).times(2).add(3))+". Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())
@@ -1334,7 +1334,7 @@ addLayer("r", {
             title: "Advanced Requirement Reduction",
             cost(x) {let cost = new Decimal(hasUpgrade('r', 21) ? 9 : 10).times(x.add(50))
             return cost},
-            display() { return "Divide Research Requirement Based on Plants. (free) Hold to buy max. Cost: "+format(this.cost())+" Gardens." },
+            display() { return autoThisBuyableDisplay("Divide Research Requirement Based on Plants. (free) Hold to buy max.", this, " Gardens")},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
                 addBuyables(this.layer, this.id, 1)
@@ -1346,7 +1346,7 @@ addLayer("r", {
             title: "Wildlife Superbooster",
             cost(x) {let cost = new Decimal(2).times(x.add(2))
             return cost},
-            display() { return "Increase Requirement Reduction and Wildlife Booster Base by 1. Hold to buy max. Cost: "+format(this.cost())+" Wildlife Boosters." },
+            display() { return autoThisBuyableDisplay("Increase Requirement Reduction and Wildlife Booster Base by 1. Hold to buy max.", this, " Wildlife Boosters")},
             canAfford() { return getBuyableAmount('r', 12).gte(this.cost()) },
             buy() {
                 addBuyables('r', 12, (this.cost().times(-1)))
@@ -1358,20 +1358,20 @@ addLayer("r", {
             title: "Time Speed Superincrease",
             cost(x) {let cost = new Decimal(2).times(x.add(2.5))
             return cost},
-            display() { return "Increase Time Speed Increase Base by 2. Hold to buy max. Cost: "+format(this.cost())+" Time Speed Increases."},
+            display() { return autoThisBuyableDisplay("Increase Time Speed Increase Base by 2. Hold to buy max.", this, " Time Speed Increases")},
             canAfford() { return getBuyableAmount('r', 21).gte(this.cost()) },
             buy() {
                 addBuyables('r', 21, (this.cost().times(-1)))
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             unlocked() {return player.r.best.gte(25)},
-            tooltip() {return "Currently: +"+format(getBuyableAmount('r', 31))+". "},
+            tooltip() {return "Currently: +"+format(getBuyableAmount('r', 31).times(2))+". "},
         },
         32: {
             title: "Researchers",
             cost(x) {let cost = new Decimal(5 + upgradeEffect('r', 23)).times(x.add(7))
             return cost},
-            display() { return "Find Researchers to help. Hold to buy max. Cost: "+format(this.cost())+" Research. You Currently have "+format(player.r.researchers)+" Researchers."},
+            display() { return autoThisBuyableDisplay("Find Researchers to help. Researchers Multiply Research Gain by Researchers + 1. Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())
@@ -1379,13 +1379,13 @@ addLayer("r", {
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 32).pow_base(2).times(getBuyableAmount('r', 32)).times(buyableEffect('r', 33))},
             unlocked() {return player.r.best.gte(38)},
-            tooltip() {return "Currently: +"+format(buyableEffect('r', 32))+"/sec. "},
+            tooltip() {return "Currently: +"+format(buyableEffect('r', 32))+"/sec."},
         },
         33: {
             title: "Research Booster",
             cost(x) {let cost = new Decimal(10 + upgradeEffect('r', 23)).times(x.add(5))
             return cost},
-            display() { return "Reset Researchers but Multiply their gain Based on Research Time. Hold to buy max. Cost: "+format(this.cost())+" Research. You Currently have "+format(player.r.researchers)+" Researchers."},
+            display() {return autoThisBuyableDisplay("Reset Researchers but Multiply Their Gain based on Research Time. Hold to Buy Max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
                 player.r.points = player.r.points.minus(this.cost())

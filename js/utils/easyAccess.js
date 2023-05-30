@@ -1,22 +1,22 @@
 function hasUpgrade(layer, id) {
 	return ((player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString())) && !tmp[layer].deactivated)
-} // Returns if you have a specified upgrade
+} // Returns whether or not you have a specified upgrade
 
 function hasMilestone(layer, id) {
 	return ((player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString())) && !tmp[layer].deactivated)
-} // Returns if you have a specified milestone
+} // Returns whether or not you have a specified milestone
 
 function hasAchievement(layer, id) {
 	return ((player[layer].achievements.includes(toNumber(id)) || player[layer].achievements.includes(id.toString())) && !tmp[layer].deactivated)
-} // Returns if you have a specified achievement
+} // Returns whether or not you have a specified achievement
 
 function hasChallenge(layer, id) {
 	return ((player[layer].challenges[id]) && !tmp[layer].deactivated)
-} // Returns if you have completed a specified challenge
+} // Returns whether or not you have completed a specified challenge
 
 function maxedChallenge(layer, id) {
 	return ((player[layer].challenges[id] >= tmp[layer].challenges[id].completionLimit) && !tmp[layer].deactivated)
-} // Returns if you have fully completed a specified challenge
+} // Returns whether or not you have fully completed a specified challenge
 
 function challengeCompletions(layer, id) {
 	return (player[layer].challenges[id])
@@ -76,46 +76,38 @@ function gridEffect(layer, id) {
 
 // Past this point these are new functions, created by Thenonymous
 
-function smartUpgradeEffect(layer, id) {
-    return (hasUpgrade(layer, id) ? upgradeEffect(layer, id) : 1)
-} // Returns the effect of a specified upgrade but returns 1 if you don't have the upgrade
+function smartUpgradeEffect(layer, id, def = decimalOne) {
+    return (hasUpgrade(layer, id) ? upgradeEffect(layer, id) : def)
+} // Returns the effect of a specified upgrade but returns 1 if you don't have the upgrade, you can change the default by adding a third input
 
-function smartAddUpgradeEffect(layer, id) {
-    return (hasUpgrade(layer, id) ? upgradeEffect(layer, id) : 0)
-} // Returns the effect of a specified upgrade but returns 0 if you don't have the upgrade (used if using +/- for an effect)
-
-function thisUpgradeEffect() {
-    return (upgradeEffect(this.layer, this.id))
+function thisUpgradeEffect(thisUpgrade) {
+    return (upgradeEffect(thisUpgrade.layer, thisUpgrade.id))
 } // Returns the effect of the current upgrade (the upgrade which you are setting the properties of)
 
-function autoBuyableDisplay(desc, layer, id) {
-    return (desc + "<br>Cost: "+ format(this.cost()) +". Amount: "+ format(getBuyableAmount(this.layer, this.id)) +". ")
+function autoBuyableDisplay(desc, layer, id, baseName = "", limit = "") {
+    return (desc + "<br>Cost: "+ (tmp[layer].buyables[id].cost.lt(0.1) ? formatSmall(tmp[layer].buyables[id].cost) : format(tmp[layer].buyables[id].cost)) +baseName+". Amount: "+ format(getBuyableAmount(layer, id)) + limit +". ")
 } // Returns a buyable display from just a description
 
-function thisBuyableAmount() {
-    return (getBuyableAmount(this.layer, this.id))
+function thisBuyableAmount(thisBuyable) {
+    return (getBuyableAmount(thisBuyable.layer, thisBuyable.id))
 } // Returns the amount of the current buyable
 
-function thisBuyableEffect() {
-    return (buyableEffect(this.layer, this.id))
+function thisBuyableEffect(thisBuyable) {
+    return (buyableEffect(thisBuyable.layer, thisBuyable.id))
 } // Returns the effect of the current buyable
 
 function milestoneEffect(layer, id) {
     return (tmp[layer].milestones[id].effect)
 } // Returns the effect of a specified milestone
 
-function smartMilestoneEffect(layer, id) {
-    return (hasMilestone(layer, id) ? milestoneEffect(layer, id) : 1)
-} // Returns the effect of a specified milestone if bought, otherwise returns 1
+function smartMilestoneEffect(layer, id, def = decimalOne) {
+    return (hasMilestone(layer, id) ? milestoneEffect(layer, id) : def)
+} // Returns the effect of a specified milestone if bought, otherwise returns 1, you can change the default by adding a third input
 
-function smartAddMilestoneEffect(layer, id) {
-    return (hasMilestone(layer, id) ? milestoneEffect(layer, id) : 0)
-} // Returns the effect of a specified milestone if bought, otherwise returns 0
-
-function thisMilestoneEffect() {
-    return (milestoneEffect(this.layer, this.id))
+function thisMilestoneEffect(thisMilestone) {
+    return (milestoneEffect(thisMilestone.layer, thisMilestone.id))
 } // Returns the effect of the current milestone
 
-function autoThisBuyableDisplay(desc) {
-    return autoBuyableDisplay(desc, this.layer, this.id)
+function autoThisBuyableDisplay(desc, thisBuyable, baseName = "", limit = "") {
+    return autoBuyableDisplay(desc, thisBuyable.layer, thisBuyable.id, baseName, limit)
 } // Returns an autoBuyableDisplay (see line 91) of the current buyable
