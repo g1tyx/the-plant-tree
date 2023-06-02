@@ -1642,7 +1642,7 @@ addLayer("t", {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
         let keep = [];
-        if(layers[rettingLayer].row <= 1) keep.push("upgrades"), keep.push("buyables"), keep.push("milestones")
+        if(layers[resettingLayer].row <= 1) keep.push("upgrades"), keep.push("buyables"), keep.push("milestones")
         layerDataReset(this.layer, keep)
     },
     onPrestige() {
