@@ -13,11 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "4",
-	name: "Research",
+	num: "5",
+	name: "Trees",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+    <h3>v5</h3><br>
+        Trees - Added with Many Upgrades, 3 Buyables and 5 Milestones.<br>
+        Research - Added 3 Upgrades.<br>
+        Zones - Added 1 Milestone.<br>
+        Plants - Added 1 New Subtab.<br>
     <h3>v4</h3><br>
         Research - Added with 10 Upgrades and 9 Buyables.<br>
         Wildlife - Added 8 Upgrades.<br>
@@ -76,7 +81,10 @@ function getPointGen() {
     gain=gain.times(player.w.large.add(1).pow(0.5))
     gain=gain.times(player.r.points.add(1).pow(hasUpgrade('r', 22) ? 100 : 3))
     gain=gain.times(buyableEffect('g', 21))
+    gain=gain.times(tmp.t.effect)
+    gain=gain.times(smartUpgradeEffect('t', 21))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
+    if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
     if(inChallenge('z', 21)) gain=gain.dividedBy(player.points.add(10).log(10))
@@ -101,7 +109,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return false
+	return hasUpgrade('t', 91)
 }
 
 

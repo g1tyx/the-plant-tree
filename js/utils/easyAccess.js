@@ -76,7 +76,7 @@ function gridEffect(layer, id) {
 
 // Past this point these are new functions, created by Thenonymous
 
-function smartUpgradeEffect(layer, id, def = decimalOne) {
+function smartUpgradeEffect(layer, id, def = new Decimal(1)) {
     return (hasUpgrade(layer, id) ? upgradeEffect(layer, id) : def)
 } // Returns the effect of a specified upgrade but returns 1 if you don't have the upgrade, you can change the default by adding a third input
 
