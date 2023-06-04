@@ -926,10 +926,9 @@ addLayer("w", {
     update(diff) {
         gain = tmp.w.wildlifeGen
         if(hasUpgrade('w', 33)) {
-            gain=gain.minus(player.w.points.pow(0.1))
-            player.w.large=player.w.large.add(player.w.points.pow(0.1).times(upgradeEffect('w', 14)).minus(player.w.large.times(0.1)).times(diff))
+            player.w.large=getLogisticAmount(player.w.large, player.w.points.pow(0.1).times(upgradeEffect('w', 14)), 0.1, diff)
         }
-        player.w.points=player.w.points.add(gain.times(diff))
+        player.w.points=getLogisticAmount(player.w.points, gain, upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.095), new Decimal(diff).times(tmp.w.wildlifeSpeed))
     },
     wildlifeGen() {
         let gain = new Decimal(0)
@@ -950,8 +949,7 @@ addLayer("w", {
         gain = gain.times(gainUpgradeEffect('w', 73))
         gain = gain.times(gainUpgradeEffect('w', 82))
         
-        gain=gain.minus(player.w.points.times(upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.1)))
-        return gain.times(tmp.w.wildlifeSpeed)
+        return gain
     },
     wildlifeSpeed() {
         let speed = new Decimal(1)

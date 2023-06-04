@@ -13,11 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "5",
-	name: "Trees",
+	num: "5.1",
+	name: "Trees - Wildlife Rewritten",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+    <h4>v5.1</h4><br>
+        Wildlife - Rewrote Gain / Stole from The Tree of Life by pg132.<br>
+        General - Increased Max Tick Length to 1 Hour.<br>
     <h3>v5</h3><br>
         Trees - Added with Many Upgrades, 3 Buyables and 5 Milestones.<br>
         Research - Added 3 Upgrades.<br>
@@ -123,7 +126,7 @@ var backgroundStyle = {
 
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
-	return(0.5) // Default is 1 hour which is just arbitrarily large
+	return(3600) // Default is 1 hour which is just arbitrarily large
 }
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
@@ -136,4 +139,37 @@ function gainUpgradeEffect(x, y) {
 	let gain=new Decimal(1)
 	if(hasUpgrade(x, y)) gain=gain.times(upgradeEffect(x, y))
 	return gain
+}
+
+// ToL functions:
+function getLogisticAmount(current, gain, loss, diff){
+        if (current.eq(gain.div(loss))) return current
+        if (gain.gte("ee10")) return gain.div(loss)
+        if (current.lt(gain.div(loss))) {
+                c = getLogisticTimeConstant(current, gain, loss)
+                
+                val1 = c.plus(diff) // t+c
+                val2 = val1.times(-1).times(loss) // -B(t+c)
+                val3 = Decimal.exp(val2) // this should be A-Bx
+                val4 = gain.sub(val3) // should be A-(A-Bx) = Bx
+                val5 = val4.div(loss) // should be x
+
+                return val5.max(0)
+        } else {
+                c = getLogisticTimeConstant(current, gain, loss)
+                
+                val1 = c.plus(diff) // t+c
+                val2 = val1.times(-1).times(loss) // -B(t+c)
+                val3 = Decimal.exp(val2) // this should be Bx-A
+                val4 = gain.plus(val3) // should be (Bx-A)+A
+                val5 = val4.div(loss) // should be x
+
+                return val5.max(0)
+        }
+}
+
+function getLogisticTimeConstant(current, gain, loss){
+        if (current.eq(gain.div(loss))) return Infinity
+        if (current.gt(gain.div(loss))) return current.times(loss).sub(gain).ln().div(-1).div(loss)
+        return current.times(loss).sub(gain).times(-1).ln().div(-1).div(loss)
 }
