@@ -1,5 +1,6 @@
 var player;
 var needCanvasUpdate = true;
+var msReady = true;
 
 // Don't change this
 const TMT_VERSION = {
@@ -173,16 +174,16 @@ function generatePoints(layer, diff) {
 }
 
 function doReset(layer, force=false) {
-	if (tmp[layer].type == "none") return
+	if (tmp[layer].type == "none")  return
 	let row = tmp[layer].row
 	if (!force) {
 		
-		if (tmp[layer].canReset === false) return;
+		if (tmp[layer].canReset === false)  return;
 		
-		if (tmp[layer].baseAmount.lt(tmp[layer].requires)) return;
+		if (tmp[layer].baseAmount.lt(tmp[layer].requires))  return;
 		let gain = tmp[layer].resetGain
 		if (tmp[layer].type=="static") {
-			if (tmp[layer].baseAmount.lt(tmp[layer].nextAt)) return;
+			if (tmp[layer].baseAmount.lt(tmp[layer].nextAt))  return;
 			gain =(tmp[layer].canBuyMax ? gain : 1)
 		} 
 
@@ -190,6 +191,7 @@ function doReset(layer, force=false) {
 		if (layers[layer].onPrestige)
 			run(layers[layer].onPrestige, layers[layer], gain)
 		
+        msReady = false
 		addPoints(layer, gain)
 		updateMilestones(layer)
 		updateAchievements(layer)
@@ -207,7 +209,7 @@ function doReset(layer, force=false) {
 	
 	}
 
-	if (run(layers[layer].resetsNothing, layers[layer])) return
+	if (run(layers[layer].resetsNothing, layers[layer])) {msReady = true; return};
 	tmp[layer].baseAmount = decimalZero // quick fix
 
 
@@ -221,6 +223,7 @@ function doReset(layer, force=false) {
 	for (r in OTHER_LAYERS){
 		rowReset(r, layer)
 	}
+    msReady = true
 
 	player[layer].resetTime = 0
 

@@ -1,5 +1,5 @@
 // ************ Themes ************
-var themes = ["default", "aqua"]
+var themes = ["default", "aqua", "plant"]
 
 var colors = {
 	default: {
@@ -11,6 +11,7 @@ var colors = {
 		locked: "#bf8f8f",
 		background: "#0f0f0f",
 		background_tooltip: "rgba(0, 0, 0, 0.75)",
+        unlocked: true,
 	},
 	aqua: {
 		1: "#bfdfff",
@@ -21,7 +22,19 @@ var colors = {
 		locked: "#c4a7b3",
 		background: "#001f3f",
 		background_tooltip: "rgba(0, 15, 31, 0.75)",
+        unlocked: true,
 	},
+    plant: {
+        1: "#cfffaf",
+        2: "#97af7f",
+        3: "#5f6f4f",
+        color: "#cfffaf",
+        points: "#dfffcf",
+        locked: "#a7b3c4",
+        background: "#0f2f00",
+        background_tooltip: "rgba(15, 31, 0, 0.75)",
+        unlocked() {return hasMilestone('a', 0)},
+    },
 }
 function changeTheme() {
 
@@ -44,8 +57,11 @@ function switchTheme() {
 	else {
 		index ++;
 		options.theme = themes[index];
-		options.theme = themes[1];
 	}
+    colors_theme = colors[options.theme || "default"];
+    if(!colors_theme["unlocked"]) {
+        switchTheme();
+    }
 	changeTheme();
 	resizeCanvas();
 }

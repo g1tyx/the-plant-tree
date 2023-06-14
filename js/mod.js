@@ -13,14 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "5.1",
-	name: "Trees - Wildlife Rewritten",
+	num: "6",
+	name: "Ecosystems I",
 }
 
 let changelog = `<h1>Version History:</h1><br>
-    <h4>v5.1</h4><br>
-        Wildlife - Rewrote Gain / Stole from The Tree of Life by pg132.<br>
-        General - Increased Max Tick Length to 1 Hour.<br>
+    <h3>v6</h3><br>
+        Ecosystems - Added With 10 Milestones, 4 Upgrades, 1 Buyable and 5 Achievements.<br>
+        Zones - Added 4 Milestones.<br>
+        Plants - Added 2 Upgrades.<br>
+    <h3>v5.1</h3><br>
+        Wildlife - Rewritten with minor Balancing.<br>
+        General - Option to Change Max Tick Length between 1 Hour and 0.5 Seconds.<br>
     <h3>v5</h3><br>
         Trees - Added with Many Upgrades, 3 Buyables and 5 Milestones.<br>
         Research - Added 3 Upgrades.<br>
@@ -86,6 +90,7 @@ function getPointGen() {
     gain=gain.times(buyableEffect('g', 21))
     gain=gain.times(tmp.t.effect)
     gain=gain.times(smartUpgradeEffect('t', 21))
+    gain=gain.times(clickableEffect('e', 11))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
     if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
@@ -112,7 +117,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('t', 91)
+	return hasUpgrade('e', 14)
 }
 
 
@@ -126,7 +131,7 @@ var backgroundStyle = {
 
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
-	return(3600) // Default is 1 hour which is just arbitrarily large
+	return(options.shortMaxTick ? 0.5 : 3600) // Default is 1 hour which is just arbitrarily large
 }
 
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,

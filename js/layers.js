@@ -4,13 +4,28 @@ addLayer("a", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: "?",
+		points: "0",
     }},
     color: "#FFFF00",
     resource: "Useless Paperclips", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     row: "side", // Row the layer is in on the tree (0 is the first row)
     layerShown(){return true},
+    milestonePopups: false,
+    tabFormat: {
+        "Achievements": {
+            content: [
+                "achievements",
+                "blank",
+                ],
+        },
+        "Theme Unlocks": {
+            content: [
+                "milestones",
+            ],
+            unlocked() {return false},
+        },
+    },
     achievements: {
         11: {
             name: "1st Plant!",
@@ -163,6 +178,38 @@ addLayer("a", {
             done() {return hasUpgrade('t', 91)},
             tooltip: "Buy a Row 3 Plant Tree Upgrade?",
         },
+        71: {
+            name: "Sub-Milestones?",
+            done() {return hasMilestone('e', 1)},
+            tooltip: "Get Ecosystem Milestone 2",
+        },
+        72: {
+            name: "Prickly Pears from <i>the Void</i>",
+            done() {return tmp.p.buyables[11].cost.lt("1.80e-308")},
+            tooltip: "Make Prickly Pears Cheaper Than 1.80e-308 Plants, Don't worry, this will be out of order",
+        },
+        73: {
+            name: "Quality OF LIFE",
+            done() {return player.e.points.gte(2)},
+            tooltip: "Gain a Second Ecosystem. Reward: Divide Ecosystem Requirements by 1.20",
+        },
+        74: {
+            name() {return hasMilestone('e', 9) ? `<font size = "-2"> Wait... holup... holy frick is that an achievement outside of the achievements layer!? bro</font>` : "Uh oh, this achievement name contains spoilers!"},
+            done() {return hasMilestone('e', 9)},
+            tooltip: "Begin Generation of Ecology",
+        },
+        75: {
+            name: "<i>SUS</i>TAINABLE SPACE",
+            done() {return hasUpgrade('e', 14)},
+            tooltip: "Buy '100% Recycled Materials'",
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "1 Ecosystem: Theme Unlock",
+            effectDescription: "Unlock 'Plant' Theme",
+            done() {return player.e.points.gte(1)},
+        },
     },
 }),
 addLayer("p", {
@@ -190,6 +237,7 @@ addLayer("p", {
     canBuyMax: true,
     autoPrestige() {return hasMilestone('g', 0)},
     resetsNothing() {return hasMilestone('g', 0)},
+    autoUpgrade() {return hasMilestone('e', 5)},
     branches: ['g', 'z'],
     tabFormat: {
         "Plants": {
@@ -206,11 +254,11 @@ addLayer("p", {
                 "blank",
                 "upgrades",
                 ],
-            unlocked() {return hasUpgrade('r', 25)},
+            unlocked() {return hasUpgrade('r', 25) || player.e.best.gte(1)},
         },
         "Trees": {
             embedLayer: 't',
-            unlocked() {return hasUpgrade('r', 25)},
+            unlocked() {return hasUpgrade('r', 25) || hasMilestone('e', 5)},
         },
     },
     effectDescription() {if(hasUpgrade('p', 14)) return "Next Magnitude increase at "+format(new Decimal(10).add(upgradeEffect('p', 34)).pow(player.points.log(new Decimal(10).add(upgradeEffect('p', 34))).ceil()))+" Points (1-4, 2-2)"},
@@ -253,6 +301,7 @@ addLayer("p", {
     layerShown(){return true},
     automate() {
         if(hasUpgrade('w', 42) && (player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).gte(0))) {addBuyables('p', 12, player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).ceil())}
+        if(hasMilestone('z', 7)) buyBuyable('p', 13)
     },
     milestones: {
         0: {
@@ -476,7 +525,7 @@ addLayer("p", {
             unlocked() {return new Decimal(challengeCompletions('z', 22)).gte(3)},
             tooltip: "2rt(Plants) -> 1.5rt(Plants)",
         },
-        74 :{
+        74: {
             title: "Filmy Fern",
             description: "'Nutrients' Divides Prickly Pear Cost at a Reduced Rate",
             cost: (new Decimal(13300)),
@@ -484,6 +533,24 @@ addLayer("p", {
             effect() {return buyableEffect('w', 11).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 74))},
             tooltip: "Nutrients ^ 0.1",
+        },
+        81: {
+            title: "Cabbage",
+            description: "First Ecosystem Ability Effect also Divides Garden Costs at a Reduced Rate",
+            cost: (new Decimal("1.65e6")),
+            unlocked() {return hasMilestone('e', 6)},
+            effect() {return player.e.points.add(1).pow(10).log(10).root(10)},
+            effectDisplay() {return "÷"+format(thisUpgradeEffect(this))},
+            tooltip: "log10 (Effect) ^ 0.1",
+        },
+        82: {
+            title: "Cauliflower",
+            description: "Ability Cooldown Divided based on Zones",
+            cost: (new Decimal("1.9e6")),
+            unlocked() {return hasMilestone('e', 6)},
+            effect() {return player.z.points.add(1).root(3)},
+            effectDisplay() {return "÷"+format(thisUpgradeEffect(this))},
+            tooltip: "3rt (Zones)",
         },
     },
     buyables: {
@@ -507,6 +574,7 @@ addLayer("p", {
                 if(hasUpgrade('r', 33)) {buyMaxBuyable(this.layer, this.id)} else{
               if(!hasAchievement('a', 24)) {player.p.points = player.p.points.minus(this.cost())};
               addBuyables(this.layer, this.id, 1)}
+                
             },
             unlocked() { return hasUpgrade('g', 12) },
             effect() {
@@ -528,7 +596,7 @@ addLayer("p", {
                 if(hasUpgrade('w', 51)) cost=cost.dividedBy(buyableEffect('w', 11))
             return cost},
             display() { return autoThisBuyableDisplay("Divide plant costs by 10. Hold to buy max.", this)},
-            canAfford() { return player.points.gte(this.cost()) },
+            canAfford() { return player.points.gte(this.cost()) && !hasUpgrade('w', 42)},
             buy() {
                 player.points = player.points.sub(this.cost())
                 addBuyables(this.layer, this.id, 1)},
@@ -542,15 +610,18 @@ addLayer("p", {
             },
         13: {
             title: "Echinocactus",
-            cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(new Decimal(100).add(upgradeEffect('p', 72))))
-            return cost},
-            display() { return autoThisBuyableDisplay("Multiply Plant cost base above 1 by 0.99. Hold to buy max.", this,"","/100.00")},
+            cost(x) {
+                let cost = new Decimal(100).add(new Decimal(x).times(new Decimal(100).add(upgradeEffect('p', 72)))).pow(getBuyableAmount('p', 13).gte(100) ? getBuyableAmount('p', 13).minus(50).dividedBy(50) : 1)
+                if(hasMilestone('z', 7)) cost = cost.pow(0.9)
+                return cost
+            },
+            display() { return autoThisBuyableDisplay("Multiply Plant cost base above 1 by 0.99. Hold to buy max.", this,"","/"+format(tmp.p.buyables[13].purchaseLimit))},
             canAfford() { return player.p.points.gte(this.cost()) },
             buy() {
                 if(!hasUpgrade('p', 64)) {player.p.points = player.p.points.sub(this.cost())}
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('p', 63)},
-            purchaseLimit: 100,
+            purchaseLimit() {return hasMilestone('z', 6) ? 200 : 100},
             effect() {return new Decimal(0.99).pow(getBuyableAmount('p', 13))},
             tooltip() {return "Total Effect: ×"+format(getBuyableAmount('p', 13).pow_base(0.99))+" (Before Bonus Levels)"},
             },
@@ -576,7 +647,13 @@ addLayer("g", {
     base() {return 2},
     canBuyMax: true,
     branches: ['p', 'z'],
-    resetsNothing() {return hasMilestone('z', 4)},
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        
+        let keep = [];
+        layerDataReset(this.layer, keep);
+    },
+    resetsNothing() {return hasMilestone('z', 4) || hasMilestone('e', 5)},
     autoPrestige() {return hasUpgrade('t', 13)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -587,6 +664,7 @@ addLayer("g", {
         if(hasUpgrade('w', 53)) mult=mult.dividedBy(upgradeEffect('w', 53))
         if(hasMilestone('z', 4)) mult=mult.dividedBy(player.z.points.dividedBy(2).add(1).root(2))
         mult = mult.dividedBy(smartUpgradeEffect('t', 82))
+        if(getClickableState('e', 11)) mult = mult.dividedBy(smartUpgradeEffect('p', 81))
                return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -596,7 +674,7 @@ addLayer("g", {
     hotkeys: [
         {key: "g", description: "G: Reset for Gardens", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
-    layerShown(){return hasUpgrade('p', 24)||player.g.best.gte(1)},
+    layerShown(){return hasUpgrade('p', 24)||player.g.best.gte(1) || hasMilestone('e', 7)},
 
     upgrades: {
         11: {
@@ -631,7 +709,7 @@ addLayer("g", {
               return player.p.points.plus(10).log(base).floor().pow_base(2);
             },
             effectDisplay() { return `÷${format(upgradeEffect('g', 14))}` }
-          },
+        },
         21: {
             title: "Raised Beds II",
             description: "Unlock another buyable",
@@ -804,9 +882,22 @@ addLayer("z", {
     baseAmount() {return player.p.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.7, // Prestige currency exponent
-    base() {return 2},
+    base() {
+        let base = new Decimal(2)
+        base = base.minus(1).times(buyableEffect('e', 11)).add(1)
+        return base
+    },
     canBuyMax: true,
+    autoPrestige() {return hasMilestone('z', 9)},
+    resetsNothing() {return hasMilestone('e', 3)},
     branches: ['p', 'g'],
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        
+        let keep = [];
+        if(hasAchievement('e', 13)) keep.push("milestones")
+        layerDataReset(this.layer, keep);
+    },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
             if(hasUpgrade('g', 44)) mult=mult.dividedBy(upgradeEffect('g', 44))
@@ -819,7 +910,7 @@ addLayer("z", {
     hotkeys: [
         {key: "z", description: "Z: Reset for Zones", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
-    layerShown(){return hasUpgrade('g', 24)||player.z.best.gte(1)},
+    layerShown(){return hasUpgrade('g', 24)||player.z.best.gte(1) || hasMilestone('e', 7)},
 
     milestones: {
         0: {
@@ -853,6 +944,31 @@ addLayer("z", {
             effectDescription: "Autobuy Tree of Life Buyables",
             done() {return player.z.points.gte(6)},
             unlocked() {return hasUpgrade('t', 21)},
+        },
+        6: {
+            requirementDescription: "7 Zones",
+            effectDescription: "Multiply Echinocactus Limit by 2 but Superscaling Starts",
+            done() {return player.z.points.gte(7)},
+            unlocked() {return hasMilestone('z', 5)},
+        },
+        7: {
+            requirementDescription: "8 Zones",
+            effectDescription: "Autobuy Echinocactus and Reduce its Cost",
+            done() {return player.z.points.gte(8)},
+            unlocked() {return hasMilestone('z', 6)},
+        },
+        8: {
+            requirementDescription: "9 Zones",
+            effectDescription: "Multiply Ecology Gain and 'Recycling' Cost by Zones",
+            done() {return player.z.points.gte(9)},
+            unlocked() {return hasMilestone('z', 7)},
+            effect() {return player.z.points.add(1)},
+        },
+        9: {
+            requirementDescription: "10 Zones",
+            effectDescription: "Automatically Reset for Zones",
+            done() {return player.z.points.gte(10)},
+            unlocked() {return hasMilestone('z', 8)},
         },
     },
     challenges: {
@@ -912,11 +1028,12 @@ addLayer("w", {
     baseAmount() {return player.p.points}, // Get the current amount of baseResource
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     branches: ['p', 'g', 'z'],
-     doReset(resettingLayer) {
+    doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
         let keep = [];
         if (layers[resettingLayer].row == 1) {keep.push("upgrades")};
+        if (resettingLayer==='e' && hasAchievement('e', 12)) keep.push("upgrades")
         layerDataReset(this.layer, keep);
     },      
     effectDescription() {let desc = "You are generating "+format(tmp.w.wildlifeGen)+" Wildlife every second. You keep Wildlife Upgrades on reset. "
@@ -932,7 +1049,7 @@ addLayer("w", {
     },
     wildlifeGen() {
         let gain = new Decimal(0)
-        if(challengeCompletions('z', 22) >= 3) gain = gain.add(player.p.points.root(hasUpgrade('p', 73) ? (hasUpgrade('r', 11) ? 1.1 : 1.5 ) : 2 ))
+        if(challengeCompletions('z', 22) >= 3 || hasMilestone('e', 7)) gain = gain.add(player.p.points.root(hasUpgrade('p', 73) ? (hasUpgrade('r', 11) ? 1.1 : 1.5 ) : 2 ))
         if(hasUpgrade('w', 21)) gain = gain.add(player.g.points.root(2))
         
         if(hasUpgrade('w', 12)) gain = gain.times(upgradeEffect('w', 12))
@@ -948,6 +1065,7 @@ addLayer("w", {
         gain = gain.times(buyableEffect('r', 12))
         gain = gain.times(gainUpgradeEffect('w', 73))
         gain = gain.times(gainUpgradeEffect('w', 82))
+        gain = gain.times(smartUpgradeEffect('e', 12))
         
         return gain
     },
@@ -958,7 +1076,7 @@ addLayer("w", {
         return speed
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return challengeCompletions('z', 22) >= 3},
+    layerShown(){return challengeCompletions('z', 22) >= 3 || hasMilestone('e', 7)},
     
     upgrades: {
         11: {
@@ -1280,6 +1398,7 @@ addLayer("r", {
         amt = amt.times(smartUpgradeEffect('t', 43))
         amt = amt.times(smartUpgradeEffect('t', 73))
         amt = amt.times(smartUpgradeEffect('t', 72))
+        amt = amt.pow(smartUpgradeEffect('e', 11))
         return amt
     }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -1291,6 +1410,15 @@ addLayer("r", {
     update(diff) {
         if(!tmp.r.layerShown) player.r.resetTime = 0
         player.r.researchers = player.r.researchers.add(buyableEffect('r', 32).times(diff))
+    },
+    doReset(resettingLayer) {
+        if(layers[resettingLayer].row <= 1 || resettingLayer === 'r') return;
+        
+        let keep = [];
+        if(hasAchievement('e', 14)) keep.push("upgrades")
+        layerDataReset(this.layer, keep)
+        
+        if(resettingLayer==='e' && hasAchievement('e', 11) && !player[this.layer].upgrades.includes(14)) player[this.layer].upgrades.push(14) 
     },
     automate() {
         if(hasUpgrade('r', 14)) buyBuyable('p', 11)
@@ -1319,7 +1447,7 @@ addLayer("r", {
     "upgrades"
     ],
     autoPrestige: true,
-    resetsNothing() {return hasMilestone('t', 4)},
+    resetsNothing() {return hasMilestone('t', 4) || player.e.best.gte(1)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
                return mult
@@ -1328,7 +1456,7 @@ addLayer("r", {
         return new Decimal(1)
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return hasUpgrade('w', 64)||player.r.best.gte(1)},   
+    layerShown(){return hasUpgrade('w', 64)||player.r.best.gte(1)||player.e.best.gte(1)},   
     bars: {
         bar1: {
             direction: RIGHT,
@@ -1641,6 +1769,8 @@ addLayer("t", {
         
         let keep = [];
         if(layers[resettingLayer].row <= 1) keep.push("upgrades"), keep.push("buyables"), keep.push("milestones")
+        if(resettingLayer==='e' && hasMilestone('e', 5)) keep.push("upgrades")
+        if(resettingLayer==='e' && hasAchievement('e', 11)) keep.push("milestones")
         layerDataReset(this.layer, keep)
     },
     onPrestige() {
@@ -1681,6 +1811,7 @@ addLayer("t", {
                 if(hasMilestone('t', 2)) effect = effect.times(player.t.leaves.add(1).pow(0.1))
                 effect = effect.times(smartUpgradeEffect('t', 81))
                 effect = effect.times(smartUpgradeEffect('r', 32))
+                effect = effect.times(clickableEffect('e', 12))
                 return effect
             },
             effectDisplay() {return format(thisUpgradeEffect(this))+"/sec. You have "+format(player.t.leaves)+" Leaves, Dividing Tree Requirements by "+format(player.t.leaves.times(0.01).add(1).pow(100))+"."},
@@ -1824,8 +1955,8 @@ addLayer("t", {
             unlocked() {return hasUpgrade('t', 73)},
         },
         91: {
-            title: "Coming Soon...",
-            description: "Coming Soon...",
+            title: "Ecosystems",
+            description: "Unlock Ecosystems",
             cost: (new Decimal(6700)),
             unlocked() {return hasUpgrade('t', 72)},
         },
@@ -1898,5 +2029,289 @@ addLayer("t", {
             done() {return tmp.t.milestones[this.id].unlocked && player.t.points.gte(1200)},
             unlocked() {return hasUpgrade('t', 51)},
         },
+    },
+}),
+addLayer("e", {
+    name: "ecosystems", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "E", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+        ecology: new Decimal(0),
+        best: new Decimal(0),
+        total: new Decimal(0),
+        resetTime: -1,
+        cooldown: new Decimal(0),
+        lastAbility: 11,
+        autoAbility: false,
+    }},
+    color: "#11FF99",
+    requires: new Decimal("1.6e6"), // Can be a function that takes requirement increases into account
+    resource: "Ecosystems", // Name of prestige currency
+    baseResource: "plants", // Name of resource prestige is based on
+    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1.1, // Prestige currency exponent
+    base() {return 1.1},
+    canBuyMax: true,
+    tabFormat: {
+        "Main": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                ["display-text",
+                    function() {return player.e.cooldown.lte(0) ? "Abilities Ready": format(player.e.cooldown)+"s"}
+                ],
+                "clickables",
+                "blank",
+                "milestones",
+                () =>  hasMilestone('e', 9) ? "achievements" : undefined,
+                "blank",
+                "blank",
+                "buyables",
+                "blank",
+                "blank",
+                "upgrades",
+            ],
+            unlocked() {return hasMilestone('e', 9)},
+        },
+        "Ecology": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                ["display-text",
+                    function() {return "You Have "+format(player.e.ecology)+" Ecology"}
+                ],
+                "blank",
+                "blank",
+                "buyables",
+                "blank",
+                "blank",
+                "upgrades",
+                "blank",
+                "blank",
+                "achievements",
+                "blank",
+                "blank",
+            ],
+            unlocked() {return hasMilestone('e', 9)},
+        },
+    },
+    branches() {
+        let branches = ['g', 'z']
+        if(player.g.best.lt(1)) branches.push('p')
+        return branches
+        },
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        
+        let keep = [];
+        layerDataReset(this.layer, keep)
+    },
+    onPrestige() {
+        if(!tmp.e.resetsNothing) player.e.ecology = new Decimal(0)
+    },
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+               if(hasAchievement('a', 73)) mult=mult.dividedBy(1.2)
+               return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    update(diff) {
+        player.e.cooldown = player.e.cooldown.minus(diff)
+        let active = getClickableState('e', 11) && !hasAchievement('e', 15)
+        if(!active) active = getClickableState('e', 12)
+        if(player.e.cooldown.lte(0) && active) {
+            if(!hasAchievement('e', 15)) setClickableState('e', 11, false)
+            setClickableState('e', 12, false)
+            let cooldown = new Decimal(30)
+            if(hasMilestone('e', 4)) cooldown = cooldown.minus(10)
+            cooldown = cooldown.dividedBy(smartUpgradeEffect('p', 82))
+            player.e.cooldown = cooldown
+        }
+        if(hasMilestone('e', 6) && player.e.autoAbility && player.e.cooldown.lte(0)) {
+            tmp.e.clickables[player.e.lastAbility].onClick()
+        }
+        console.log(player.t.points.gte(25))
+        if(hasMilestone('e', 9)) player.e.ecology = getLogisticAmount(player.e.ecology, milestoneEffect('e', 9), 0.1, diff)
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "e", description: "E: Reset for Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+    ],
+    prestigeNotify() {return (canReset('e') || player.e.cooldown.lte(0)) && player.e.unlocked},
+    layerShown(){return hasUpgrade('t', 91)||player.e.best.gte(1)},
+    clickables: {
+        11: {
+            display() {return "Multiply Point Gain by "+format(player.e.points.add(1).pow(10))+" (10s).<br>Currently: "+(getClickableState('e', 11) ? "Active":"Inactive")},
+            canClick() {return player.e.cooldown.lte(0) && !hasAchievement('e', 15)},
+            unlocked() {return hasMilestone('e', 1)},
+            effect() {return getClickableState(this.layer, this.id) ? player.e.points.add(1).pow(10) : 1},
+            onClick() {
+                setClickableState(this.layer, this.id, true)
+                let duration = new Decimal(10)
+                player.e.cooldown = duration
+                player.e.lastAbility = 11
+            },
+        },
+        12: {
+            display() {return "Multiply Leaf Gain by "+format(new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0))+" (5s).<br>Currently: "+(getClickableState('e', 12) ? "Active":"Inactive")},
+            canClick() {return player.e.cooldown.lte(0)},
+            unlocked() {return hasMilestone('e', 2)},
+            effect() {return getClickableState(this.layer, this.id) ? new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0) : 1},
+            onClick() {
+                setClickableState(this.layer, this.id, true)
+                let duration = new Decimal(5)
+                player.e.cooldown = duration
+                player.e.lastAbility = 12
+            },
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "1 Ecosystem",
+            effectDescription: "Keep Research Unlocked",
+            done() {return player.e.points.gte(1)},
+        },
+        1: {
+            requirementDescription: "1 Ecosystem and 4 Zones",
+            effectDescription: "Unlock the First Ecosystem Ability",
+            done() {return player.e.points.gte(1) && player.z.points.gte(4) && msReady},
+        },
+        2: {
+            requirementDescription: "1 Ecosystem and 25 Trees",
+            effectDescription: "Unlock the Second Ecosystem Ability",
+            done() {return player.e.points.gte(1) && player.t.points.gte(25) && msReady},
+        },
+        3: {
+            requirementDescription: "2 Ecosystems",
+            effectDescription: "Zones Reset Nothing",
+            done() {return player.e.points.gte(2)},
+        },
+        4: {
+            requirementDescription: "2 Ecosystems and 260 Trees",
+            effectDescription: "Reduce Abilities Cooldown by 10s (30s -> 20s)",
+            done() {return player.e.points.gte(2) && player.t.points.gte(260) && msReady},
+        },
+        5: {
+            requirementDescription: "3 Ecosystems",
+            effectDescription: "Keep Tree Upgrades, Keep Trees Unlocked and Auto-Buy Plant Upgrades. (Gardens Always Reset Nothing)",
+            done() {return player.e.points.gte(3)},
+        },
+        6: {
+            requirementDescription: "3 Ecosystems and 1,500,000 Plants",
+            effectDescription: "When Active, Automatically Trigger the Last Ability Triggered and Unlock 2 New Plant Upgrades",
+            done() {return player.e.points.gte(3) && player.p.points.gte("1.5e6") && msReady},
+            toggles: [["e", "autoAbility"]],
+        },
+        7: {
+            requirementDescription: "4 Ecosystems",
+            effectDescription: "Keep Row 1 and 2 Layers Unlocked",
+            done() {return player.e.points.gte(4)},
+        },
+        8: {
+            requirementDescription: "4 Ecosystems and 1,500,000 Plants",
+            effectDescription: "Increase Second Ecosystem Ability Effect by Ecosystems",
+            done() {return player.e.points.gte(4) && player.p.points.gte("1.5e6") && msReady},
+        },
+        9: {
+            requirementDescription: "5 Ecosystems",
+            effectDescription() {return "Generate Ecology and Lose 10%/sec. Currently: "+format(milestoneEffect('e', 9))+"/sec"},
+            effect() {
+                let effect = player.e.points.times(player.p.points.add(1).log(10))
+                effect = effect.times(smartUpgradeEffect('e', 13))
+                effect = effect.times(smartMilestoneEffect('z', 8))
+                return effect
+                },
+            done() {return player.e.points.gte(5)},
+        },
+    },
+    upgrades: {
+        11: {
+            title: "Plastic",
+            description: "Raise Research Time to ^ 1.1",
+            effect: 1.1,
+            cost: (new Decimal(100)),
+            currencyDisplayName: "Ecology",
+            currencyInternalName: "ecology",
+            currencyLayer: "e",
+        },
+        12: {
+            title: "Paper",
+            description: "Multiply Wildlife Gain by Ecology",
+            effect() {return player.e.ecology.add(1)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            cost: (new Decimal(200)),
+            currencyDisplayName: "Ecology",
+            currencyInternalName: "ecology",
+            currencyLayer: "e",
+        },
+        13: {
+            title: "Bamboo",
+            description: "Multiply Ecology Gain based on Ecology and Unlock a Buyable",
+            effect() {return player.e.ecology.add(10).log(10)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            cost: (new Decimal(300)),
+            currencyDisplayName: "Ecology",
+            currencyInternalName: "ecology",
+            currencyLayer: "e",
+        },
+        14: {
+            title: "\"100% Recycled Materials\"",
+            description: "Coming Soon...",
+            cost: (new Decimal(40000)),
+            currencyDisplayName: "Ecology",
+            currencyInternalName: "ecology",
+            currencyLayer: "e",
+        },
+    },
+    buyables: {
+        11: {
+            title: "Recycling",
+            cost(x) {let cost = x.times(100)
+            cost = cost.times(smartMilestoneEffect('z', 8))
+            return cost},
+            display() { return autoThisBuyableDisplay("Multiply Zone Base (Above 1) by 0.95. Hold to buy max.", this, " Ecology")},
+            canAfford() { return player.e.ecology.gte(this.cost()) },
+            buy() {
+                player.e.ecology = player.e.ecology.minus(this.cost())
+                addBuyables(this.layer, this.id, 1)},
+            unlocked() {return hasUpgrade('e', 13)},
+            effect() {return getBuyableAmount('e', 11).pow_base(0.95)},
+            tooltip() {return "Currently: x"+format(thisBuyableEffect(this))},
+        },
+    },
+    achievements: {
+        11: {
+            name: "6 Ecosystems",
+            tooltip: "Reward: Keep Tree Milestones and 'Plant Robotics' on Reset",
+            done() {return player.e.points.gte(6)},
+        },
+        12: {
+            name: "7 Ecosystems",
+            tooltip: "Reward: Keep Wildlife Upgrades on Reset",
+            done() {return player.e.points.gte(7)},
+        },
+        13: {
+            name: "8 Ecosystems",
+            tooltip: "Reward: Keep Zone Milestones on Reset",
+            done() {return player.e.points.gte(8)},
+        },
+        14: {
+            name: "9 Ecosystems",
+            tooltip: "Reward: Keep Research Upgrades on Reset",
+            done() {return player.e.points.gte(9)},
+        },
+        15: {
+            name: "10 Ecosystems",
+            tooltip: "Reward: Remove The Ability to Activate the First Ecosystem Ability but it's Permanently Active",
+            done() {return player.e.points.gte(10)},
+            onComplete() {setClickableState('e', 11, true)},
+        }
     },
 })
