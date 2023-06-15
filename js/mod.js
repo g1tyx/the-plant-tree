@@ -13,11 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "6",
+	num: "6.1",
 	name: "Ecosystems I",
 }
 
 let changelog = `<h1>Version History:</h1><br>
+    <h3>v6.1</h3><br>
+        Ecosystems - Added a cap on 'Recycling'.<br>
     <h3>v6</h3><br>
         Ecosystems - Added With 10 Milestones, 4 Upgrades, 1 Buyable and 5 Achievements.<br>
         Zones - Added 4 Milestones.<br>
@@ -137,6 +139,10 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
+    if(oldVersion = 6) {
+    if(player.z.points.gte(100)) player.z.points = new Decimal(10)
+    if(player.e.ecology.lt(0)) player.e.ecology = 0
+    }
 }
 
 // Functions I have created:

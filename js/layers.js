@@ -2137,7 +2137,6 @@ addLayer("e", {
         if(hasMilestone('e', 6) && player.e.autoAbility && player.e.cooldown.lte(0)) {
             tmp.e.clickables[player.e.lastAbility].onClick()
         }
-        console.log(player.t.points.gte(25))
         if(hasMilestone('e', 9)) player.e.ecology = getLogisticAmount(player.e.ecology, milestoneEffect('e', 9), 0.1, diff)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
@@ -2276,7 +2275,7 @@ addLayer("e", {
             cost(x) {let cost = x.times(100)
             cost = cost.times(smartMilestoneEffect('z', 8))
             return cost},
-            display() { return autoThisBuyableDisplay("Multiply Zone Base (Above 1) by 0.95. Hold to buy max.", this, " Ecology")},
+            display() { return autoThisBuyableDisplay("Multiply Zone Base (Above 1) by 0.95. Hold to buy max.", this, " Ecology", "/50.00")},
             canAfford() { return player.e.ecology.gte(this.cost()) },
             buy() {
                 player.e.ecology = player.e.ecology.minus(this.cost())
@@ -2284,6 +2283,7 @@ addLayer("e", {
             unlocked() {return hasUpgrade('e', 13)},
             effect() {return getBuyableAmount('e', 11).pow_base(0.95)},
             tooltip() {return "Currently: x"+format(thisBuyableEffect(this))},
+            purchaseLimit: 50,
         },
     },
     achievements: {
