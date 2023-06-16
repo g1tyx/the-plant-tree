@@ -13,12 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "6.1",
-	name: "Ecosystems I",
+	num: "7",
+	name: "Fish",
 }
 
 let changelog = `<h1>Version History:</h1><br>
-    <h3>v6.1</h3><br>
+    <h3>v7</h3><br>
+        Fish - Added with 8 Upgrades and a Prestige Button.<br>
+        Ecosystems - Added 2 Upgrades and 5 Achievements.<br>
+        Research - Added 2 Upgrades.<br>
+        Zones - Added 4 Upgrades and some Milestones.<br>
+    <h3>v6.0.1</h3><br>
         Ecosystems - Added a cap on 'Recycling'.<br>
     <h3>v6</h3><br>
         Ecosystems - Added With 10 Milestones, 4 Upgrades, 1 Buyable and 5 Achievements.<br>
@@ -48,7 +53,7 @@ let changelog = `<h1>Version History:</h1><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `Congratulations! You have beaten this game, but there's still to discover...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -93,6 +98,7 @@ function getPointGen() {
     gain=gain.times(tmp.t.effect)
     gain=gain.times(smartUpgradeEffect('t', 21))
     gain=gain.times(clickableEffect('e', 11))
+    gain=gain.times(smartUpgradeEffect('w', 91))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
     if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
@@ -114,12 +120,13 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+    function() {return "Press CTRL to See Specific Values"}
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('e', 14)
+	return hasUpgrade('z', 14)
 }
 
 

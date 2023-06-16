@@ -203,6 +203,31 @@ addLayer("a", {
             done() {return hasUpgrade('e', 14)},
             tooltip: "Buy '100% Recycled Materials'",
         },
+        81: {
+            name: "The Fishing Trip",
+            done() {return player.w.fish.gte(50)},
+            tooltip: "Find 50 Fish",
+        },
+        82: {
+            name: "You Need More Trash Cans",
+            done() {return getBuyableAmount('e', 11).gte(50)},
+            tooltip: "Recycle 50 Times",
+        },
+        83: {
+            name: "EPA <br><font size = -2>(Ecological Plant Agency)</font>",
+            done() {return player.r.points.gte(1200)},
+            tooltip: "Achieve 1,200 Research. Reward: Research Speed x2",
+        },
+        84: {
+            name: "The Plants...",
+            done() {return player.p.points.gte("1e8")},
+            tooltip: "100,000,000 Plants",
+        },
+        85: {
+            name: "AMERICAN SPACE",
+            done() {return hasUpgrade('z', 14)},
+            tooltip: "Get 'Americas Inspired Zone'",
+        },
     },
     milestones: {
         0: {
@@ -229,7 +254,7 @@ addLayer("p", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1, // Prestige currency exponent
+    exponent() {return 1-smartUpgradeEffect('z', 13, 0)}, // Prestige currency exponent
     base() {let base = 2
     if(hasUpgrade('p', 43)){base -= 0.1}
     if(new Decimal(getBuyableAmount('p', 13)).gte(1)){base = new Decimal(1).add(new Decimal(base).minus(1).times(buyableEffect('p', 13)))}
@@ -286,6 +311,7 @@ addLayer("p", {
         if(hasUpgrade('w', 31)) mult=mult.dividedBy(player.w.points.add(1))
         if(hasUpgrade('w', 63)) mult=mult.dividedBy(player.w.large.add(1).pow(0.5))
         mult = mult.dividedBy(smartUpgradeEffect('t', 71))
+        mult = mult.dividedBy(smartUpgradeEffect('w', 101))
         if(!hasUpgrade('t', 14)) mult=mult.times(tmp.t.effect)
         if(inChallenge('z', 12)) mult=mult.times((getBuyableAmount('p', 11).add(1)))
         return mult
@@ -651,6 +677,7 @@ addLayer("g", {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
         let keep = [];
+        if(hasAchievement('e', 21)) keep.push("upgrades", "milestones")
         layerDataReset(this.layer, keep);
     },
     resetsNothing() {return hasMilestone('z', 4) || hasMilestone('e', 5)},
@@ -822,11 +849,20 @@ addLayer("g", {
             display() { return autoThisBuyableDisplay("Multiply Point Gain by Temperate Zone Completions. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 24)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return new Decimal(challengeCompletions('z', 21)).gte(1)},
             effect() {return new Decimal(challengeCompletions('z', 21)).add(1).pow(getBuyableAmount('g', 11))},
             tooltip() {return "Temp. Zone Completions + 1 ^ X. Currently Multiplying Point Gain when bought by x"+format(new Decimal(1).add(challengeCompletions('z', 21)))},
+            buyMax() {
+                let max = new Decimal(0)
+                max = player.g.points.minus(100).dividedBy(10 + upgradeEffect('g', 43))
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max)
             },
+        },
         12: {
             title: "Tunnel Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(10 + upgradeEffect('g', 43)))
@@ -834,11 +870,20 @@ addLayer("g", {
             display() { return autoThisBuyableDisplay("Multiply Point Gain by Zones. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 24)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return new Decimal(challengeCompletions('z', 21)).gte(2)},
             effect() {return player.z.points.add(1).pow(getBuyableAmount('g', 12))},
             tooltip() {return "Zones + 1 ^ X. Currently Multiplying Point Gain when bought by x"+format(player.z.points.add(1))},
+            buyMax() {
+                let max = new Decimal(0)
+                max = player.g.points.minus(100).dividedBy(10 + upgradeEffect('g', 43))
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max)
             },
+        },
         13: {
             title: "Exploration Features",
             cost(x) {let cost = new Decimal(100).add(new Decimal(x).times(20 + upgradeEffect('g', 43)))
@@ -846,11 +891,20 @@ addLayer("g", {
             display() { return autoThisBuyableDisplay("Multiply Point Gain based on total first row Garden Buyable Purchases. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 24)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return new Decimal(challengeCompletions('z', 21)).gte(3)},
             effect() {return getBuyableAmount('g', 11).add(getBuyableAmount('g', 12)).add(getBuyableAmount('g', 13)).root(2).pow(getBuyableAmount('g', 13))},
             tooltip() {return "(Total Purchases ^ 0.5) ^ X. Currently Multiplying Point Gain when bought by x"+format(getBuyableAmount('g', 11).add(getBuyableAmount('g', 12)).add(getBuyableAmount('g', 13)).root(2))},
+            buyMax() {
+                let max = new Decimal(0)
+                max = player.g.points.minus(100).dividedBy(20 + upgradeEffect('g', 43))
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max)
             },
+        },
         21: {
             title: "Educational Features",
             cost(x) {let cost = new Decimal(800).add(new Decimal(x).times(10))
@@ -858,12 +912,21 @@ addLayer("g", {
             display() { return autoThisBuyableDisplay("Multiply Research Speed and Point gain by Research. (free) Hold to buy max.", this)},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 24)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return player.g.best.gte(795)},
             effect() {return getBuyableAmount('g', 21).pow_base(player.r.points.add(1))},
             tooltip() {return "Currently Multiplying Research and Point Gain when bought by "+format(player.r.points.add(1))},
+            buyMax() {
+                let max = new Decimal(0)
+                max = player.g.points.minus(800).dividedBy(10)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max)
             },
         },
+    },
 }),
 addLayer("z", {
     name: "zones", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -896,11 +959,14 @@ addLayer("z", {
         
         let keep = [];
         if(hasAchievement('e', 13)) keep.push("milestones")
+        if(hasAchievement('e', 22)) keep.push("challenges")
+        if(hasUpgrade('z', 14)) keep.push("upgrades")
         layerDataReset(this.layer, keep);
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
             if(hasUpgrade('g', 44)) mult=mult.dividedBy(upgradeEffect('g', 44))
+            mult = mult.div(smartUpgradeEffect('w', 102))
                return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -970,6 +1036,18 @@ addLayer("z", {
             done() {return player.z.points.gte(10)},
             unlocked() {return hasMilestone('z', 8)},
         },
+        10: {
+            requirementDescription: "20 Zones",
+            effectDescription: "Generate 1% of Pending Fish Gain Every Second",
+            done() {return player.z.points.gte(20)},
+            unlocked() {return hasMilestone('z', 9)},
+        },
+        11: {
+            requirementDescription: "25 Zones",
+            effectDescription: "Unlock 4 Zone Upgrades Which Reset Plants on Purchase",
+            done() {return player.z.points.gte(25)},
+            unlocked() {return hasMilestone('z', 10)},
+        },
     },
     challenges: {
         11: {
@@ -1012,6 +1090,43 @@ addLayer("z", {
             countsAs: [11, 12, 21],
         },
     },
+    upgrades: {
+        11: {
+            title: "European Inspired Zone",
+            description: "Multiply Ecology Gain by Zones",
+            cost: (new Decimal(26)),
+            unlocked() {return hasMilestone('z', 11)},
+            onPurchase() {player.p.points = new Decimal(0)},
+            effect() {return player.z.points.add(1)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+        },
+        12: {
+            title: "African Inspired Zone",
+            description: "Raise Research Time to a Power Based on Zones",
+            cost: (new Decimal(27)),
+            unlocked() {return hasMilestone('z', 11)},
+            onPurchase() {player.p.points = new Decimal(0)},
+            effect() {return player.z.points.add(30).log(30)},
+            effectDisplay() {return "^"+format(thisUpgradeEffect(this))},
+            tooltip: "log30 (Zones)",
+        },
+        13: {
+            title: "Asian Inspired Zone",
+            description: "Reduce the Plant Exponent by 0.01",
+            cost: (new Decimal(28)),
+            unlocked() {return hasMilestone('z', 11)},
+            onPurchase() {player.p.points = new Decimal(0)},
+            effect: 0.01
+        },
+        14: {
+            title: "Americas Inspired Zone",
+            description: "Coming Soon...",
+            cost: (new Decimal(50)),
+            unlocked() {return hasMilestone('z', 11)},
+            onPurchase() {player.p.points = new Decimal(0)},
+            tooltip: "Keep Zone Upgrades on Reset",
+        },
+    },
 }),
 addLayer("w", {
     name: "wildlife", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -1021,6 +1136,7 @@ addLayer("w", {
         unlocked: true,
 		points: new Decimal(0),
         large: new Decimal(0),
+        fish: new Decimal(0),
     }},
     color: "#0088AA",
     resource: "wildlife", // Name of prestige currency
@@ -1028,6 +1144,36 @@ addLayer("w", {
     baseAmount() {return player.p.points}, // Get the current amount of baseResource
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     branches: ['p', 'g', 'z'],
+    tabFormat: {
+        "Main": {
+            content: [
+                "main-display",
+                "resource-display",
+                "blank",
+                ["buyables", [1]],
+                "blank",
+                "blank",
+                ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8]],
+                "blank",
+            ],
+            unlocked() {return hasUpgrade('e', 14)},
+        },
+        "Fish": {
+            content: [
+                "main-display",
+                ["buyables", [2]],
+                ["display-text",
+                 function() {return "<font size = +2>You Have "+format(player.w.fish)+" Fish.</font>"},
+                ],
+                "resource-display",
+                "blank",
+                "blank",
+                ["upgrades", [9, 10]],
+                "blank",
+            ],
+            unlocked() {return hasUpgrade('e', 14)},
+        },
+    },
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
@@ -1046,6 +1192,11 @@ addLayer("w", {
             player.w.large=getLogisticAmount(player.w.large, player.w.points.pow(0.1).times(upgradeEffect('w', 14)), 0.1, diff)
         }
         player.w.points=getLogisticAmount(player.w.points, gain, upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.095), new Decimal(diff).times(tmp.w.wildlifeSpeed))
+        
+        let passiveFish = new Decimal(0)
+        if(hasMilestone('z', 10)) passiveFish = passiveFish.add(0.01)
+        passiveFish = passiveFish.add(smartUpgradeEffect('w', 94, new Decimal(0)).times(0.01))
+        if(buyableEffect('w', 21).gte(player.w.fish)) player.w.fish = player.w.fish.add(diff>toNumber(new Decimal(1).div(passiveFish)) ? buyableEffect('w', 21).minus(player.w.fish) : buyableEffect('w', 21).minus(player.w.fish).times(diff).times(passiveFish))
     },
     wildlifeGen() {
         let gain = new Decimal(0)
@@ -1066,6 +1217,8 @@ addLayer("w", {
         gain = gain.times(gainUpgradeEffect('w', 73))
         gain = gain.times(gainUpgradeEffect('w', 82))
         gain = gain.times(smartUpgradeEffect('e', 12))
+        gain = gain.times(smartUpgradeEffect('w', 93))
+        gain = gain.times(smartUpgradeEffect('e', 22))
         
         return gain
     },
@@ -1340,6 +1493,94 @@ addLayer("w", {
             effectDisplay() {return "x"+format(upgradeEffect('w', 84))},
             tooltip: "Requires 'Meadow' and 'Smarter Wildlife'",
         },
+        91: {
+            title: "Rudd",
+            description: "Point Gain is Multiplied Based on Fish",
+            cost: (new Decimal(1)),
+            effect() {return player.w.fish.add(1).pow(1000)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            tooltip: "Fish ^ 1000",
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        92: {
+            title: "Roach",
+            description: "Multiply Research Time Based on Fish",
+            cost: (new Decimal(50)),
+            effect() {return player.w.fish.add(1).pow(100)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            tooltip: "Fish ^ 100",
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        93: {
+            title: "Gudgeon",
+            description: "Multiply Wildlife Gain Based on Fish",
+            cost: (new Decimal(250)),
+            effect() {return player.w.fish.add(1).pow(10)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            tooltip: "Fish ^ 10",
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        94: {
+            title: "Stickleback",
+            description: "Increase Passive Fish Generation (20 Zones) by 1% per Ecosystem",
+            cost: (new Decimal(350)),
+            effect() {return player.e.points},
+            effectDisplay() {return "+"+format(thisUpgradeEffect(this))+"%"},
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        101: {
+            title: "Bream",
+            description: "Divide Plant Costs Based on Fish",
+            cost: (new Decimal(1111)),
+            unlocked() {return hasUpgrade('w', 91)},
+            effect() {return player.w.fish.add(1).pow(2000)},
+            effectDisplay() {return "÷"+format(thisUpgradeEffect(this))},
+            tooltip: "Fish ^ 2000",
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        102: {
+            title: "Rainbow Trout",
+            description: "Divide Zone Requirements Based on Research Requirement Multiplier",
+            cost: (new Decimal(1750)),
+            unlocked() {return hasUpgrade('w', 92)},
+            effect() {return new Decimal(1).div(tmp.r.requires).add(1).log(2).root(2)},
+            effectDisplay() {return shiftDown ? "÷"+thisUpgradeEffect(this) : "÷"+format(thisUpgradeEffect(this))},
+            tooltip: "2rt (log2 (Mult))",
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        103: {
+            title: "Common Carp",
+            description: "Fish Multiply Their own Gain",
+            cost: (new Decimal(5555)),
+            unlocked() {return hasUpgrade('w', 93)},
+            effect() {return player.w.fish.add(10).log(10)},
+            effectDisplay() {return shiftDown ? "x"+thisUpgradeEffect(this) : "x"+format(thisUpgradeEffect(this))},
+            tooltip: "log10 (Fish)",
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
+        104: {
+            title: "Eel",
+            description: "Double 'Recycling' Limit but Superscaling Starts",
+            cost: (new Decimal(32000)),
+            unlocked() {return hasUpgrade('w', 94)},
+            currencyDisplayName: "Fish",
+            currencyInternalName: "fish",
+            currencyLayer: "w",
+        },
     },
     buyables: {
         11: {
@@ -1355,6 +1596,23 @@ addLayer("w", {
             purchaseLimit() {return (hasUpgrade('r', 14) ? (hasUpgrade('r', 15) ? 40 : 35 ) : 30) + upgradeEffect('w', 83) + smartUpgradeEffect('r', 31, 0)},
             effect() {return player.points.add(1).pow(getBuyableAmount('w', 11).dividedBy(100))},
             tooltip() {return "Points ^ N where N is X ÷ 100. Currently: ÷"+format(buyableEffect('w', 11))},
+        },
+        21: {
+            title: "Find Fish",
+            display() {return tmp.w.buyables[21].canAfford ? "Reset Ecology and Wildlife to Gain <br><font size = +2>"+format(thisBuyableEffect(this).minus(player.w.fish))+"</font><br> Fish" : "Next in "+format(player.w.fish.minus(thisBuyableEffect(this)))+" Fish<br>Fish Gain is Based on Wildlife and Ecology"},
+            canAfford() {return thisBuyableEffect(this).gte(player.w.fish)},
+            buy() {
+                player.w.fish = thisBuyableEffect(this)
+                player.w.points = new Decimal(0)
+                player.w.large = new Decimal(0)
+                player.e.ecology = new Decimal(0)
+            },
+            effect() {
+                let gain = player.w.points.add(1).log("1e100").add(player.w.points.dividedBy("1e1000").add(1).log("1e10")).times(player.e.ecology.add(1).log(10)).minus(100)
+                gain = gain.times(smartUpgradeEffect('r', 34))
+                gain = gain.times(smartUpgradeEffect('w', 103))
+                return gain
+            },
         },
     },
 }),
@@ -1398,11 +1656,14 @@ addLayer("r", {
         amt = amt.times(smartUpgradeEffect('t', 43))
         amt = amt.times(smartUpgradeEffect('t', 73))
         amt = amt.times(smartUpgradeEffect('t', 72))
+        amt = amt.times(smartUpgradeEffect('w', 92))
+        if(hasAchievement('a', 83)) amt = amt.times(2)
         amt = amt.pow(smartUpgradeEffect('e', 11))
+        amt = amt.pow(smartUpgradeEffect('z', 12))
         return amt
     }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1.5, // Prestige currency exponent
+    exponent() {return 1.5-smartUpgradeEffect('e', 21, 0)}, // Prestige currency exponent
     base() {return 2 - smartUpgradeEffect('t', 13, 0)},
     canBuyMax: true,
     effectDescription() {return "Multiplying Point gain by "+format(player.r.points.add(1).pow(hasUpgrade('r', 22) ? 100 : 3))},
@@ -1483,11 +1744,19 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Divide Research Requirement by "+format(getBuyableAmount('r', 23).add(2))+". Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) player.r.points = player.r.points.minus(this.cost())
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 11).pow_base(getBuyableAmount('r', 23).add(2))},
             tooltip() {return "Currently: ÷"+format(buyableEffect('r', 11))},
+            buyMax() {
+                let max = player.r.points.div(2).sub(1)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         12: {
             title: "Wildlife Booster",
@@ -1496,11 +1765,19 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Multiply Wildlife gain by "+format(getBuyableAmount('r', 23).add(2))+".<br> Unlocks more Wildlife Upgrades after 2 Purchases.<br> Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) player.r.points = player.r.points.minus(this.cost())
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 12).pow_base(getBuyableAmount('r', 23).add(2))},
             tooltip() {return "Currently: x"+format(buyableEffect('r', 12))},
+            buyMax() {
+                let max = player.r.points.div(3).sub(2)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         13: {
             title: "Requirement Reduction II",
@@ -1509,11 +1786,19 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Divide Research Requirement by Research. Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) player.r.points = player.r.points.minus(this.cost())
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 13).pow_base(player.r.points.add(1))},
             tooltip() {return "Currently: ÷"+format(buyableEffect('r', 13))},
+            buyMax() {
+                let max = player.r.points.div(2).sub(2)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         21: {
             title: "Time Speed Increase",
@@ -1522,11 +1807,19 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Multiply Research Time Gain by "+format(getBuyableAmount('r', 31).times(2).add(3))+". Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) player.r.points = player.r.points.minus(this.cost())
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 21).pow_base(getBuyableAmount('r', 31).times(2).add(3))},
             tooltip() {return "Currently: x"+format(buyableEffect('r', 21))},
+            buyMax() {
+                let max = player.r.points.div(5).sub(1)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         22: {
             title: "Advanced Requirement Reduction",
@@ -1535,10 +1828,18 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Divide Research Requirement Based on Plants. (free) Hold to buy max.", this, " Gardens")},
             canAfford() { return player.g.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 22).pow_base(player.p.points.add(10).log(10))},
             tooltip() {return "Currently: ÷"+format(buyableEffect('r', 22))+". Currently Dividing by "+format(player.p.points.add(10).log(10))+" When Bought"},
+            buyMax() {
+                let max = player.g.points.div(hasUpgrade('r', 21) ? 9 : 10).sub(50)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         23: {
             title: "Wildlife Superbooster",
@@ -1547,10 +1848,18 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Increase Requirement Reduction and Wildlife Booster Base by 1. Hold to buy max.", this, " Wildlife Boosters")},
             canAfford() { return getBuyableAmount('r', 12).gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) addBuyables('r', 12, (this.cost().times(-1)))
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             tooltip() {return "Currently: +"+format(getBuyableAmount('r', 23))+". "},
+            buyMax() {
+                let max = getBuyableAmount('r', 12).div(2).sub(2)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         31: {
             title: "Time Speed Superincrease",
@@ -1559,11 +1868,19 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Increase Time Speed Increase Base by 2. Hold to buy max.", this, " Time Speed Increases")},
             canAfford() { return getBuyableAmount('r', 21).gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) addBuyables('r', 21, (this.cost().times(-1)))
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             unlocked() {return player.r.best.gte(25)},
             tooltip() {return "Currently: +"+format(getBuyableAmount('r', 31).times(2))+". "},
+            buyMax() {
+                let max = getBuyableAmount('r', 21).div(2).sub(2.5)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         32: {
             title: "Researchers",
@@ -1572,12 +1889,20 @@ addLayer("r", {
             display() { return autoThisBuyableDisplay("Find Researchers to help. Researchers Multiply Research Gain by Researchers + 1. You have "+format(player.r.researchers)+" Researchers. Hold to buy max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) player.r.points = player.r.points.minus(this.cost())
                 addBuyables(this.layer, this.id, 1)
                 player.r.resetTimes = 0},
             effect() {return getBuyableAmount('r', 32).pow_base(2).times(getBuyableAmount('r', 32)).times(buyableEffect('r', 33))},
             unlocked() {return player.r.best.gte(38)},
             tooltip() {return "Currently: +"+format(buyableEffect('r', 32))+"/sec."},
+            buyMax() {
+                let max = player.r.points.div(5 + upgradeEffect('r', 23)).sub(7)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
         33: {
             title: "Research Booster",
@@ -1586,6 +1911,10 @@ addLayer("r", {
             display() {return autoThisBuyableDisplay("Reset Researchers but Multiply Their Gain based on Research Time. Hold to Buy Max.", this, " Research")},
             canAfford() { return player.r.points.gte(this.cost()) },
             buy() {
+                if(hasAchievement('e', 25)) {
+                    buyMaxBuyable(this.layer, this.id)
+                    return;
+                }
                 if(!hasUpgrade('t', 14)) player.r.points = player.r.points.minus(this.cost())
                 addBuyables(this.layer, this.id, 1)
                 player.r.researchers = new Decimal(0)
@@ -1593,6 +1922,10 @@ addLayer("r", {
             effect() {return getBuyableAmount('r', 33).pow_base(tmp.r.baseAmount.add(1).log(10))},
             unlocked() {return player.r.best.gte(53)},
             tooltip() {return "Currently: x"+format(buyableEffect('r', 33))+". Currently Multiplying by "+format(tmp.r.baseAmount.add(1).log(10))+" When Bought"},
+            buyMax() {
+                let max = player.r.points.div(10 + upgradeEffect('r', 23)).sub(5)
+                if(max.gte(thisBuyableAmount(this))) setBuyableAmount(this.layer, this.id, max.add(1).floor())
+            },
         },
     },
     upgrades: {
@@ -1686,6 +2019,24 @@ addLayer("r", {
             description: "Actually Buy Max Prickly Pears",
             cost: (new Decimal(375)),
             unlocked() {return hasUpgrade('t', 83)},
+        },
+        34: {
+            title: "Fishing Pole",
+            description: "Multiply Fish Gain Based on Research",
+            cost: (new Decimal(1130)),
+            unlocked() {return hasUpgrade('e', 21)},
+            effect() {return player.r.points.div(100).root(2).div(5).add(1)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            tooltip: "sqrt (Research ÷ 100) ÷ 5 + 1",
+        },
+        35: {
+            title: "Lure",
+            description: "Multiply Ecology Gain Based on Fish",
+            cost: (new Decimal(2600)),
+            unlocked() {return hasUpgrade('e', 21)},
+            effect() {return player.w.fish.add(2).log(2).root(2)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
+            tooltip: "sqrt (log2 (Fish))",
         },
     },
 }),
@@ -2159,10 +2510,10 @@ addLayer("e", {
             },
         },
         12: {
-            display() {return "Multiply Leaf Gain by "+format(new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0))+" (5s).<br>Currently: "+(getClickableState('e', 12) ? "Active":"Inactive")},
+            display() {return "Multiply Leaf Gain by "+format(new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0).pow(hasAchievement('e', 23)?1.75:1))+" (5s).<br>Currently: "+(getClickableState('e', 12) ? "Active":"Inactive")},
             canClick() {return player.e.cooldown.lte(0)},
             unlocked() {return hasMilestone('e', 2)},
-            effect() {return getClickableState(this.layer, this.id) ? new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0) : 1},
+            effect() {return getClickableState(this.layer, this.id) ? new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0).pow(hasAchievement('e', 23)?1.75:1) : 1},
             onClick() {
                 setClickableState(this.layer, this.id, true)
                 let duration = new Decimal(5)
@@ -2225,6 +2576,8 @@ addLayer("e", {
                 let effect = player.e.points.times(player.p.points.add(1).log(10))
                 effect = effect.times(smartUpgradeEffect('e', 13))
                 effect = effect.times(smartMilestoneEffect('z', 8))
+                effect = effect.times(smartUpgradeEffect('z', 11))
+                effect = effect.times(smartUpgradeEffect('r', 35))
                 return effect
                 },
             done() {return player.e.points.gte(5)},
@@ -2262,8 +2615,30 @@ addLayer("e", {
         },
         14: {
             title: "\"100% Recycled Materials\"",
-            description: "Coming Soon...",
+            description: "Unlock Fish",
             cost: (new Decimal(40000)),
+            currencyDisplayName: "Ecology",
+            currencyInternalName: "ecology",
+            currencyLayer: "e",
+            tooltip: "Fish are found in the Wildlife Layer",
+        },
+        21: {
+            title: "Vegetable Patch",
+            description: "Reduce Research Exponent by 0.03 and Unlock 2 More Research Upgrades",
+            cost: (new Decimal(172500)),
+            unlocked() {return hasUpgrade('e', 14)},
+            effect() {return 0.03},
+            currencyDisplayName: "Ecology",
+            currencyInternalName: "ecology",
+            currencyLayer: "e",
+        },
+        22: {
+            title: "Chicken Coop",
+            description: "Multiply Wildlife Gain Based on Ecology",
+            cost: (new Decimal(185000)),
+            unlocked() {return hasUpgrade('e', 14)},
+            effect() {return player.e.ecology.pow(100)},
+            effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
             currencyDisplayName: "Ecology",
             currencyInternalName: "ecology",
             currencyLayer: "e",
@@ -2273,9 +2648,10 @@ addLayer("e", {
         11: {
             title: "Recycling",
             cost(x) {let cost = x.times(100)
+            if(x.gte(50)) cost = cost.pow(x.sub(25).div(25))
             cost = cost.times(smartMilestoneEffect('z', 8))
             return cost},
-            display() { return autoThisBuyableDisplay("Multiply Zone Base (Above 1) by 0.95. Hold to buy max.", this, " Ecology", "/50.00")},
+            display() { return autoThisBuyableDisplay("Multiply Zone Base (Above 1) by 0.95. Hold to buy max.", this, " Ecology", "/"+format(tmp.e.buyables[11].purchaseLimit))},
             canAfford() { return player.e.ecology.gte(this.cost()) },
             buy() {
                 player.e.ecology = player.e.ecology.minus(this.cost())
@@ -2283,7 +2659,7 @@ addLayer("e", {
             unlocked() {return hasUpgrade('e', 13)},
             effect() {return getBuyableAmount('e', 11).pow_base(0.95)},
             tooltip() {return "Currently: x"+format(thisBuyableEffect(this))},
-            purchaseLimit: 50,
+            purchaseLimit() {return hasUpgrade('w', 104)?100:50},
         },
     },
     achievements: {
@@ -2312,6 +2688,31 @@ addLayer("e", {
             tooltip: "Reward: Remove The Ability to Activate the First Ecosystem Ability but it's Permanently Active",
             done() {return player.e.points.gte(10)},
             onComplete() {setClickableState('e', 11, true)},
-        }
+        },
+        21: {
+            name: "15 Ecosystems",
+            tooltip: "Reward: Keep Garden Upgrades and Milestones on Reset",
+            done() {return player.e.points.gte(15)},
+        },
+        22: {
+            name: "20 Ecosystems",
+            tooltip: "Keep Zone Completions on Reset",
+            done() {return player.e.points.gte(20)},
+        },
+        23: {
+            name: "25 Ecosystems",
+            tooltip: "Reward: Raise the Second Ecosystem Ability Effect to 1.75",
+            done() {return player.e.points.gte(25)},
+        },
+        24: {
+            name: "30 Ecosystems",
+            tooltip: "Reward: Buy Max Garden Buyables",
+            done() {return player.e.points.gte(30)},
+        },
+        25: {
+            name: "35 Ecosystems",
+            tooltip: "Reward: Buy Max Research Buyables",
+            done() {return player.e.points.gte(35)},
+        },
     },
 })
