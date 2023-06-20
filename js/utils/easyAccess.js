@@ -111,3 +111,43 @@ function thisMilestoneEffect(thisMilestone) {
 function autoThisBuyableDisplay(desc, thisBuyable, baseName = "", limit = "") {
     return autoBuyableDisplay(desc, thisBuyable.layer, thisBuyable.id, baseName, limit)
 } // Returns an autoBuyableDisplay (see line 91) of the current buyable
+
+function completionDecimal(layer, id) {
+    return new Decimal(challengeCompletions(layer, id))
+} // Returns challengeCompletions in Decimal form
+
+function thisCompletionDecimal(challenge) {
+    return completionDecimal(challenge.layer, challenge.id)
+} // Returns the completionDecimal of challenge
+
+function challengeDescriptionNo(layer, id, index) {
+    return tmp[layer].challenges[id].challengeDescriptionArray[index]
+} // Returns the challenge description of a certain number
+
+function thisChallengeDescriptionArray(challenge) {
+    return challengeDescriptionNo(challenge.layer, challenge.id, challengeCompletions(challenge.layer, challenge.id))
+}
+
+function challengeGoalDescription(layer, id) {
+    return formatWhole(challengeRequirement(layer, id, challengeCompletions(layer, id)))+tmp[layer].challenges[id].baseName
+}
+
+function challengeRequirement(layer, id, index) {
+    return tmp[layer].challenges[id].requirementArray[index]
+}
+
+function thisChallengeCompletions(challenge) {
+    return challengeCompletions(challenge.layer, challenge.id)
+}
+
+function thisChallengeRequirement(challenge) {
+    return challengeRequirement(challenge.layer, challenge.id, thisChallengeCompletions(challenge))
+}
+
+function challengeCanComplete(layer, id) {
+    return tmp[layer].challenges[id].baseAmount.gte(challengeRequirement(layer, id, challengeCompletions(layer, id)))
+}
+
+function inCompletion(layer, id, completion) {
+    return inChallenge(layer, id) && challengeCompletions(layer, id) == completion
+}

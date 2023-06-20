@@ -13,43 +13,50 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "7",
-	name: "Fish",
+	num: "8",
+	name: "Reclamation",
 }
 
-let changelog = `<h1>Version History:</h1><br>
-    <h3>v7</h3><br>
+let changelog = `<h1>Version History:</h1><br><br>
+    <h2>v8</h2><br>
+        General - Added 'Time Control' Tab and Improved Changelog Formatting.<br>
+        Reclamation - Added with 3 Challenges, 5 Milestones and 10 Achievements.<br>
+        Fish - Added 4 Upgrades.<br>
+        Ecosystems - Added 2 Upgrades.<br>
+        Research - Added 3 Buyables.<br>
+        Gardens - Added 4 Upgrades.<br><br>
+    <h2>v7</h2><br>
         Fish - Added with 8 Upgrades and a Prestige Button.<br>
         Ecosystems - Added 2 Upgrades and 5 Achievements.<br>
         Research - Added 2 Upgrades.<br>
-        Zones - Added 4 Upgrades and some Milestones.<br>
+        Zones - Added 4 Upgrades and some Milestones.<br><br>
     <h3>v6.0.1</h3><br>
-        Ecosystems - Added a cap on 'Recycling'.<br>
-    <h3>v6</h3><br>
+        Ecosystems - Added a cap on 'Recycling'.<br><br>
+    <h2>v6</h2><br>
         Ecosystems - Added With 10 Milestones, 4 Upgrades, 1 Buyable and 5 Achievements.<br>
         Zones - Added 4 Milestones.<br>
-        Plants - Added 2 Upgrades.<br>
+        Plants - Added 2 Upgrades.<br><br>
     <h3>v5.1</h3><br>
         Wildlife - Rewritten with minor Balancing.<br>
-        General - Option to Change Max Tick Length between 1 Hour and 0.5 Seconds.<br>
-    <h3>v5</h3><br>
+        General - Option to Change Max Tick Length between 1 Hour and 0.5 Seconds.<br><br>
+    <h2>v5</h2><br>
         Trees - Added with Many Upgrades, 3 Buyables and 5 Milestones.<br>
         Research - Added 3 Upgrades.<br>
         Zones - Added 1 Milestone.<br>
-        Plants - Added 1 New Subtab.<br>
-    <h3>v4</h3><br>
+        Plants - Added 1 New Subtab.<br><br>
+    <h2>v4</h2><br>
         Research - Added with 10 Upgrades and 9 Buyables.<br>
         Wildlife - Added 8 Upgrades.<br>
         Zones - Added 1 Milestone.<br>
-        Gardens - Added 1 Buyable.<br>
-    <h3>v3</h3><br>
+        Gardens - Added 1 Buyable.<br><br>
+    <h2>v3</h2><br>
         Wildlife - Added with 24 Upgrades and 1 Buyable.<br>
-        Plants - Added 2 Upgrades.<br>
-    <h3>v2</h3><br>
+        Plants - Added 2 Upgrades.<br><br>
+    <h2>v2</h2><br>
         Plants - Added Many Upgrades and 1 Buyable.<br>
         Gardens - Added Upgrades and Milestones.<br>
-        Zones - Added with 4 Challenges and Milestones.<br>
-	<h3>v1</h3><br>
+        Zones - Added with 4 Challenges and Milestones.<br><br>
+	<h2>v1</h2><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
 
@@ -78,7 +85,7 @@ function getPointGen() {
 	gain=gain.times(gainUpgradeEffect('p', 11))
 	gain=gain.times(gainUpgradeEffect('p', 12))
 	gain=gain.times(gainUpgradeEffect('p', 14))
-	if(hasUpgrade('p', 24)) gain=gain.times(2)
+	if(hasUpgrade('p', 24)) gain=gain.times(upgradeEffect('p', 24))
 	gain=gain.times(gainUpgradeEffect('g', 11))
 	if(hasUpgrade('g', 12)) gain=gain.times(buyableEffect('p', 11))
 	gain=gain.times(gainUpgradeEffect('p', 31))
@@ -99,18 +106,16 @@ function getPointGen() {
     gain=gain.times(smartUpgradeEffect('t', 21))
     gain=gain.times(clickableEffect('e', 11))
     gain=gain.times(smartUpgradeEffect('w', 91))
+    gain=gain.times(smartUpgradeEffect('w', 111))
+    gain=gain.times(smartUpgradeEffect('e', 24))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
     if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
     if(inChallenge('z', 21)) gain=gain.dividedBy(player.points.add(10).log(10))
+    if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) gain = gain.pow(0.5)
     
     if(gain.gte(new Decimal("1.80e308"))) gain=gain.dividedBy(new Decimal("1.80e308")).pow(0.95).times(new Decimal("1.80e308"))
-    if(false){
-    gain=gain.add(3)
-    gain=new Decimal(1).add(gain.minus(player.points.add(1).pow(0.5)))
-    gain=gain.dividedBy(player.points.add(10).log(10))
-    } //being kept for challenge ideas
 	return gain
 }
 
@@ -126,7 +131,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('z', 14)
+	return hasUpgrade('g', 54)
 }
 
 
