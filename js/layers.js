@@ -652,7 +652,7 @@ addLayer("p", {
               return cost;
             },
             display() { return autoThisBuyableDisplay("Multiply point gain and divide plant costs by 5. Hold to buy max.", this)},
-            canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0},
+            canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0 && msReady},
             buy() {
                 if(hasUpgrade('r', 33)) {buyMaxBuyable(this.layer, this.id)} else{
               if(!hasAchievement('a', 24)) {player.p.points = player.p.points.minus(this.cost())};
