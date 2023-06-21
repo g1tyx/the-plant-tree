@@ -3057,7 +3057,7 @@ addLayer("re", {
             challengeDescription() {return thisChallengeDescriptionArray(this)},
             challengeDescriptionArray: ["Wildlife Generation ^ 0.01", "Wildlife Generation ^ 0.01<br>Research Time ^ 0.01", "Wildlife Generation ^ 0.1<br>Research Time ^ 0.1<br>Point Gain ^ 0.1", "Completed"],
             unlocked() {return hasMilestone('re', 0)},
-            requirementArray: [38320, 36100, 21420, 0],
+            requirementArray: [37600, 36100, 21420, 0],
             requirement() {return thisChallengeRequirement(this)},
             baseAmount() {return player.p.points},
             baseName: " Plants",
