@@ -667,7 +667,7 @@ addLayer("p", {
             tooltip() {return "Total Effect: <br> ×/÷"+format(getBuyableAmount('p', 11).pow_base(5))+" (Before Bonus Levels)"},
             buyMax() {
                 if(player.p.points.gte(this.cost)) {
-                    addBuyables(this.layer, this.id, player.p.points.dividedBy(this.cost(getBuyableAmount(this.layer, this.id).minus(1))).log(2).floor())
+                    addBuyables(this.layer, this.id, player.p.points.div(this.cost(getBuyableAmount(this.layer, this.id).minus(1))).log(2).floor())
                 }
             },
           },
