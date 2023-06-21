@@ -381,7 +381,7 @@ addLayer("p", {
     ],
     layerShown(){return true},
     automate() {
-        if(hasUpgrade('w', 42) && (player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).gte(0))) {addBuyables('p', 12, player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).ceil())}
+        if(hasUpgrade('w', 42) && tmp.p.buyables[11].canAfford) {addBuyables('p', 12, player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).ceil())}
         if(hasMilestone('z', 7)) buyBuyable('p', 13)
         if(player.p.points.lt(0)) player.p.points = new Decimal(0)
     },
@@ -652,7 +652,7 @@ addLayer("p", {
               return cost;
             },
             display() { return autoThisBuyableDisplay("Multiply point gain and divide plant costs by 5. Hold to buy max.", this)},
-            canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0 && msReady},
+            canAfford() {return player.p.points.gte(this.cost()) && player.p.resetTime > 0 && msReady && player.p.points.gt(0)},
             buy() {
                 if(hasUpgrade('r', 33)) {buyMaxBuyable(this.layer, this.id)} else{
               if(!hasAchievement('a', 24)) {player.p.points = player.p.points.minus(this.cost())};
@@ -679,7 +679,7 @@ addLayer("p", {
                 if(hasUpgrade('w', 51)) cost=cost.dividedBy(buyableEffect('w', 11))
             return cost},
             display() { return autoThisBuyableDisplay("Divide plant costs by 10. Hold to buy max.", this)},
-            canAfford() { return player.points.gte(this.cost()) && !hasUpgrade('w', 42)},
+            canAfford() { return player.points.gte(this.cost()) && !hasUpgrade('w', 42) && player.points.gt(0)},
             buy() {
                 player.points = player.points.sub(this.cost())
                 addBuyables(this.layer, this.id, 1)},
