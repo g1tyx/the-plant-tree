@@ -657,7 +657,7 @@ addLayer("p", {
                 if(hasUpgrade('r', 33)) {buyMaxBuyable(this.layer, this.id)} else{
               if(!hasAchievement('a', 24)) {player.p.points = player.p.points.minus(this.cost())};
               addBuyables(this.layer, this.id, 1)}
-                
+              if(isNaN(getBuyableAmount('p', 11))) setBuyableAmount('p', 11, new Decimal(0))
             },
             unlocked() { return hasUpgrade('g', 12) },
             effect() {
@@ -667,7 +667,7 @@ addLayer("p", {
             tooltip() {return "Total Effect: <br> ×/÷"+format(getBuyableAmount('p', 11).pow_base(5))+" (Before Bonus Levels)"},
             buyMax() {
                 if(player.p.points.gte(this.cost)) {
-                    addBuyables(this.layer, this.id, player.p.points.div(this.cost(getBuyableAmount(this.layer, this.id).minus(1))).log(2).floor())
+                    addBuyables(this.layer, this.id, player.p.points.dividedBy(this.cost(getBuyableAmount(this.layer, this.id).minus(1))).log(2).floor())
                 }
             },
           },
@@ -856,7 +856,7 @@ addLayer("g", {
             description: "Divide Garden costs based on Points",
             cost: (new Decimal(30)),
             unlocked() {return hasUpgrade('g', 33)},
-            effect() {return player.points.log(5).pow(0.05)},
+            effect() {return player.points.add(5).log(5).pow(0.05)},
             effectDisplay() {return "÷"+format(upgradeEffect('g', 34))},
             tooltip: "log5(Points) ^ 0.05"
         },
