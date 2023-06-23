@@ -699,6 +699,7 @@ addLayer("p", {
             buyMax() {
                 let max = player.points.add(1).log(1000)
                 if(max.gt(getBuyableAmount('p', 12))) setBuyableAmount('p', 12, max.add(1).floor())
+                buyBuyable('p', 12)
             },
         13: {
             title: "Echinocactus",
