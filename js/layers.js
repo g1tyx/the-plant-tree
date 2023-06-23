@@ -695,11 +695,11 @@ addLayer("p", {
                 if(hasUpgrade('p', 64)) extra = extra.add(getBuyableAmount('p', 13))
                 return new Decimal(10).pow(getBuyableAmount('p', 12).add(extra))},
             tooltip() {return "Total Effect: ÷"+format(getBuyableAmount('p', 12).pow_base(10))+" (Before Bonus Levels)"},
-            },
             buyMax() {
                 let max = player.points.add(1).log(1000)
                 if(max.gt(getBuyableAmount('p', 12))) setBuyableAmount('p', 12, max.add(1).floor())
                 buyBuyable('p', 12)
+            },
             },
         13: {
             title: "Echinocactus",
@@ -3033,7 +3033,7 @@ addLayer("re", {
     hotkeys: [
         {key: "r", description: "R: Reset for Reclaimed Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
-    layerShown(){return hasUpgrade('z', 14)||player.r.best.gte(1)},
+    layerShown(){return hasUpgrade('z', 14)||player.re.best.gte(1)},
     
     milestones: {
         0: {
