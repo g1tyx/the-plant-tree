@@ -317,6 +317,11 @@ addLayer("p", {
     resetsNothing() {return hasMilestone('g', 0)},
     autoUpgrade() {return hasMilestone('e', 5)},
     branches: ['g', 'z'],
+    tooltip() {
+        let tooltip = formatWhole(player.p.points)+" Plants"
+        if(hasUpgrade('r', 25)) tooltip = tooltip + "<br><font size = -1>"+formatWhole(player.t.points)+" Trees</font>"
+        return tooltip
+    },
     deactivated() {return inCompletion('re', 12, 2)},
     tabFormat: {
         "Plants": {
@@ -381,7 +386,7 @@ addLayer("p", {
     ],
     layerShown(){return true},
     automate() {
-        if(hasUpgrade('w', 42) && tmp.p.buyables[11].canAfford) {addBuyables('p', 12, player.points.dividedBy(tmp.p.buyables[12].cost).log(1000).ceil())}
+        if(hasUpgrade('w', 42)) buyMaxBuyable('p', 12)
         if(hasMilestone('z', 7)) buyBuyable('p', 13)
         if(player.p.points.lt(0)) player.p.points = new Decimal(0)
     },
@@ -679,7 +684,7 @@ addLayer("p", {
                 if(hasUpgrade('w', 51)) cost=cost.dividedBy(buyableEffect('w', 11))
             return cost},
             display() { return autoThisBuyableDisplay("Divide plant costs by 10. Hold to buy max.", this)},
-            canAfford() { return player.points.gte(this.cost()) && !hasUpgrade('w', 42) && player.points.gt(0)},
+            canAfford() { return player.points.gte(this.cost()) && player.points.gt(0)},
             buy() {
                 player.points = player.points.sub(this.cost())
                 addBuyables(this.layer, this.id, 1)},
@@ -690,6 +695,10 @@ addLayer("p", {
                 if(hasUpgrade('p', 64)) extra = extra.add(getBuyableAmount('p', 13))
                 return new Decimal(10).pow(getBuyableAmount('p', 12).add(extra))},
             tooltip() {return "Total Effect: ÷"+format(getBuyableAmount('p', 12).pow_base(10))+" (Before Bonus Levels)"},
+            },
+            buyMax() {
+                let max = player.points.add(1).log(1000)
+                if(max.gt(getBuyableAmount('p', 12))) setBuyableAmount('p', 12, max.add(1).floor())
             },
         13: {
             title: "Echinocactus",
@@ -1242,6 +1251,11 @@ addLayer("w", {
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     branches: ['p', 'g', 'z'],
     autoUpgrade() {return hasMilestone('re', 0) && player.w.autoUpgrade},
+    tooltip() {
+        let tooltip = formatWhole(player.w.points)+" Wildlife"
+        if(hasUpgrade('e', 14)) tooltip = tooltip + "<br><font size = -1>"+formatWhole(player.w.fish)+" Fish</font>"
+        return tooltip
+    },
     tabFormat: {
         "Main": {
             content: [
@@ -3057,7 +3071,7 @@ addLayer("re", {
             challengeDescription() {return thisChallengeDescriptionArray(this)},
             challengeDescriptionArray: ["Wildlife Generation ^ 0.01", "Wildlife Generation ^ 0.01<br>Research Time ^ 0.01", "Wildlife Generation ^ 0.1<br>Research Time ^ 0.1<br>Point Gain ^ 0.1", "Completed"],
             unlocked() {return hasMilestone('re', 0)},
-            requirementArray: [37600, 36100, 21420, 0],
+            requirementArray: [38320, 36100, 21420, 0],
             requirement() {return thisChallengeRequirement(this)},
             baseAmount() {return player.p.points},
             baseName: " Plants",
