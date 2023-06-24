@@ -116,6 +116,7 @@ function getPointGen() {
     if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) gain = gain.pow(0.5)
     
     if(gain.gte(new Decimal("1.80e308"))) gain=gain.dividedBy(new Decimal("1.80e308")).pow(0.95).times(new Decimal("1.80e308"))
+    if(gain.lt(0)) return new Decimal(0)
 	return gain
 }
 

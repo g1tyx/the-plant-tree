@@ -480,7 +480,7 @@ addLayer("p", {
             description: "Divide Garden costs based on points",
             cost: (new Decimal(195)),
             unlocked() {return hasMilestone('g', 0)},
-            effect() {return player.points.log(10).pow(0.1)},
+            effect() {return player.points.add(10).log(10).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 33))},
             tooltip: "(log10(Points)) ^ 0.1",
         },
@@ -671,9 +671,17 @@ addLayer("p", {
                 return getBuyableAmount('p', 11).add(extra).pow_base(5) },
             tooltip() {return "Total Effect: <br> ×/÷"+format(getBuyableAmount('p', 11).pow_base(5))+" (Before Bonus Levels)"},
             buyMax() {
-                if(player.p.points.gte(this.cost)) {
-                    addBuyables(this.layer, this.id, player.p.points.dividedBy(this.cost(getBuyableAmount(this.layer, this.id).minus(1))).log(2).floor())
-                }
+                let base = new Decimal(2);
+                if (hasMilestone('g', 1)) base = base.minus(0.1);
+                if (hasUpgrade('g', 42)) base = base.minus(0.1);
+                let mult = new Decimal(1)
+                if (hasUpgrade('g', 14)) mult = mult.dividedBy(upgradeEffect('g', 14));
+                if (hasUpgrade('p', 44)) mult = mult.dividedBy(upgradeEffect('p', 44));
+                if (hasUpgrade('p', 52)) mult = mult.dividedBy(upgradeEffect('p', 52));
+                if (hasUpgrade('p', 62)) mult = mult.dividedBy(getBuyableAmount('p', 12).add(1));
+                if (hasUpgrade('p', 74)) mult = mult.dividedBy(upgradeEffect('p', 74));
+                let max = player.p.points.div(mult).add(1).log(base)
+                if(max.gt(getBuyableAmount('p', 11))) setBuyableAmount('p', 11, max.add(1).floor())
             },
           },
         12: {
@@ -1063,9 +1071,9 @@ addLayer("z", {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
         let keep = [];
-        if(hasAchievement('e', 13)) keep.push("milestones")
-        if(hasAchievement('e', 22)) keep.push("challenges")
-        if(hasUpgrade('z', 14)) keep.push("upgrades")
+        if(hasAchievement('e', 13)) keep.push("milestones");
+        if(hasAchievement('e', 22)) keep.push("challenges");
+        if(hasUpgrade('z', 14)) keep.push("upgrades");
         layerDataReset(this.layer, keep);
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -1222,7 +1230,7 @@ addLayer("z", {
             cost: (new Decimal(28)),
             unlocked() {return hasMilestone('z', 11)},
             onPurchase() {player.p.points = new Decimal(0)},
-            effect: 0.01
+            effect() {return 0.01},
         },
         14: {
             title: "Americas Inspired Zone",
@@ -1307,7 +1315,8 @@ addLayer("w", {
         if(hasUpgrade('w', 33)) {
             player.w.large=getLogisticAmount(player.w.large, player.w.points.pow(0.1).times(upgradeEffect('w', 14)).times(buyableEffect('r', 42)), 0.1, diff)
         }
-        player.w.points=getLogisticAmount(player.w.points, gain, upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.095), new Decimal(diff).times(tmp.w.wildlifeSpeed))
+        player.w.points=getLogisticAmount(player.w.points, gain, upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.095), new Decimal(diff).times(tmp.w.wildlifeSpeed)).max(0)
+        if(isNaN(player.w.points)) player.w.points = new Decimal(0)
         
         let passiveFish = new Decimal(0)
         if(hasMilestone('z', 10)) passiveFish = passiveFish.add(0.01)
@@ -1444,7 +1453,7 @@ addLayer("w", {
             description: "Multiply Wildlife gain Based on Points",
             cost() {return new Decimal("6.5e11")},
             unlocked() {return hasUpgrade('w', 14) && hasUpgrade('w', 21)},
-            effect() {return player.points.add(1).log(3).root(3)},
+            effect() {return player.points.add(3).log(3).root(3)},
             effectDisplay() {return "x"+format(upgradeEffect('w', 34))},
             tooltip: "3rt (log3 (Points)). Requires 'Meadow' and 'Bigger Wildlife'",
         },
@@ -1502,7 +1511,7 @@ addLayer("w", {
             description: "Divide Garden Costs based on Wildlife (Boosted by Large Wildlife)",
             cost: (new Decimal("3.33e11")),
             unlocked() {return hasUpgrade('w', 13) && hasUpgrade('w', 23)},
-            effect() {return player.w.points.times(player.w.large).log(10).pow(0.1)},
+            effect() {return player.w.points.times(player.w.large).add(10).log(10).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('w', 53))},
             tooltip: "(log10 (Wildlife × LW)) ^ 0.1. Requires 'Cave' and 'Faster Wildlife' (R:ab:bit)",
         },
@@ -1832,6 +1841,10 @@ addLayer("r", {
         amt = amt.pow(smartUpgradeEffect('z', 12))
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 1) amt = amt.pow(0.01)
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) amt = amt.pow(10)
+        if(isNaN(amt)) {
+            amt = new Decimal(0)
+            doReset(this.layer)
+        }
         return amt
     }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -2904,7 +2917,7 @@ addLayer("e", {
             description: "Multiply Ecology Gain by Plants",
             cost: (new Decimal(58)),
             unlocked() {return hasMilestone('re', 3)},
-            effect() {return player.p.points},
+            effect() {return player.p.points.add(1)},
             effectDisplay() {return "x"+format(thisUpgradeEffect(this))},
         },
         24: {
