@@ -704,7 +704,7 @@ addLayer("p", {
                 return new Decimal(10).pow(getBuyableAmount('p', 12).add(extra))},
             tooltip() {return "Total Effect: ÷"+format(getBuyableAmount('p', 12).pow_base(10))+" (Before Bonus Levels)"},
             buyMax() {
-                let max = player.points.add(1).log(1000)
+                let max = player.points.div(this.cost(0)).add(1).log(1000)
                 if(max.gt(getBuyableAmount('p', 12))) setBuyableAmount('p', 12, max.add(1).floor())
                 buyBuyable('p', 12)
             },
