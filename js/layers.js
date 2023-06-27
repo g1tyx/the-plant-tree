@@ -1777,10 +1777,10 @@ addLayer("w", {
         },
         21: {
             title: "Find Fish",
-            display() {return tmp.w.buyables[21].canAfford ? "Reset Ecology and Wildlife to Gain <br><font size = +2>"+format(thisBuyableEffect(this).minus(player.w.fish))+"</font><br> Fish" : "Next in "+format(player.w.fish.minus(thisBuyableEffect(this)))+" Fish<br>Fish Gain is Based on Wildlife and Ecology"},
+            display() {return tmp.w.buyables[21].canAfford ? "Reset Ecology and Wildlife to Gain <br><font size = +2>"+format(thisBuyableEffect(this).minus(player.w.fish).max(0))+"</font><br> Fish" : "Next in "+format(player.w.fish.minus(thisBuyableEffect(this)))+" Fish<br>Fish Gain is Based on Wildlife and Ecology"},
             canAfford() {return thisBuyableEffect(this).gte(player.w.fish)},
             buy() {
-                player.w.fish = thisBuyableEffect(this)
+                player.w.fish = thisBuyableEffect(this).max(player.w.fish)
                 player.w.points = new Decimal(0)
                 player.w.large = new Decimal(0)
                 player.e.ecology = new Decimal(0)
