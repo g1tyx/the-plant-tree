@@ -218,7 +218,7 @@ function doReset(layer, force=false) {
 		if (row >= layers[layerResetting].row && (!force || layerResetting != layer)) completeChallenge(layerResetting)
 	}
 
-	player.points = (row == 0 ? decimalZero : getStartPoints())
+	player.points = (row == 0 ? decimalZero : getStartPoints()).max(0)
 
 	for (let x = row; x >= 0; x--) rowReset(x, layer)
 	for (r in OTHER_LAYERS){
@@ -243,7 +243,7 @@ function resetRow(row) {
 		player[layer].unlocked = false
 		if (player[layer].unlockOrder) player[layer].unlockOrder = 0
 	}
-	player.points = getStartPoints()
+	player.points = getStartPoints().max(0)
 	updateTemp();
 	resizeCanvas();
 }

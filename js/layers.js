@@ -694,7 +694,7 @@ addLayer("p", {
             display() { return autoThisBuyableDisplay("Divide plant costs by 10. Hold to buy max.", this)},
             canAfford() { return player.points.gte(this.cost()) && player.points.gt(0)},
             buy() {
-                player.points = player.points.sub(this.cost())
+                player.points = player.points.sub(this.cost().max(0))
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('g', 21) && !inChallenge('z', 22)},
             effect() {
