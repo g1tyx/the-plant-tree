@@ -300,7 +300,7 @@ addLayer("p", {
     requires() {return 10}, // Can be a function that takes requirement increases into account
     resource: "plants", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
+    baseAmount() {return player.points.max(0)}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent() {
         let exponent = new Decimal(1-smartUpgradeEffect('z', 13, 0))
@@ -345,7 +345,7 @@ addLayer("p", {
             unlocked() {return hasUpgrade('r', 25) || hasMilestone('e', 5)},
         },
     },
-    effectDescription() {if(hasUpgrade('p', 14)) return "Next Magnitude increase at "+format(new Decimal(10).add(upgradeEffect('p', 34)).pow(player.points.log(new Decimal(10).add(upgradeEffect('p', 34))).ceil()))+" Points (1-4, 2-2)"},
+    effectDescription() {if(hasUpgrade('p', 14)) return "Next Magnitude increase at "+format(new Decimal(10).add(upgradeEffect('p', 34)).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).ceil()))+" Points (1-4, 2-2)"},
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         
@@ -409,7 +409,7 @@ addLayer("p", {
             title: "Bear-Paw Succulent",
             description: "Multiply point gain based on points",
             cost: (new Decimal(5)),
-            effect() {return player.points.add(2).log(2)},
+            effect() {return player.points.max(0).add(2).log(2)},
             effectDisplay() {return "x"+format(upgradeEffect('p', 12))},
             tooltip: "log2(Points + 2)"
         },
@@ -424,7 +424,7 @@ addLayer("p", {
             title: "Snake Plant",
             description: "Points are multiplied based on magnitude",
             cost: (new Decimal(18)),
-            effect() {return new Decimal(2).pow(player.points.add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
+            effect() {return new Decimal(2).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
             effectDisplay() {return "x"+format(upgradeEffect('p', 14))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -432,7 +432,7 @@ addLayer("p", {
             title: "Philodendron",
             description: "Plant costs are divided by points",
             cost: (new Decimal(25)),
-            effect() {return player.points.add(1).pow(0.1)},
+            effect() {return player.points.max(0).add(1).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 21))},
             tooltip: "Points ^ 0.1",
         },
@@ -440,7 +440,7 @@ addLayer("p", {
             title: "Anthurium",
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
-            effect() {return new Decimal(2).pow(player.points.add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
+            effect() {return new Decimal(2).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -480,7 +480,7 @@ addLayer("p", {
             description: "Divide Garden costs based on points",
             cost: (new Decimal(195)),
             unlocked() {return hasMilestone('g', 0)},
-            effect() {return player.points.add(10).log(10).pow(0.1)},
+            effect() {return player.points.max(0).add(10).log(10).pow(0.1)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 33))},
             tooltip: "(log10(Points)) ^ 0.1",
         },
@@ -497,7 +497,7 @@ addLayer("p", {
             description: "Divide Plant costs based on Points and Plants",
             cost: (new Decimal(250)),
             unlocked() {return new Decimal(challengeCompletions('z', 11)).gte(1)},
-            effect() {return player.points.times(player.p.points.pow(3)).add(1).pow(0.2)},
+            effect() {return player.points.max(0).times(player.p.points.max(0).pow(3)).add(1).pow(0.2)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 41))},
             tooltip: "Points x (Plants ^ 3) ^ 0.2",
         },
@@ -539,7 +539,7 @@ addLayer("p", {
             title: "Sempervivum",
             description: "Prickly Pear cost is divided based on points",
             cost() {if(hasUpgrade('p', 51)){return 600}else{return 500}},
-            effect() {return player.points.add(2).log(2)},
+            effect() {return player.points.max(0).add(2).log(2)},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 52))},
             unlocked() {return new Decimal(challengeCompletions('z', 12)).gte(1)},
             tooltip: "Cost increases when Plant Upgrade 5-1 is bought. Formula: log2(Points)",
@@ -874,7 +874,7 @@ addLayer("g", {
             description: "Divide Garden costs based on Points",
             cost: (new Decimal(30)),
             unlocked() {return hasUpgrade('g', 33)},
-            effect() {return player.points.add(5).log(5).pow(0.05)},
+            effect() {return player.points.max(0).add(5).log(5).pow(0.05)},
             effectDisplay() {return "÷"+format(upgradeEffect('g', 34))},
             tooltip: "log5(Points) ^ 0.05"
         },
@@ -1382,7 +1382,7 @@ addLayer("w", {
             description: "Multiply Wildlife Gain based on Magnitude",
             cost: (new Decimal("1.7e6")),
             unlocked() {return hasUpgrade('w', 12)},
-            effect() {return player.points.add(10).log(10).floor().pow(0.5)},
+            effect() {return player.points.max(0).add(10).log(10).floor().pow(0.5)},
             effectDisplay() {return "x"+format(upgradeEffect('w', 13))},
             tooltip: "Magnitude ^ 0.5",
         },
@@ -1453,7 +1453,7 @@ addLayer("w", {
             description: "Multiply Wildlife gain Based on Points",
             cost() {return new Decimal("6.5e11")},
             unlocked() {return hasUpgrade('w', 14) && hasUpgrade('w', 21)},
-            effect() {return player.points.add(3).log(3).root(3)},
+            effect() {return player.points.max(0).add(3).log(3).root(3)},
             effectDisplay() {return "x"+format(upgradeEffect('w', 34))},
             tooltip: "3rt (log3 (Points)). Requires 'Meadow' and 'Bigger Wildlife'",
         },
@@ -1462,7 +1462,7 @@ addLayer("w", {
             description: "Multiply Point and Wildlife Gain based on Points and Wildlife",
             cost: (new Decimal(23000)),
             unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 22)},
-            effect() {return player.points.add(2).pow(0.05).log(20).times(player.w.points.add(2).pow(0.25).log(4))},
+            effect() {return player.points.max(0).add(2).pow(0.05).log(20).times(player.w.points.add(2).pow(0.25).log(4))},
             effectDisplay() {return "x"+format(upgradeEffect('w', 41))},
             tooltip: "log20 (Points ^ 0.05) x lo4(Wildlife ^ 0.25). Requires 'Log Pile' and 'Longer Wildlife'",
         },
@@ -1772,7 +1772,7 @@ addLayer("w", {
                 addBuyables(this.layer, this.id, 1)},
             unlocked() {return hasUpgrade('w', 51)},
             purchaseLimit() {return (hasUpgrade('r', 14) ? (hasUpgrade('r', 15) ? 40 : 35 ) : 30) + upgradeEffect('w', 83) + smartUpgradeEffect('r', 31, 0)},
-            effect() {return player.points.add(1).pow(getBuyableAmount('w', 11).dividedBy(100))},
+            effect() {return player.points.max(0).add(1).pow(getBuyableAmount('w', 11).dividedBy(100))},
             tooltip() {return "Points ^ N where N is X ÷ 100. Currently: ÷"+format(buyableEffect('w', 11))},
         },
         21: {
@@ -2208,7 +2208,7 @@ addLayer("r", {
             title: "Point Research Facility",
             description: "Points Boost Research Time Gain",
             cost: (new Decimal(23)),
-            effect() {return player.points.add(3000).log(5).log(5)},
+            effect() {return player.points.max(0).add(3000).log(5).log(5)},
             effectDisplay() {return "x"+format(upgradeEffect('r', 13))},
             tooltip: "log5 (log5 (Points))",
         },
@@ -2321,7 +2321,7 @@ addLayer("t", {
     }, // Can be a function that takes requirement increases into account
     resource: "trees", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
+    baseAmount() {return player.points.max(0)}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
     base() {let base = new Decimal("1e10")

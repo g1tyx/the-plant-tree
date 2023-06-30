@@ -112,7 +112,7 @@ function getPointGen() {
     if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
-    if(inChallenge('z', 21)) gain=gain.dividedBy(player.points.add(10).log(10))
+    if(inChallenge('z', 21)) gain=gain.dividedBy(player.points.max(0).add(10).log(10))
     if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) gain = gain.pow(0.5)
     
     if(gain.gte(new Decimal("1.80e308"))) gain=gain.dividedBy(new Decimal("1.80e308")).pow(0.95).times(new Decimal("1.80e308"))
