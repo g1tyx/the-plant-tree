@@ -151,3 +151,30 @@ function challengeCanComplete(layer, id) {
 function inCompletion(layer, id, completion) {
     return inChallenge(layer, id) && challengeCompletions(layer, id) == completion
 }
+
+function inChallengeFromLayer(layer) {
+    return player[layer].activeChallenge != undefined;
+}
+
+function arrayRemove(array, removed) {
+    return array.filter(item => !removed.includes(item))
+}
+
+function getBlankClickables(ids, layer) {
+    let clickables = {}
+    for(idx in ids) {
+        let id = ids[idx]
+        clickables = {
+            ...clickables,
+            [id]: {
+                canClick() {return getClickableState(layer, id)},
+                display() {return getClickableState(layer, id) ? "ACTIVE" : "INACTIVE"},
+                style() {return {
+                        'min-height': '75px',
+                        'width': '75px',
+                }},
+            },
+        }
+    }
+    return clickables
+}

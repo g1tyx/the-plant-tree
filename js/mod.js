@@ -13,11 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "8",
-	name: "Reclamation",
+	num: "9",
+	name: "Natural Disasters",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
+    <h2>v9</h2><br>
+        General - Added an option to make the layer node symbols emojis.<br>
+        Natural Disasters - Added with 3 Challenges, 3 Milestones and 22 Upgrades.<br>
+        Trees - Added 4 Upgrades.<br>
+        Research - Added a Minigame (3 Milestones and a 6×6 Grid).<br><br>
     <h2>v8</h2><br>
         General - Added 'Time Control' Tab and Improved Changelog Formatting.<br>
         Reclamation - Added with 3 Challenges, 5 Milestones and 10 Achievements.<br>
@@ -45,7 +50,7 @@ let changelog = `<h1>Version History:</h1><br><br>
         Zones - Added 1 Milestone.<br>
         Plants - Added 1 New Subtab.<br><br>
     <h2>v4</h2><br>
-        Research - Added with 10 Upgrades and 9 Buyables.<br>
+        Research< - Added with 10 Upgrades and 9 Buyables.<br>
         Wildlife - Added 8 Upgrades.<br>
         Zones - Added 1 Milestone.<br>
         Gardens - Added 1 Buyable.<br><br>
@@ -60,7 +65,7 @@ let changelog = `<h1>Version History:</h1><br><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
 
-let winText = `Congratulations! You have beaten this game, but there's still to discover...`
+let winText = `Congratulations! You have beaten this game, but the princess is in another tree!`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -109,13 +114,41 @@ function getPointGen() {
     gain=gain.times(smartUpgradeEffect('w', 111))
     gain=gain.times(smartUpgradeEffect('e', 24))
     if(hasAchievement('a', 33) && player.z.points.lt(3)) gain=gain.times(2)
+    gain=gain.times(smartUpgradeEffect('r', 101))
+    gain=gain.times(smartUpgradeEffect('t', 111))
+    gain = gain.mul(smartMilestoneEffect('r', 1))
+
+        // Disasters
+    gain = gain.mul(smartUpgradeEffect('n', 12))
+    if(hasUpgrade('n', 14)) gain = gain.mul(player.n.soil.add(1).root(2))
+    gain = gain.mul(smartUpgradeEffect('n', 21))
+    gain = gain.mul(smartUpgradeEffect('n', 41))
+
+    if(inChallenge('n', 11)) gain = gain.mul(player.n.soil.add(1).root(2))
+
+    // Powers
+    if(hasUpgrade('n', 74)) gain = gain.pow(1.1)
+
+    // Challenges
     if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
 	if(inChallenge('z', 11)) gain=gain.dividedBy(player.p.points.add(1))
 	if(inChallenge('z', 12)) gain=gain.dividedBy((getBuyableAmount('p', 11)).add(1))
     if(inChallenge('z', 21)) gain=gain.dividedBy(player.points.max(0).add(10).log(10))
     if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) gain = gain.pow(0.5)
+
+        // Disasters
+        if(inChallenge('n', 11)) gain = gain.pow(0.75).min(gain)
+        if(inChallenge('n', 12)) gain = gain.div(gain.add(player.points).pow(0.75))
+        if(inChallenge('n', 13)) gain = gain.max(1).log(10).max(gain.root(100))
+
+    // Total Point Gain
+    gain = gain.mul(smartUpgradeEffect('n', 63))
     
+    // Softcaps
     if(gain.gte(new Decimal("1.80e308"))) gain=gain.dividedBy(new Decimal("1.80e308")).pow(0.95).times(new Decimal("1.80e308"))
+
+
+    // Bugfixes
     if(gain.lt(0)) return new Decimal(0)
 	return gain
 }
@@ -126,13 +159,14 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-    function() {return "Press CTRL to See Specific Values"}
+    function() {return "Press CTRL to See Specific Values<br>Stuck on a tab? Click the layer node again"},
+    //function() {return hasUpgrade('g', 54) ? "<a v-bind:style={color: #00AAFF} href=https://raw.githack.com/THENONYMOUS/The-Random-Tree/plant-tree-extreme/index.html>Extreme Mode</a>" : ""}
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasUpgrade('g', 54)
+	return hasMilestone('n', 2)
 }
 
 
@@ -163,6 +197,12 @@ function gainUpgradeEffect(x, y) {
 	let gain=new Decimal(1)
 	if(hasUpgrade(x, y)) gain=gain.times(upgradeEffect(x, y))
 	return gain
+}
+
+function pointMag() {
+    let mag = player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor()
+    mag = mag.add(player.n.mag).floor()
+    return mag.max(0)
 }
 
 // ToL functions:

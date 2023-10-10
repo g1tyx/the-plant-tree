@@ -175,7 +175,7 @@ function generatePoints(layer, diff) {
 }
 
 function doReset(layer, force=false) {
-	if (tmp[layer].type == "none")  return
+	if (tmp[layer].type == "none" && !force) /* if (tmp[layer].type == "none") */  return
 	let row = tmp[layer].row
 	if (!force) {
 		

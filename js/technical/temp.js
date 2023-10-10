@@ -88,6 +88,9 @@ function setupTempData(layerData, tmpData, funcsData) {
 		} else {
 			tmpData[item] = layerData[item]
 		}
+		if(item == 'unlocked') {
+			// tmpData[item] = tmpData[item] || hasUpgrade([layerData.layer], [layerData.id])
+		}
 	}	
 }
 

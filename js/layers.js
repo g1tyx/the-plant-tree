@@ -1,4 +1,4 @@
-addLayer("a", {
+addLayer("a", { // Achievements layer
     name: "achievements", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -24,12 +24,6 @@ addLayer("a", {
                 "clickables",
                 "blank",
             ],
-        },
-        "Theme Unlocks": {
-            content: [
-                "milestones",
-            ],
-            unlocked() {return false},
         },
     },
     clickables: {
@@ -276,18 +270,65 @@ addLayer("a", {
             done() {return hasUpgrade('g', 54)},
             tooltip: "Buy 'Tipi'",
         },
-    },
-    milestones: {
-        0: {
-            requirementDescription: "1 Ecosystem: Theme Unlock",
-            effectDescription: "Unlock 'Plant' Theme",
-            done() {return player.e.points.gte(1)},
+        101: {
+            name: "Volcanic Survival",
+            done() {return player.n.ash.gte(69)},
+            tooltip: "Get 69 Volcanic ash",
+            style: {
+                height: '75px',
+                width: '70px',
+            },
+        },
+        102: {
+            name: "Volcanic Shock",
+            done() {return hasUpgrade('p', 13) && msReady && inChallenge('n', 11)},
+            tooltip: "Get a Jade Plant in 'Eruption'<br>Read the challenge effects now",
+            style: {
+                height: '75px',
+                width: '70px',
+            },
+        },
+        103: {
+            name: "AAAA",
+            done() {return hasUpgrade('n', 31)},
+            tooltip: "Unlock an Earthquake",
+            style: {
+                height: '75px',
+                width: '70px',
+            },
+        },
+        104: {
+            name: "AAAA squared",
+            done() {return hasUpgrade('n', 32)},
+            tooltip: "Unlock a Hurricane",
+            style: {
+                height: '75px',
+                width: '70px',
+            },
+        },
+        105: {
+            name: "Double Exponential",
+            done() {return player.points.gte("e1e9")},
+            tooltip: "Reach e1.000e9 Points",
+            style: {
+                height: '75px',
+                width: '70px',
+            },
+        },
+        106: {
+            name: "Protected Ecosystems?",
+            done() {return hasMilestone('n', 2)},
+            tooltip: "Get the 3rd Disaster Milestone",
+            style: {
+                height: '75px',
+                width: '100px',
+            },
         },
     },
 }),
-addLayer("p", {
+addLayer("p", { // Plants layer
     name: "plants", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🪴" : "P"},
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -300,7 +341,12 @@ addLayer("p", {
     requires() {return 10}, // Can be a function that takes requirement increases into account
     resource: "plants", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points.max(0)}, // Get the current amount of baseResource
+    baseAmount() {
+        let amt = player.points.max(0)
+        amt = amt.pow(smartUpgradeEffect('n', 61))
+        if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
+        return amt
+    }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent() {
         let exponent = new Decimal(1-smartUpgradeEffect('z', 13, 0))
@@ -338,20 +384,22 @@ addLayer("p", {
                 "blank",
                 "upgrades",
                 ],
-            unlocked() {return hasUpgrade('r', 25) || player.e.best.gte(1)},
+            unlocked() {return hasUpgrade('r', 25) || player.e.best.gte(1) || hasUpgrade('n', 44)},
         },
         "Trees": {
             embedLayer: 't',
-            unlocked() {return hasUpgrade('r', 25) || hasMilestone('e', 5)},
+            unlocked() {return hasUpgrade('r', 25) || hasMilestone('e', 5) || hasUpgrade('n', 44)},
         },
     },
     effectDescription() {if(hasUpgrade('p', 14)) return "Next Magnitude increase at "+format(new Decimal(10).add(upgradeEffect('p', 34)).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).ceil()))+" Points (1-4, 2-2)"},
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
         
         let keep = [];
         keep.push("milestones");
         if (hasAchievement('a', 23) && resettingLayer==='g') keep.push("upgrades");
+        if (hasUpgrade('n', 14) && row <= 3) keep.push("upgrades");
         if (hasAchievement('a', 34) && resettingLayer==='g' && layers[resettingLayer].row == 1) keep.push("buyables")
         layerDataReset(this.layer, keep)
     },      
@@ -371,6 +419,9 @@ addLayer("p", {
         if(hasUpgrade('w', 63)) mult=mult.dividedBy(player.w.large.add(1).pow(0.5))
         mult = mult.dividedBy(smartUpgradeEffect('t', 71))
         mult = mult.dividedBy(smartUpgradeEffect('w', 101))
+        mult = mult.div(smartUpgradeEffect('n', 11))
+        mult = mult.div(smartUpgradeEffect('n', 72))
+        mult = mult.mul(smartUpgradeEffect('n', 62))
         if(hasAchievement('re', 15)) mult = mult.times(tmp.r.requires.div(10))
         if(!hasUpgrade('t', 14)) mult=mult.times(tmp.t.effect)
         if(inChallenge('z', 12)) mult=mult.times((getBuyableAmount('p', 11).add(1)))
@@ -379,6 +430,11 @@ addLayer("p", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
         return exp
+    },
+    directMult() {
+        let mult = new Decimal(1)
+        if(inChallenge('n', 11)) mult = mult.mul(0.5)
+        return mult
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -424,7 +480,7 @@ addLayer("p", {
             title: "Snake Plant",
             description: "Points are multiplied based on magnitude",
             cost: (new Decimal(18)),
-            effect() {return new Decimal(2).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
+            effect() {return new Decimal(2).pow(/*player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor()*/pointMag())},
             effectDisplay() {return "x"+format(upgradeEffect('p', 14))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -440,7 +496,7 @@ addLayer("p", {
             title: "Anthurium",
             description: "Plant costs are divided based on magnitude",
             cost: (new Decimal(30)),
-            effect() {return new Decimal(2).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor())},
+            effect() {return new Decimal(2).pow(/*player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).floor()*/pointMag())},
             effectDisplay() {return "÷"+format(upgradeEffect('p', 22))},
             tooltip: "2 ^ Floor(log10(Points))",
         },
@@ -681,9 +737,11 @@ addLayer("p", {
                 if (hasUpgrade('p', 62)) mult = mult.dividedBy(getBuyableAmount('p', 12).add(1));
                 if (hasUpgrade('p', 74)) mult = mult.dividedBy(upgradeEffect('p', 74));
                 let max = player.p.points.div(mult).add(1).log(base)
+                max = max.min(this.purchaseLimit)
                 if(max.gt(getBuyableAmount('p', 11))) setBuyableAmount('p', 11, max.add(1).floor())
             },
-          },
+            purchaseLimit: new Decimal("1e9"),
+        },
         12: {
             title: "Saguaro",
             cost(x) {let cost = new Decimal(1000).pow(x)
@@ -705,8 +763,10 @@ addLayer("p", {
             tooltip() {return "Total Effect: ÷"+format(getBuyableAmount('p', 12).pow_base(10))+" (Before Bonus Levels)"},
             buyMax() {
                 let max = player.points.div(this.cost(0)).add(1).log(1000)
+                max = max.min(this.purchaseLimit)
                 if(max.gt(getBuyableAmount('p', 12))) setBuyableAmount('p', 12, max.add(1).floor())
             },
+            purchaseLimit: new Decimal("1e9"),
             },
         13: {
             title: "Echinocactus",
@@ -727,9 +787,9 @@ addLayer("p", {
             },
         },
 }),
-addLayer("g", {
+addLayer("g", { // Gardens layer
     name: "gardens", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "G", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🌻" : "G"},
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
@@ -741,7 +801,11 @@ addLayer("g", {
     requires: new Decimal(50), // Can be a function that takes requirement increases into account
     resource: "gardens", // Name of prestige currency
     baseResource: "plants", // Name of resource prestige is based on
-    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    baseAmount() {
+        let amt = player.p.points
+        if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
+        return amt
+    }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent() {return 0.4 + (inCompletion('re', 21, 1) ? 1 : 0)}, // Prestige currency exponent
     base() {return 2},
@@ -750,12 +814,13 @@ addLayer("g", {
     deactivated() {return inCompletion('re', 12, 1)},
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
         
         let keep = [];
         if(hasAchievement('e', 21)) keep.push("upgrades", "milestones")
         layerDataReset(this.layer, keep);
     },
-    resetsNothing() {return hasMilestone('z', 4) || hasMilestone('e', 5)},
+    resetsNothing() {return hasMilestone('z', 4) || hasMilestone('e', 5) || hasUpgrade('t', 13)},
     autoPrestige() {return hasUpgrade('t', 13)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -771,7 +836,9 @@ addLayer("g", {
         mult = mult.dividedBy(smartUpgradeEffect('g', 51))
         mult = mult.dividedBy(smartUpgradeEffect('g', 52))
         mult = mult.div(buyableEffect('r', 43))
-               return mult
+        mult = mult.div(smartUpgradeEffect('n', 22))
+        mult = mult.div(smartUpgradeEffect('n', 62))
+        return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
@@ -934,7 +1001,7 @@ addLayer("g", {
         },
         54: {
             title: "Tipi",
-            description: "Coming Soon...",
+            description: "Start Natural Disasters...",
             cost: (new Decimal(28000)),
             unlocked() {return hasUpgrade('g', 52) && completionDecimal('re', 12).gte(3)},
         },
@@ -1040,9 +1107,9 @@ addLayer("g", {
         },
     },
 }),
-addLayer("z", {
+addLayer("z", { // Zones layer
     name: "zones", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "Z", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🏞️" : "Z"},
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
@@ -1054,7 +1121,11 @@ addLayer("z", {
     requires: new Decimal(250), // Can be a function that takes requirement increases into account
     resource: "zones", // Name of prestige currency
     baseResource: "plants", // Name of resource prestige is based on
-    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    baseAmount() {
+        let amt = player.p.points
+        if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
+        return amt
+    }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.7, // Prestige currency exponent
     base() {
@@ -1068,10 +1139,11 @@ addLayer("z", {
     branches: ['p', 'g'],
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
         
         let keep = [];
-        if(hasAchievement('e', 13)) keep.push("milestones");
-        if(hasAchievement('e', 22)) keep.push("challenges");
+        if(hasAchievement('e', 13) || (hasMilestone('n', 0)&&row<=3)) keep.push("milestones");
+        if(hasAchievement('e', 22) || hasUpgrade('n', 71)) keep.push("challenges");
         if(hasUpgrade('z', 14)) keep.push("upgrades");
         layerDataReset(this.layer, keep);
     },
@@ -1080,6 +1152,7 @@ addLayer("z", {
         if(hasUpgrade('g', 44)) mult=mult.dividedBy(upgradeEffect('g', 44))
         mult = mult.div(smartUpgradeEffect('w', 102))
         if(hasAchievement('re', 24)) mult = mult.div(player.re.points.add(1))
+        mult = mult.div(smartUpgradeEffect('n', 72))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -1233,7 +1306,7 @@ addLayer("z", {
         },
         14: {
             title: "Americas Inspired Zone",
-            description: "Coming Soon...",
+            description: "Unlock Reclaimed Ecosystems",
             cost: (new Decimal(50)),
             unlocked() {return hasMilestone('z', 11)},
             onPurchase() {player.p.points = new Decimal(0)},
@@ -1241,9 +1314,9 @@ addLayer("z", {
         },
     },
 }),
-addLayer("w", {
+addLayer("w", { // Wildlife layer
     name: "wildlife", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "W", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🦔" : "W"},
     position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -1276,7 +1349,6 @@ addLayer("w", {
                 ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8]],
                 "blank",
             ],
-            unlocked() {return hasUpgrade('e', 14)},
         },
         "Fish": {
             content: [
@@ -1296,6 +1368,7 @@ addLayer("w", {
     },
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
         
         let keep = [];
         if (layers[resettingLayer].row == 1) {keep.push("upgrades")};
@@ -1324,7 +1397,9 @@ addLayer("w", {
     },
     wildlifeGen() {
         let gain = new Decimal(0)
-        if(challengeCompletions('z', 22) >= 3 || hasMilestone('e', 7)) gain = gain.add(player.p.points.root(hasUpgrade('p', 73) ? (hasUpgrade('r', 11) ? 1.1 : 1.5 ) : 2 ))
+        let rt = hasUpgrade('p', 73) ? (hasUpgrade('r', 11) ? 1.1 : 1.5 ) : 2 
+        if(hasUpgrade('n', 73)) rt -= 0.1
+        if(challengeCompletions('z', 22) >= 3 || hasMilestone('e', 7)) gain = gain.add(player.p.points.root(rt))
         if(hasUpgrade('w', 21)) gain = gain.add(player.g.points.root(2))
         
         if(hasUpgrade('w', 12)) gain = gain.times(upgradeEffect('w', 12))
@@ -1343,6 +1418,7 @@ addLayer("w", {
         gain = gain.times(smartUpgradeEffect('e', 12))
         gain = gain.times(smartUpgradeEffect('w', 93))
         gain = gain.times(smartUpgradeEffect('e', 22))
+        gain = gain.times(smartUpgradeEffect('t', 121))
         if(hasAchievement('re', 11)) gain=gain . pow(1.1)
         
         if(inChallenge('re', 11)) gain = gain.pow(0.01)
@@ -1461,7 +1537,7 @@ addLayer("w", {
             description: "Multiply Point and Wildlife Gain based on Points and Wildlife",
             cost: (new Decimal(23000)),
             unlocked() {return hasUpgrade('w', 11) && hasUpgrade('w', 22)},
-            effect() {return player.points.max(0).add(2).pow(0.05).log(20).times(player.w.points.add(2).pow(0.25).log(4))},
+            effect() {return player.points.max(0).add(2).pow(0.05).log(20).max(1).times(player.w.points.add(2).pow(0.25).log(4).max(1))},
             effectDisplay() {return "x"+format(upgradeEffect('w', 41))},
             tooltip: "log20 (Points ^ 0.05) x lo4(Wildlife ^ 0.25). Requires 'Log Pile' and 'Longer Wildlife'",
         },
@@ -1789,14 +1865,15 @@ addLayer("w", {
                 if(hasAchievement('re', 13)) gain = gain.add(100)
                 gain = gain.times(smartUpgradeEffect('r', 34))
                 gain = gain.times(smartUpgradeEffect('w', 103))
+                gain = gain.mul(smartMilestoneEffect('r', 2))
                 return gain
             },
         },
     },
 }),
-addLayer("r", {
+addLayer("r", { // Research layer
     name: "research", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "R", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🔎" : "R"},
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -1836,10 +1913,13 @@ addLayer("r", {
         amt = amt.times(smartUpgradeEffect('t', 72))
         amt = amt.times(smartUpgradeEffect('w', 92))
         if(hasAchievement('a', 83)) amt = amt.times(2)
+        amt = amt.times(smartMilestoneEffect('r', 0))
+        if(hasUpgrade('t', 131)) amt = amt.mul(upgradeEffect('t', 131)[0])
         amt = amt.pow(smartUpgradeEffect('e', 11))
         amt = amt.pow(smartUpgradeEffect('z', 12))
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 1) amt = amt.pow(0.01)
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) amt = amt.pow(10)
+        if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
         if(isNaN(amt)) {
             amt = new Decimal(0)
             doReset(this.layer)
@@ -1859,6 +1939,7 @@ addLayer("r", {
     },
     doReset(resettingLayer) {
         if(layers[resettingLayer].row <= 1 || resettingLayer === 'r') return;
+        let row = layers[resettingLayer].row;
         
         let keep = [];
         if(hasAchievement('e', 14)) keep.push("upgrades")
@@ -1874,27 +1955,49 @@ addLayer("r", {
         if(hasAchievement('re', 23)) buyBuyable('r', 43)
     },
     
-    tabFormat: [
-    "main-display",
-    "prestige-button",
-    ["display-text",
-        function() {return 'If you wrote 3 digits per second, it would take you approximately '+format(tmp.r.baseAmount.log(10).floor().dividedBy(3))+' seconds to write down your time spent researching.'}],
-    "blank",
-    "blank",
-    ["display-text",
-        'Linear'],
-    ["bar", "bar1"],
-    "blank",
-    ["display-text",
-        'Logarithmic'],
-    ["bar", "bar2"],
-    "blank",
-    "blank",
-    "buyables",
-    "blank",
-    "blank",
-    "upgrades"
-    ],
+    tabFormat: {
+        Main: {
+            content: [
+                "main-display",
+                "prestige-button",
+                ["display-text",
+                    function() {return 'If you wrote 3 digits per second, it would take you approximately '+formatTime(tmp.r.baseAmount.log(10).floor().dividedBy(3))+' to write down your time spent researching.'}],
+                "blank",
+                "blank",
+                ["display-text",
+                    'Linear'],
+                ["bar", "bar1"],
+                "blank",
+                ["display-text",
+                    'Logarithmic'],
+                ["bar", "bar2"],
+                "blank",
+                "blank",
+                "buyables",
+                "blank",
+                "blank",
+                ["upgrades", [1, 2, 3, 4, 5, 6, 7, 8, 9]],
+            ],
+        },
+        Minigame: {
+            content: [
+                "main-display",
+                "prestige-button",
+                ["display-text",
+                    function() {return 'If you wrote 3 digits per second, it would take you approximately '+formatTime(tmp.r.baseAmount.log(10).floor().dividedBy(3))+' to write down your time spent researching.'}],
+                "blank",
+                ["display-text", function() {
+                    return "<br>Your minigame score is: "+format(tmp.r.minigameScore)
+                }],
+                "blank",
+                ["clickables", [1, 2, 3, 4, 5, 6]],
+                "blank",
+                ["milestones", [0, 1, 2, 3, 4]],
+                "blank",
+            ],
+            unlocked() {return hasMilestone('n', 1)},
+        },
+    },
     autoPrestige: true,
     resetsNothing() {return hasMilestone('t', 4) || player.e.best.gte(1)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -2299,10 +2402,197 @@ addLayer("r", {
             tooltip: "sqrt (log2 (Fish))",
         },
     },
+    minigameScore() { // Research Minigame
+        let score = new Decimal(Object.keys(tmp.r.clickables).filter(data => [22, 23, 24, 25, 26, 32, 33, 34, 35, 36, 42, 43, 44, 45, 46, 52, 53, 54, 55, 56, 62, 63, 64, 65, 66].includes(Number(data)) && getClickableState('r', data)).length)
+        score = score.pow(new Decimal(Object.keys(tmp.r.clickables).filter(data => [21, 31, 41, 51, 61].includes(Number(data)) && tmp.r.clickables[data].canClick).length).add(1))
+
+        return score
+    },
+    milestones: {
+        0: {
+            requirementDescription: "1 Minigame Score",
+            effectDescription() {return "Minigame Score multiplies Research Speed | Currently: ×"+format(this.effect())},
+            done() {return tmp.r.minigameScore.gte(1)},
+            effect() {return tmp.r.minigameScore.add(1).pow(100)},
+        },
+        1: {
+            requirementDescription: "10 Minigame Score",
+            effectDescription() {return "Minigame Score multiplies Point Gain | Currently: ×"+format(this.effect())},
+            done() {return tmp.r.minigameScore.gte(10)},
+            effect() {return tmp.r.minigameScore.add(1).pow(5000)},
+        },
+        2: {
+            requirementDescription: "10,000 Minigame Score",
+            effectDescription() {return "Minigame Score multiplies Fish Gain | Currently: ×"+format(this.effect())},
+            done() {return tmp.r.minigameScore.gte(10000)},
+            effect() {return tmp.r.minigameScore.add(1).root(2)},
+        },
+    },
+    clickables: {
+        11: {
+            display() {return "Use "+format(this.cost())+" Research to get a minigame token"},
+            canClick() {return player.r.points.gte(this.cost()) && !getClickableState('r', 11)},
+            cost() {
+                let cost1 = new Decimal(Object.keys(tmp.r.clickables).filter(data => [21, 31, 41, 51, 61].includes(Number(data)) && tmp.r.clickables[data].canClick).length).mul(1000)
+                let cost2 = new Decimal(Object.keys(tmp.r.clickables).filter(data => [22, 23, 24, 25, 26, 32, 33, 34, 35, 36, 42, 43, 44, 45, 46, 52, 53, 54, 55, 56, 62, 63, 64, 65, 66].includes(Number(data)) && getClickableState('r', data)).length).mul(100)
+                return cost1.add(cost2).add(14000)
+            },
+            onClick() {
+                player.r.points = player.r.points.sub(this.cost())
+                player.r.resetTime = 0
+                setClickableState('r', 11, true)
+            },
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        12: {
+            display: "Activate a random clickable in this column",
+            canClick() {return getClickableState('r', 11)},
+            onClick() {
+                setClickableState('r', 11, false)
+                let activate = [22, 32, 42, 52, 62]
+                activate = activate[Math.floor(Math.random()*activate.length)]
+                setClickableState('r', activate, true)
+            },
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        13: {
+            display: "Activate a random clickable in this column",
+            canClick() {return getClickableState('r', 11)},
+            onClick() {
+                setClickableState('r', 11, false)
+                let activate = [23, 33, 43, 53, 63]
+                activate = activate[Math.floor(Math.random()*activate.length)]
+                setClickableState('r', activate, true)
+            },
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        14: {
+            display: "Activate a random clickable in this column",
+            canClick() {return getClickableState('r', 11)},
+            onClick() {
+                setClickableState('r', 11, false)
+                let activate = [24, 34, 44, 54, 64]
+                activate = activate[Math.floor(Math.random()*activate.length)]
+                setClickableState('r', activate, true)
+            },
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        15: {
+            display: "Activate a random clickable in this column",
+            canClick() {return getClickableState('r', 11)},
+            onClick() {
+                setClickableState('r', 11, false)
+                let activate = [25, 35, 45, 55, 65]
+                activate = activate[Math.floor(Math.random()*activate.length)]
+                setClickableState('r', activate, true)
+            },
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        16: {
+            display: "Activate a random clickable in this column",
+            canClick() {return getClickableState('r', 11)},
+            onClick() {
+                setClickableState('r', 11, false)
+                let activate = [26, 36, 46, 56, 66]
+                activate = activate[Math.floor(Math.random()*activate.length)]
+                setClickableState('r', activate, true)
+            },
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        21: {
+            canClick() {
+                let click = true
+                for(id of [22, 23, 24, 25, 26]) {
+                    click = click && getClickableState('r', id)
+                }
+                return click
+            },
+            display() {return this.canClick() ? "Complete" : "Incomplete"},
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        31: {
+            canClick() {
+                let click = true
+                for(id of [32, 33, 34, 35, 36]) {
+                    click = click && getClickableState('r', id)
+                }
+                return click
+            },
+            display() {return this.canClick() ? "Complete" : "Incomplete"},
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        41: {
+            canClick() {
+                let click = true
+                for(id of [42, 43, 44, 45, 46]) {
+                    click = click && getClickableState('r', id)
+                }
+                return click
+            },
+            display() {return this.canClick() ? "Complete" : "Incomplete"},
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        51: {
+            canClick() {
+                let click = true
+                for(id of [52, 53, 54, 55, 56]) {
+                    click = click && getClickableState('r', id)
+                }
+                return click
+            },
+            display() {return this.canClick() ? "Complete" : "Incomplete"},
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        61: {
+            canClick() {
+                let click = true
+                for(id of [62, 63, 64, 65, 66]) {
+                    click = click && getClickableState('r', id)
+                }
+                return click
+            },
+            display() {return this.canClick() ? "Complete" : "Incomplete"},
+            style() {return {
+                    'min-height': '75px',
+                    'width': '75px',
+            }},
+        },
+        ...getBlankClickables([22, 23, 24, 25, 26, 32, 33, 34, 35, 36, 42, 43, 44, 45, 46, 52, 53, 54, 55, 56, 62, 63, 64, 65, 66], 'r')
+    },
 }),
-addLayer("t", {
+addLayer("t", { // Trees layer
     name: "trees", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "T", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🌲" : "T"},
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -2315,12 +2605,17 @@ addLayer("t", {
     color: "#278000",
     requires() {
         let req = new Decimal("1e2700")
-        req = req.dividedBy(hasUpgrade('t', 12) ? player.t.leaves.times(0.01).add(1).pow(100) : 1)
+        req = req.dividedBy(hasUpgrade('t', 12) ? tmp.t.effect2 : 1)
         return req
     }, // Can be a function that takes requirement increases into account
     resource: "trees", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.points.max(0)}, // Get the current amount of baseResource
+    baseAmount() {
+        let amt = player.points.max(0)
+        amt = amt.pow(smartUpgradeEffect('n', 71))
+        if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
+        return amt
+    }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
     base() {let base = new Decimal("1e10")
@@ -2346,8 +2641,19 @@ addLayer("t", {
         ["upgrades", [6]],
         "blank",
         ["upgrades", [7, 8, 9]],
+        "blank",
+        ["upgrades", [10, 11, 12, 13]],
+        "blank",
     ],
-    effect() {return player.t.points.add(1).pow(10 + smartUpgradeEffect('t', 14, 0))},
+    effect() {
+        let effect = player.t.points.add(1).pow(10 + smartUpgradeEffect('t', 14, 0))
+        return effect
+    },
+    effect2() {
+        let effect = player.t.leaves.times(0.01).add(1).pow(100)
+        if(getClickableState('n', 11)) effect = effect.add(1).log(10).add(1)
+        return effect
+    },
     automate() {
         if(hasUpgrade('t', 13)) {
             buyBuyable('r', 11)
@@ -2374,16 +2680,18 @@ addLayer("t", {
     },
     effectDescription() {
         let desc = "Trees are Multiplying Point gain <u>and Plant Costs</u> by "+format(tmp.t.effect)+". Trees are Affected by the 1st Garden Milestone. "
-        if(player.t.best.gte(20)) desc = desc + "You have "+format(player.t.leaves)+" Leaves, Dividing Tree Requirements by "+format(player.t.leaves.times(0.01).add(1).pow(100))+". "
+        if(player.t.best.gte(20)) desc = desc + "You have "+format(player.t.leaves)+" Leaves, Dividing Tree Requirements by "+format(tmp.t.effect2)+". "
         return desc
         },
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
         
         let keep = [];
         if(layers[resettingLayer].row <= 1) keep.push("upgrades"), keep.push("buyables"), keep.push("milestones")
         if(resettingLayer==='e' && hasMilestone('e', 5)) keep.push("upgrades")
         if(resettingLayer==='e' && hasAchievement('e', 11)) keep.push("milestones")
+        if(hasUpgrade('n', 44)&&row<=3) keep.push("upgrades"), keep.push("milestones")
         layerDataReset(this.layer, keep)
     },
     onPrestige() {
@@ -2391,6 +2699,7 @@ addLayer("t", {
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if(hasUpgrade('t', 131)) mult = mult.div(upgradeEffect('t', 131)[1])
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -2398,7 +2707,7 @@ addLayer("t", {
         return exp
     },
     update(diff) {
-        player.t.leaves = player.t.leaves.add(smartUpgradeEffect('t', 12, new Decimal(0)).times(diff))
+        player.t.leaves = player.t.leaves.add(smartUpgradeEffect('t', 12, new Decimal(0)).times(diff)).min("1e50")
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -2524,7 +2833,7 @@ addLayer("t", {
             description: "Divide Plant Costs by Leaves Effect at an Increased Rate",
             cost: (new Decimal(1100)),
             unlocked() {return hasUpgrade('t', 61)},
-            effect() {return player.t.leaves.times(0.01).add(1).pow(500)},
+            effect() {return tmp.t.effect2.pow(5)},
             effectDisplay() {return "÷"+format(thisUpgradeEffect(this))},
             tooltip: "'^ 500' Instead of '^ 100'",
         },
@@ -2574,6 +2883,66 @@ addLayer("t", {
             description: "Unlock Ecosystems",
             cost: (new Decimal(6700)),
             unlocked() {return hasUpgrade('t', 72)},
+        },
+        101: {
+            title: "Prestige",
+            description: "Multiply Extra Point Magnitude gain by 2",
+            cost: new Decimal("1e8"),
+            unlocked() {return hasMilestone('n', 0)},
+            onPurchase() {
+                player.points = new Decimal(0)
+                player.t.leaves = new Decimal(0)
+                layerDataReset('p', ["upgrades", "milestones", "challenges", "achievements"])
+            },
+            tooltip: "Resets Plants and leaves on Purchase"
+        },
+        111: {
+            title: "Kilo-Prestige",
+            description: "Multiply Point gain based on trees",
+            cost: new Decimal("1.75e8"),
+            unlocked() {return hasMilestone('n', 0)},
+            onPurchase() {
+                player.points = new Decimal(0)
+                player.t.leaves = new Decimal(0)
+                layerDataReset('p', ["upgrades", "milestones", "challenges", "achievements"])
+                Vue.set(player.t, "upgrades", arrayRemove(player.t.upgrades, [101, '101']))
+            },
+            canAfford() {return hasUpgrade('t', 101)},
+            effect() {return player.t.points.root(1.5).pow_base(10)},
+            effectDisplay() {return "×"+format(this.effect())},
+            tooltip: "10 ^ 1.5rt (Trees)<br>Resets Plants, leaves and previous MVGT Upgrades on Purchase",
+        },
+        121: {
+            title: "Mega-Prestige",
+            description: "Multiply Wildlife gain based on trees",
+            cost: new Decimal("2.25e8"),
+            unlocked() {return hasMilestone('n', 0)},
+            onPurchase() {
+                player.points = new Decimal(0)
+                player.t.leaves = new Decimal(0)
+                layerDataReset('p', ["upgrades", "milestones", "challenges", "achievements"])
+                Vue.set(player.t, "upgrades", arrayRemove(player.t.upgrades, [101, '101', 111, '111']))
+            },
+            canAfford() {return hasUpgrade('t', 101) && hasUpgrade('t', 111)},
+            effect() {return player.t.points.root(2).pow_base(10)},
+            effectDisplay() {return "×"+format(this.effect())},
+            tooltip: "10 ^ sqrt (Trees)<br>Resets Plants, leaves and previous MVGT Upgrades on Purchase",
+        },
+        131: {
+            title: "Giga-Prestige",
+            description: "Research and Trees boost each other",
+            cost: new Decimal("4e8"),
+            unlocked() {return hasMilestone('n', 0)},
+            onPurchase() {
+                player.points = new Decimal(0)
+                player.t.leaves = new Decimal(0)
+                layerDataReset('p', ["upgrades", "milestones", "challenges", "achievements"])
+                Vue.set(player.t, "upgrades", arrayRemove(player.t.upgrades, [101, '101', 111, '111', 121, '121']))
+            },
+            canAfford() {return hasUpgrade('t', 101) && hasUpgrade('t', 111) && hasUpgrade('t', 121)},
+            effect() {return [(player.t.points.add(1).pow(200)), (tmp.r.baseAmount.add(1))]},
+            effectDisplay() {return "×"+format(this.effect()[0])+" Research speed and ÷"+format(this.effect()[1])+" Tree requirements"},
+            tooltip: "Trees ^ 200, Research time<br>Resets Plants, leaves and previous MVGT Upgrades on Purchase",
         },
     },
     buyables: {
@@ -2646,9 +3015,9 @@ addLayer("t", {
         },
     },
 }),
-addLayer("e", {
+addLayer("e", { // Ecosystems layer
     name: "ecosystems", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "E", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🌎" : "E"},
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
@@ -2690,7 +3059,7 @@ addLayer("e", {
                 "blank",
                 "upgrades",
             ],
-            unlocked() {return hasMilestone('e', 9)},
+            unlocked() {return hasMilestone('e', 9) || getClickableState('n', 11)},
         },
         "Ecology": {
             content: [
@@ -2719,12 +3088,6 @@ addLayer("e", {
         let branches = ['g', 'z']
         if(player.g.best.lt(1)) branches.push('p')
         return branches
-        },
-    doReset(resettingLayer) {
-        if (layers[resettingLayer].row <= layers[this.layer].row) return;
-        
-        let keep = [];
-        layerDataReset(this.layer, keep)
     },
     onPrestige() {
         if(!tmp.e.resetsNothing) player.e.ecology = new Decimal(0)
@@ -2756,6 +3119,14 @@ addLayer("e", {
         if(hasMilestone('e', 9)) player.e.ecology = getLogisticAmount(player.e.ecology, milestoneEffect('e', 9), 0.1, diff)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
+    doReset(resettingLayer) {
+        if(layers[resettingLayer].row <= this.row) return
+        let row = layers[resettingLayer].row;
+        if(hasUpgrade('n', 74) && row<=3) return
+
+        let keep = [];
+        layerDataReset(this.layer, keep)
+    },
     hotkeys: [
         {key: "e", description: "E: Reset for Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
@@ -3000,9 +3371,9 @@ addLayer("e", {
         },
     },
 }),
-addLayer("re", {
+addLayer("re", { // Reclaimed ecosystems layer
     name: "reclamation", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "Re", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🪹" : "Re"},
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
@@ -3022,12 +3393,6 @@ addLayer("re", {
     canBuyMax: true,
     type: "static",
     branches: ['z', 'g', 'e'],
-    doReset(resettingLayer) {
-        if (layers[resettingLayer].row <= layers[this.layer].row) return;
-        
-        let keep = [];
-        layerDataReset(this.layer, keep);
-    },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
                return mult
@@ -3036,6 +3401,14 @@ addLayer("re", {
         return new Decimal(1)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
+    doReset(resettingLayer) {
+        if(layers[resettingLayer].row <= this.row) return
+        let row = layers[resettingLayer].row;
+        if(hasUpgrade('n', 64) && row<=3) return
+
+        let keep = [];
+        layerDataReset(this.layer, keep)
+    },
     midsection: [
         ["display-text",
             "Entering a Challenge Costs 1 Ecosystem.<br>Completing a Challenge Returns Your Ecosystem."
@@ -3196,4 +3569,416 @@ addLayer("re", {
             tooltip: "Divide Zone Requirement by Reclaimed Ecosystems",
         },
     },
+})
+addLayer("n", { // Natural disasters layer
+    name: "natural disasters", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol() {return options.emojiSymbols ? "🌩️" : "N"},
+    position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+        best: new Decimal(0),
+        total: new Decimal(0),
+        // Eruption
+        ash: new Decimal(0),
+        soil: new Decimal(0),
+        // Earthquake
+        mag: new Decimal(0),
+        // Hurricane
+        energy: new Decimal(0),
+    }},
+    color: "#555555",
+    requires: new Decimal(600000),
+    resource: "Disasters", // Name of prestige currency
+    baseResource: "trees", // Name of resource prestige is based on
+    baseAmount() {return player.t.points}, // Get the current amount of baseResource
+    type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    base() {let base = new Decimal(2)
+    return base},
+    canBuyMax: true,
+    type: "static",
+    prestigeNotify() {return false},
+    branches: [],
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
+        
+        let keep = [];
+        layerDataReset(this.layer, keep);
+    },
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+               return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 3, // Row the layer is in on the tree (0 is the first row)
+    displayRow: "side",
+    tooltip() {return "Current Challenge: "+(player.n.activeChallenge ? tmp.n.challenges[player.n.activeChallenge].name : "None")},
+    tabFormat: {
+        Main: {
+            unlocked() {return true},
+            content: [
+                ["display-text", function() {
+                    return "Once you press this button, the leaves effect will be log10'ed and all previous progress will be reset but you will unlock the world of natural disasters.<br>This is how you will be able to progress."
+                }],
+                "blank",
+                ["clickable", [11]],
+                "blank",
+                ["display-text", function() {
+                    return "Starting any natural disasters will also cause the above to happen.<br>It is advised to start a natural disaster immediately after pressing this button."
+                }],
+                "blank",
+                ["upgrades", [3]],
+                "blank",
+                "milestones",
+                "blank",
+            ],
+        },
+        Eruption: {
+            unlocked() {return getClickableState('n', 11)},
+            content: [
+                ["display-text", function() {
+                    return `
+                    Upgrades in all tabs can only be bought when currently in that tab's disaster.<br>
+                    Natural disasters do not give rewards other than upgrades.<br><br>
+                    In this disaster you will be hindered by:<br>
+                    - Point gain is ^0.75.<br>
+                    - Plant gain is ×0.5.<br>
+                    - Above 10 Plants, you lose 1 every second.<br><br>
+
+                    You will be boosted by:<br>
+                    - You gain 1 volcanic ash every second.<br><br>
+                    `
+                }],
+                ["display-text", function() {
+                    return "You have "+format(player.n.ash)+" volcanic ash<br>You have "+format(player.n.soil)+" improved soil, multiplying point gain in eruption disaster by ×"+format(player.n.soil.add(1).root(2))
+                }],
+                "blank",
+                ["challenge", [11]],
+                "blank",
+                ["upgrades", [1, 2]],
+                "blank",
+            ],
+        },
+        Earthquake: {
+            unlocked() {return hasUpgrade('n', 31)},
+            content: [
+                ["display-text", function() {
+                    return `
+                    Upgrades in all tabs can only be bought when currently in that tab's disaster.<br>
+                    Natural disasters do not give rewards other than upgrades.<br><br>
+                    In this disaster you will be hindered by:<br>
+                    - Point gain is divided by points ^0.75.<br>
+                    - All static layers before ecosystems percieve their base resource's amount as if they are divided by log10 of themselves.<br><br>
+
+                    You will be boosted by:<br>
+                    - Passively generate extra point magnitude based on current point magnitude. (`+format(tmp.n.magGain)+`/sec))<br><br>
+                    
+                    You lose 10% of your extra point magnitude every second.<br>
+                    `
+                }],
+                ["display-text", function() {
+                    return "You have "+formatWhole(player.n.mag.floor())+" extra magnitude<br>["+format(player.n.mag)+"]"
+                }],
+                "blank",
+                ["challenge", [12]],
+                "blank",
+                ["upgrades", [4, 5]],
+                "blank",
+            ],
+        },
+        Hurricane: {
+            unlocked() {return hasUpgrade('n', 32)},
+            content: [
+                ["display-text", function() {
+                    return `
+                    Upgrades in all tabs can only be bought when currently in that tab's disaster.<br>
+                    Natural disasters do not give rewards other than upgrades.<br><br>
+                    In this disaster you will be hindered by:<br>
+                    - Point gain is ^0.75.<br>
+                    - Point gain is also log10ed or ^0.01, whichever one is higher.<br><br>
+
+                    You will be boosted by:<br>
+                    - your best log10 plants gotten in this challenge is turned into energy.<br><br>
+                    `
+                }],
+                ["display-text", function() {
+                    return "You have "+format(player.n.energy)+" energy<br>"
+                }],
+                "blank",
+                ["challenge", [13]],
+                "blank",
+                ["upgrades", [6, 7]],
+                "blank",
+            ],
+        },
+    },
+    onPrestige() {
+        player.n.ash = new Decimal(0)
+        player.n.soil = new Decimal(0)
+    },
+    update(diff) {
+        let gain = new Decimal(0)
+        if(inChallenge('n', 11) || hasUpgrade('n', 24)) {
+            gain = new Decimal(diff)
+            gain = gain.mul(smartUpgradeEffect('n', 13))
+            gain = gain.mul(smartUpgradeEffect('n', 23))
+            player.n.ash = player.n.ash.add(gain)
+            player.n.soil = player.n.soil.add(player.n.ash.root(2).div(10).mul(diff))
+            if(inChallenge('n', 11)) {
+                player.p.points = player.p.points.sub(diff).max(10).min(player.p.points)
+            }
+        }
+        if(inChallenge('n', 12)) {
+            gain = tmp.n.magGain
+            player.n.mag = getLogisticAmount(player.n.mag, gain, 0.1, diff).max(player.n.mag)
+        }
+        if(inChallenge('n', 13)) {
+            gain = player.p.points.max(1).log(10)
+            gain = gain.mul(smartUpgradeEffect('n', 72))
+            player.n.energy = player.n.energy.max(gain)
+        }
+
+    },
+    magGain() {
+        let gain = new Decimal(0)
+        let gainBase = new Decimal(10)
+        gainBase = gainBase.sub(smartUpgradeEffect('n', 42, 0))
+        if(inChallenge('n', 12)) gain = gain.add(pointMag().add(1).log(gainBase))
+        gain = gain.add(smartUpgradeEffect('n', 43, 0))
+        if(hasUpgrade('t', 101)) gain = gain.mul(2)
+        return gain
+    },
+    layerShown(){return hasUpgrade('g', 54)||getClickableState('n', 11)},
+
+    challenges: {
+        11: {
+            name: "Eruption",
+            fullDisplay: " ",
+            canComplete: false,
+            style() {return{
+                'height': '150px',
+            }}
+        },
+        12: {
+            name: "Earthquake",
+            fullDisplay: " ",
+            canComplete: false,
+            style() {return{
+                'height': '150px',
+            }}
+        },
+        13: {
+            name: "Hurricane",
+            fullDisplay: " ",
+            canComplete: false,
+            style() {return{
+                'height': '150px',
+            }}
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "9 Reclaimed Ecosystems",
+            effectDescription: "Keep Zones Milestones on reset<br>Unlock more Tree Upgrades",
+            unlocked() {return hasUpgrade('n', 74)},
+            done() {return hasUpgrade('n', 74) && player.re.points.gte(9)},
+        },
+        1: {
+            requirementDescription: "10 Reclaimed Ecosystems and 15,000 Research",
+            effectDescription: "Unlock a Research Minigame",
+            unlocked() {return hasUpgrade('n', 74)},
+            done() {return hasUpgrade('n', 74) && msReady && player.re.points.gte(10) && player.r.points.gte(15000)},
+        },
+        2: {
+            requirementDescription: "e1.650e9 Points",
+            effectDescription: "Coming Soon...",
+            unlocked() {return hasUpgrade('n', 74)},
+            done() {return hasUpgrade('n', 74) && player.points.gte("e1.65e9")},
+        },
+    },
+    upgrades: {
+        11: {
+            title: "Volcanic Plants",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Divide plant costs by improved soil<br>Currently: ÷"+format(this.effect())+"<br><br>Cost: 8 Plants in Eruption"},
+            canAfford() {return player.p.points.gte(8) && inChallenge('n', 11)},
+            pay() {player.p.points = player.p.points.sub(8).max(0)},
+            effect() {return player.n.soil.add(1)},
+        },
+        12: {
+            title: "Volcanic Points",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Multiply point gain based on volcanic ash<br>Currently: ×"+format(this.effect())+"<br><br>Cost: 14 Plants in Eruption"},
+            canAfford() {return player.p.points.gte(14) && inChallenge('n', 11)},
+            pay() {player.p.points = player.p.points.sub(14).max(0)},
+            effect() {return player.n.ash.add(1).root(2)},
+            tooltip: "sqrt (Volcanic Ash)",
+        },
+        13: {
+            title: "Plant Ash",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Multiply volcanic ash gain by plants<br>Currently: ×"+format(this.effect())+"<br><br>Cost: 17 Plants in Eruption"},
+            canAfford() {return player.p.points.gte(17) && inChallenge('n', 11)},
+            pay() {player.p.points = player.p.points.sub(17).max(0)},
+            effect() {return player.p.points.add(1)},
+        },
+        14: {
+            title: "Ash Clouds",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Apply improved soil effect again regardless of if you are in this challenge and plant upgrades are kept<br><br>Cost: 22 Plants in Eruption"},
+            canAfford() {return player.p.points.gte(22) && inChallenge('n', 11)},
+            pay() {player.p.points = player.p.points.sub(22).max(0)},
+        },
+
+        21: {
+            title: "Volcanic Gardening",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Multiply point gain based on plants<br>Currently: ×"+format(this.effect())+"<br><br>Cost: 57 Gardens in Eruption"},
+            canAfford() {return player.g.points.gte(57) && inChallenge('n', 11)},
+            pay() {player.g.points = player.g.points.sub(57).max(0)},
+            effect() {return player.p.points.root(1.4).pow_base(1.4)},
+            tooltip: "1.4 ^ 1.4rt (Plants)",
+        },
+        22: {
+            title: "Zone Eruption",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Divide garden requirements based on volcanic ash<br>Currently: ÷"+format(this.effect())+"<br><br>Cost: 67 Gardens in Eruption"},
+            canAfford() {return player.g.points.gte(67) && inChallenge('n', 11)},
+            pay() {player.g.points = player.g.points.sub(67).max(0)},
+            effect() {return player.n.ash.add(1).log(10).add(1)},
+            tooltip: "log10 (Volcanic Ash)",
+        },
+        23: {
+            title: "Erupting Magnitude",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Extra point magnitude multiplies volcanic ash gain<br>Currently: ×"+format(this.effect())+"<br><br>Cost: 265 Gardens in Eruption"},
+            canAfford() {return player.g.points.gte(265) && inChallenge('n', 11)},
+            pay() {player.g.points = player.g.points.sub(265).max(0)},
+            effect() {return player.n.mag.add(1)},
+        },
+        24: {
+            title: "Spreading Eruption",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Most things only possible in an eruption are now possible on their own<br><br>Cost: 280 Gardens in Eruption"},
+            canAfford() {return player.g.points.gte(280) && inChallenge('n', 11)},
+            pay() {player.g.points = player.g.points.sub(280).max(0)},
+        },
+
+        31: {
+            title: "Earthquake",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Unlock a new disaster<br><br>Cost: 35 Ecosystems"},
+            canAfford() {return player.e.points.gte(35)},
+            pay() {player.e.points = player.e.points.sub(35).max(0)},
+            unlocked() {return getClickableState('n', 11)},
+        },
+        32: {
+            title: "Hurricane",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Unlock a new disaster<br><br>Cost: 3 Reclaimed Ecosystems"},
+            canAfford() {return player.re.points.gte(3)},
+            pay() {player.re.points = player.re.points.sub(3).max(0)},
+            unlocked() {return getClickableState('n', 11)},
+        },
+
+        41: {
+            title: "Quaking Points",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Multiply point gain based on extra point magnitude<br>Currently: ×"+format(this.effect())+"<br><br>Cost: 100 Plants in Earthquake"},
+            canAfford() {return player.p.points.gte(100) && inChallenge('n', 12)},
+            pay() {player.p.points = player.p.points.sub(100).max(0)},
+            effect() {return player.n.mag.add(1).pow(5)},
+            tooltip: "extra point magnitude ^ 5",
+        },
+        42: {
+            title: "Quaking Magnitude",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Total disaster upgrades improve extra point magnitude gain formula<br>Currently: "+format(this.effect())+"<br><br>Cost: 112 Plants in Earthquake"},
+            canAfford() {return player.p.points.gte(112) && inChallenge('n', 12)},
+            pay() {player.p.points = player.p.points.sub(112).max(0)},
+            effect() {return new Decimal(player.n.upgrades.length).div(new Decimal(player.n.upgrades.length).add(10)).mul(8)},
+            tooltip: "log10(magnitude) approaching log2(magnitude)",
+        },
+        43: {
+            title: "Building to Rubble Conversion",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Current point magnitude increase extra magnitude gain even more<br>Currently: +"+format(this.effect())+"<br><br>Cost: 130 Plants in Earthquake"},
+            canAfford() {return player.p.points.gte(130) && inChallenge('n', 12)},
+            pay() {player.p.points = player.p.points.sub(130).max(0)},
+            effect() {return pointMag().root(2).div(10)},
+            tooltip: "sqrt(magnitude) ÷ 10",
+        },
+        44: {
+            title: "Sturdy Trees",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Keep tree milestones and upgrades<br><br>Cost: 150 Plants in Earthquake"},
+            canAfford() {return player.p.points.gte(150) && inChallenge('n', 12)},
+            pay() {player.p.points = player.p.points.sub(150).max(0)},
+        },
+
+        61: {
+            title: "House Destruction",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Energy raises plants' perception of points<br>Currently: ^"+format(this.effect())+"<br><br>Cost: 169 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(169) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(169).max(0)},
+            effect() {return player.n.energy.add(1).log(10).add(1)},
+            tooltip: "log10 (Energy)",
+        },
+        62: {
+            title: "Plant Destruction",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Double plant requirement but half garden requirement<br>Currently: ×/÷"+format(this.effect())+"<br><br>Cost: 177 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(177) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(177).max(0)},
+            effect() {return new Decimal(2)},
+        },
+        63: {
+            title: "Power Plant Destruction",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Energy multiplies total point gain<br>Currently: ×"+format(this.effect())+"<br><br>Cost: 240 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(240) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(240).max(0)},
+            effect() {return player.n.energy.add(1)},
+        },
+        64: {
+            title: "Protected Ecosystems",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Keep all reclaimed ecosystems content on reset<br><br>Cost: 244 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(244) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(244).max(0)},
+        },
+
+        71: {
+            title: "House DESTROYER",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Energy raises trees' perception of points and keep zone completions on reset<br>Currently: ^"+format(this.effect())+"<br><br>Cost: 369 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(369) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(369).max(0)},
+            effect() {return player.n.energy.add(1).log(5).add(1)},
+            tooltip: "log5 (Energy)",
+        },
+        72: {
+            title: "Plant Seed Disperser",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Half Plant and Zone requirements and double energy gain<br>Currently: ÷/×"+format(this.effect())+"<br><br>Cost: 410 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(410) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(410).max(0)},
+            effect() {return new Decimal(2)},
+        },
+        73: {
+            title: "Wildlife Shelter",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Improve the Wildlife gain formula<br><br>Cost: 503 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(503) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(503).max(0)},
+            tooltip: "rt - 0.1",
+        },
+        74: {
+            title: "Hurricane Mastery",
+            fullDisplay() {return "<h3>"+this.title+"</h3><br>Keep all ecosystems content on reset, raise point gain ^1.1 and unlock disaster milestones<br><br>Cost: 522 Gardens in Hurricane"},
+            canAfford() {return player.g.points.gte(522) && inChallenge('n', 13)},
+            pay() {player.g.points = player.g.points.sub(522).max(0)},
+        },
+    },
+    clickables: {
+        11: {
+            canClick: true,
+            display: "Begin Natural Disasters.",
+            onClick() {
+                if(!confirm("This will reset all previous progress, are you sure you want to proceed?")) return;
+                doReset(this.layer, true)
+                setClickableState(this.layer, this.id, true)
+            },
+            unlocked() {return !getClickableState(this.layer, this.id)},
+        },
+    },
+})
+addNode("blank2", {
+    layerShown: "ghost",
+    row: "side",
+    position: 2,
 })
