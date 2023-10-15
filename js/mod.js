@@ -13,11 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "9",
+	num: "9.1",
 	name: "Natural Disasters",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
+    <h3>v9.1</h3><br>
+        General - Added Savebank and did some bugfixes.<br><br>
     <h2>v9</h2><br>
         General - Added an option to make the layer node symbols emojis.<br>
         Natural Disasters - Added with 3 Challenges, 3 Milestones and 22 Upgrades.<br>
@@ -159,7 +161,8 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-    function() {return "Press CTRL to See Specific Values<br>Stuck on a tab? Click the layer node again"},
+    function() {return "Press CTRL to See Specific Values"},
+    function() {return "TPS: "+formatWhole(player.a.fps)},
     //function() {return hasUpgrade('g', 54) ? "<a v-bind:style={color: #00AAFF} href=https://raw.githack.com/THENONYMOUS/The-Random-Tree/plant-tree-extreme/index.html>Extreme Mode</a>" : ""}
 ]
 
