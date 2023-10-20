@@ -179,6 +179,18 @@ addLayer("a", { // Achievements layer
                 'background-color': tmp.n.color,
             }},
         },
+        52: {
+            title: "Conservation Sites",
+            display: "Layer Finsihed",
+            canClick: true,
+            onClick() {
+                if(!confirm("Your current progress will not be saved!")) return;
+                importSave("eyJ0YWIiOiJvcHRpb25zLXRhYiIsIm5hdlRhYiI6InRyZWUtdGFiIiwidGltZSI6MTY5NzgwMDg1NTU0NSwibm90aWZ5Ijp7fSwidmVyc2lvblR5cGUiOiJ0aGVub255bW91cy10aGVwbGFudHRyZWUxNzU4Njc0NSIsInZlcnNpb24iOiIxMCIsInRpbWVQbGF5ZWQiOjc5ODQ5LjkzNjQyMTQ3OTU4LCJrZWVwR29pbmciOnRydWUsImhhc05hTiI6dHJ1ZSwicG9pbnRzIjoiMi4yMzA3MDM2MzY0MTIxMzZlNTU1Iiwic3VidGFicyI6eyJjaGFuZ2Vsb2ctdGFiIjp7fSwicCI6eyJtYWluVGFicyI6IlRyZWVzIn0sImEiOnsibWFpblRhYnMiOiJBY2hpZXZlbWVudHMifSwiZSI6eyJtYWluVGFicyI6IkVjb2xvZ3kifSwidyI6eyJtYWluVGFicyI6IkZpc2gifSwiciI6eyJtYWluVGFicyI6Ik1haW4ifSwibiI6eyJtYWluVGFicyI6Ikh1cnJpY2FuZSJ9LCJjIjp7Im1haW5UYWJzIjoiQ29uc2VydmF0aW9uIn19LCJsYXN0U2FmZVRhYiI6InJlIiwiaW5mb2JveGVzIjp7ImEiOnsicGxhbnRIZWxwIjpmYWxzZSwiZ2FyZGVuSGVscCI6ZmFsc2UsInpvbmVIZWxwIjpmYWxzZSwid2lsZGxpZmVIZWxwIjpmYWxzZSwicmVzZWFyY2hIZWxwIjpmYWxzZSwidHJlZUhlbHAiOmZhbHNlfX0sImluZm8tdGFiIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6Nzk4NDkuOTM2NDIxNDc5NTgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwib3B0aW9ucy10YWIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo3OTg0OS45MzY0MjE0Nzk1OCwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJjaGFuZ2Vsb2ctdGFiIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6Nzk4NDkuOTM2NDIxNDc5NTgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiYmxhbmsiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo3OTg0OS45MzY0MjE0Nzk1OCwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJ0cmVlLXRhYiI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjc5ODQ5LjkzNjQyMTQ3OTU4LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sImEiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6Ij8iLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6Nzk4NDkuOTM2NDIxNDc5NTgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6IiIsIjEyIjoiIiwiMTMiOiIiLCIxNCI6IiIsIjIxIjoiIiwiMjIiOiIiLCIyMyI6IiIsIjMxIjoiIiwiMzIiOiIiLCIzMyI6IiIsIjQxIjoiIiwiNDIiOiIiLCI0MyI6IiIsIjUxIjoiIiwiNTIiOiIifSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6WyIwIl0sImxhc3RNaWxlc3RvbmUiOiIwIiwiYWNoaWV2ZW1lbnRzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMTUiLCIyMSIsIjIyIiwiMzUiLCIyNCIsIjIzIiwiMjUiLCIzMSIsIjMyIiwiMzMiLCIzNCIsIjQxIiwiNDIiLCI0NCIsIjQzIiwiNDUiLCI1MSIsIjUyIiwiNTMiLCI1NCIsIjU1IiwiNjEiLCI2MiIsIjYzIiwiNjQiLCI2NSIsIjcxIiwiNzIiLCI3MyIsIjc0IiwiNzUiLCI4MSIsIjgyIiwiODMiLCI4NCIsIjg1IiwiOTEiLCI5MiIsIjkzIiwiOTQiLCI5NSIsIjEwMSIsIjEwMiIsIjEwMyIsIjEwNCIsIjEwNSIsIjEwNiJdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJwbGF5ZXJOYW1lIjoiUGxheWVyIiwiZnBzIjo3LjI3NTQzODYwOTgxNDI4fSwicCI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMzczNiIsImJlc3QiOiIzNzM2IiwidG90YWwiOiIxNDI1Mi4wOTU3MzQ0NDgwMiIsInJlc2V0VGltZSI6MS43MjgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMzkiLCIxMiI6IjAiLCIxMyI6IjIifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjIxIiwiMjIiLCIyMyIsIjI0IiwiMzEiLCIzMiIsIjMzIiwiMzQiLCI0MSIsIjQyIiwiNDMiLCI0NCIsIjUxIiwiNTIiLCI1MyIsIjU0IiwiNjEiLCI2MiIsIjYzIiwiNjQiXSwibWlsZXN0b25lcyI6WyIwIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sImciOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjAiLCJiZXN0IjoiMCIsInRvdGFsIjoiMCIsInJlc2V0VGltZSI6MS43MjgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMCIsIjEyIjoiMCIsIjEzIjoiMCIsIjIxIjoiMCJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMjEiLCIyMiIsIjIzIiwiMjQiLCIzMSIsIjMyIiwiMzMiLCIzNCIsIjQxIiwiNDIiLCI0MyIsIjQ0IiwiNTEiLCI1MiIsIjUzIiwiNTQiXSwibWlsZXN0b25lcyI6WyIwIiwiMSJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJ6Ijp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIyIiwiYmVzdCI6IjIiLCJ0b3RhbCI6IjIiLCJyZXNldFRpbWUiOjEuNzI4LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiLCI3IiwiOCIsIjkiLCIxMCIsIjExIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnsiMTEiOjMsIjEyIjozLCIyMSI6MywiMjIiOjN9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sInciOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjMuNjE1MjgxNzM3NDQ5NzE4NmU3MiIsImxhcmdlIjoiMCIsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjoxLjcyOCwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiIwIiwiMjEiOiIwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJmaXNoIjoiMCIsImF1dG9VcGdyYWRlIjp0cnVlLCJjYW5CdXkxMTQiOnRydWV9LCJyIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIwIiwiYmVzdCI6IjAiLCJ0b3RhbCI6IjAiLCJyZXNldFRpbWUiOjAsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMCIsIjEyIjoiMCIsIjEzIjoiMCIsIjIxIjoiMCIsIjIyIjoiMCIsIjIzIjoiMCIsIjMxIjoiMCIsIjMyIjoiMCIsIjMzIjoiMCIsIjQxIjoiMCIsIjQyIjoiMCIsIjQzIjoiMCJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7IjExIjoiIiwiMTIiOiIiLCIxMyI6IiIsIjE0IjoiIiwiMTUiOiIiLCIxNiI6IiIsIjIxIjoiIiwiMjIiOiIiLCIyMyI6IiIsIjI0IjoiIiwiMjUiOiIiLCIyNiI6IiIsIjMxIjoiIiwiMzIiOiIiLCIzMyI6IiIsIjM0IjoiIiwiMzUiOiIiLCIzNiI6IiIsIjQxIjoiIiwiNDIiOiIiLCI0MyI6IiIsIjQ0IjoiIiwiNDUiOiIiLCI0NiI6IiIsIjUxIjoiIiwiNTIiOiIiLCI1MyI6IiIsIjU0IjoiIiwiNTUiOiIiLCI1NiI6IiIsIjYxIjoiIiwiNjIiOiIiLCI2MyI6IiIsIjY0IjoiIiwiNjUiOiIiLCI2NiI6IiJ9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsxNCwxMSwxMywxMiwxNSwyNSwyNCwyMywyMiwyMSwzMywzMSwzMiwxNCwxNCwzNCwzNSwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNCwxNF0sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJyZXNldFRpbWVzIjowLCJyZXNlYXJjaGVycyI6IjAifSwidCI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMCIsImJlc3QiOiIwIiwidG90YWwiOiIwIiwibGVhdmVzIjoiMCIsInJlc2V0VGltZSI6MS43MjgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMCIsIjEyIjoiMCIsIjEzIjoiMCJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImJ1bGsiOmZhbHNlLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGwsImF1dG9VcGdyYWRlIjp0cnVlfSwiZSI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMTM1IiwiZWNvbG9neSI6IjUuNTQ0MjIzMTc1Nzc0ODI1ZTYyIiwiYmVzdCI6IjAiLCJ0b3RhbCI6IjAiLCJjb29sZG93biI6Ii0xLjcyOCIsImxhc3RBYmlsaXR5IjoxMSwiYXV0b0FiaWxpdHkiOmZhbHNlLCJyZXNldFRpbWUiOjEuNzI4LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjAifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6IiIsIjEyIjoiIn0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOlsiMCIsIjMiLCI1IiwiNyIsIjkiLCIyIiwiNCIsIjYiLCI4IiwiMSJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOlsiMTEiLCIxMiIsIjEzIiwiMTQiLCIxNSIsIjIxIiwiMjIiLCIyMyIsIjI0IiwiMjUiXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsfSwicmUiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjAiLCJiZXN0IjoiMCIsInRvdGFsIjoiMCIsInJlc2V0VGltZSI6MS43MjgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7IjExIjowLCIxMiI6MCwiMjEiOjB9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sIm4iOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjAiLCJiZXN0IjoiMCIsInRvdGFsIjoiMCIsImFzaCI6IjAiLCJzb2lsIjoiMCIsIm1hZyI6IjAiLCJlbmVyZ3kiOiIwIiwicmVzZXRUaW1lIjoxLjcyOCwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7IjExIjoiIn0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7IjExIjowLCIxMiI6MCwiMTMiOjB9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sImMiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjUiLCJjb25zZXJ2YXRpb24iOiI1LjA2MjA4MjM5MjgzMTQ2MmU1OSIsImJlc3QiOiI1IiwidG90YWwiOiI1IiwicmVzZXRUaW1lIjoxLjcyOCwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiI1NSIsIjEyIjoiNTUiLCIxMyI6IjEwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOiIifSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTEsMTIsMTMsMTQsMTUsMjEsMjIsMjMsMjQsMjUsMzEsMzIsMzMsMzQsMzVdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiXSwibGFzdE1pbGVzdG9uZSI6IjMiLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJibGFuazIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjoxNjM5OS4zMDIxMjE1MDUxNzgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiZGV2U3BlZWQiOiIxIn0=")
+            },
+            style() {return{
+                'background-color': tmp.c.color,
+            }},
+        },
     },
     achievements: {
         11: {
@@ -461,6 +473,31 @@ addLayer("a", { // Achievements layer
                 width: '100px',
             },
         },
+        111: {
+            name: "Wait are we building a house?",
+            done() {return hasUpgrade('c', 11)},
+            tooltip: "Buy 'Conservation Upgrade Foundation'",
+        },
+        112: {
+            name: "No, we must be making a robot...",
+            done() {return hasUpgrade('c', 15)},
+            tooltip: "Buy 'Plant Robotics MK III'",
+        },
+        113: {
+            name: "Huh, we made a conservation site...",
+            done() {return player.c.points.gte(2)},
+            tooltip: "Reach 2 Conservation Sites",
+        },
+        114: {
+            name: "Degenerate Gambler",
+            done() {return tmp.r.minigameScore.gte(244140625)},
+            tooltip: "Complete the research minigame",
+        },
+        115: {
+            name: "Programming be like:",
+            done() {return hasMilestone('c', 3)},
+            tooltip: "Complete the 4th Conservation Milestone",
+        },
     },
 }),
 addLayer("p", { // Plants layer
@@ -524,7 +561,7 @@ addLayer("p", { // Plants layer
         },
         "Trees": {
             embedLayer: 't',
-            unlocked() {return hasUpgrade('r', 25) || hasMilestone('e', 5) || hasUpgrade('n', 44)},
+            unlocked() {return hasUpgrade('r', 25) || hasMilestone('e', 5) || hasUpgrade('n', 44) || getClickableState('n', 11)},
         },
     },
     effectDescription() {if(hasUpgrade('p', 14)) return "Next Magnitude increase at "+format(new Decimal(10).add(upgradeEffect('p', 34)).pow(player.points.max(0).add(1).log(new Decimal(10).add(upgradeEffect('p', 34))).ceil()))+" Points (1-4, 2-2)"},
@@ -899,10 +936,10 @@ addLayer("p", { // Plants layer
             tooltip() {return "Total Effect: ÷"+format(getBuyableAmount('p', 12).pow_base(10))+" (Before Bonus Levels)"},
             buyMax() {
                 let max = player.points.div(this.cost(0)).add(1).log(1000)
-                max = max.min(this.purchaseLimit)
+                max = max.min(this.purchaseLimit())
                 if(max.gt(getBuyableAmount('p', 12))) setBuyableAmount('p', 12, max.add(1).floor())
             },
-            purchaseLimit: new Decimal("1e9"),
+            purchaseLimit() {return hasMilestone('n', 4) ? new Decimal("1e308pt1") : new Decimal("1e9")},
             },
         13: {
             title: "Echinocactus",
@@ -958,6 +995,7 @@ addLayer("g", { // Gardens layer
     },
     resetsNothing() {return hasMilestone('z', 4) || hasMilestone('e', 5) || hasUpgrade('t', 13)},
     autoPrestige() {return hasUpgrade('t', 13)},
+    autoUpgrade() {return hasMilestone('c', 2)},
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if(hasUpgrade('g', 22)) mult=mult.dividedBy(upgradeEffect('g', 22))
@@ -1280,7 +1318,7 @@ addLayer("z", { // Zones layer
         let keep = [];
         if(hasAchievement('e', 13) || (hasMilestone('n', 0)&&row<=3)) keep.push("milestones");
         if(hasAchievement('e', 22) || hasUpgrade('n', 71)) keep.push("challenges");
-        if(hasUpgrade('z', 14)) keep.push("upgrades");
+        if(hasUpgrade('z', 14) && row <= 3) keep.push("upgrades");
         layerDataReset(this.layer, keep);
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -1505,6 +1543,7 @@ addLayer("w", { // Wildlife layer
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         let row = layers[resettingLayer].row;
+        if(hasUpgrade('c', 24) && row <= 3) return;
         
         let keep = [];
         if (layers[resettingLayer].row == 1) {keep.push("upgrades")};
@@ -1555,7 +1594,9 @@ addLayer("w", { // Wildlife layer
         gain = gain.times(smartUpgradeEffect('w', 93))
         gain = gain.times(smartUpgradeEffect('e', 22))
         gain = gain.times(smartUpgradeEffect('t', 121))
-        if(hasAchievement('re', 11)) gain=gain . pow(1.1)
+        gain = gain.mul(smartUpgradeEffect('c', 11))
+        gain = gain.mul(smartUpgradeEffect('c', 22))
+        if(hasAchievement('re', 11)) gain = gain.pow(1.1)
         
         if(inChallenge('re', 11)) gain = gain.pow(0.01)
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) gain = gain.pow(10)
@@ -1568,7 +1609,7 @@ addLayer("w", { // Wildlife layer
         return speed
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
-    layerShown(){return challengeCompletions('z', 22) >= 3 || hasMilestone('e', 7)},
+    layerShown(){return challengeCompletions('z', 22) >= 3 || hasMilestone('e', 7) || hasUpgrade('c', 24)},
     
     upgrades: {
         11: {
@@ -2051,6 +2092,7 @@ addLayer("r", { // Research layer
         if(hasAchievement('a', 83)) amt = amt.times(2)
         amt = amt.times(smartMilestoneEffect('r', 0))
         if(hasUpgrade('t', 131)) amt = amt.mul(upgradeEffect('t', 131)[0])
+        amt = amt.mul(smartUpgradeEffect('c', 12))
         amt = amt.pow(smartUpgradeEffect('e', 11))
         amt = amt.pow(smartUpgradeEffect('z', 12))
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 1) amt = amt.pow(0.01)
@@ -2076,12 +2118,17 @@ addLayer("r", { // Research layer
     doReset(resettingLayer) {
         if(layers[resettingLayer].row <= 1 || resettingLayer === 'r') return;
         let row = layers[resettingLayer].row;
+
+        let keptUpgrades = [];
+        if(getClickableState('n', 11)) keptUpgrades.push(14)
         
         let keep = [];
         if(hasAchievement('e', 14)) keep.push("upgrades")
+        if(hasUpgrade('c', 33) && row <= 3) keep.push("clickables", "milestones")
         layerDataReset(this.layer, keep)
         
-        if(resettingLayer==='e' && hasAchievement('e', 11) && !player[this.layer].upgrades.includes(14)) player[this.layer].upgrades.push(14) 
+        if(resettingLayer==='e' && hasAchievement('e', 11) && !player[this.layer].upgrades.includes(14)) player[this.layer].upgrades.push(14)
+        player.r.upgrades = player.r.upgrades.concat(keptUpgrades)
     },
     automate() {
         if(hasUpgrade('r', 14)) buyBuyable('p', 11)
@@ -2128,7 +2175,7 @@ addLayer("r", { // Research layer
                 "blank",
                 ["clickables", [1, 2, 3, 4, 5, 6]],
                 "blank",
-                ["milestones", [0, 1, 2, 3, 4]],
+                ["milestones", [0, 1, 2, 3]],
                 "blank",
             ],
             unlocked() {return hasMilestone('n', 1)},
@@ -2563,6 +2610,14 @@ addLayer("r", { // Research layer
             done() {return tmp.r.minigameScore.gte(10000)},
             effect() {return tmp.r.minigameScore.add(1).root(2)},
         },
+        3: {
+            requirementDescription: "244,140,625 Minigame Score",
+            effectDescription() {return "Reseach and research time multiplies point gain | Currently: ×"+format(this.effect())},
+            done() {return tmp.r.minigameScore.gte(244140625)},
+            effect() {
+                return tmp.r.baseAmount.add(1).pow(player.r.points.pow(0.75))
+            },
+        },
     },
     clickables: {
         11: {
@@ -2787,7 +2842,7 @@ addLayer("t", { // Trees layer
     },
     effect2() {
         let effect = player.t.leaves.times(0.01).add(1).pow(100)
-        if(getClickableState('n', 11)) effect = effect.add(1).log(10).add(1)
+        if(getClickableState('n', 11) && !(hasMilestone('c', 2))) effect = effect.add(1).log(10).add(1)
         return effect
     },
     automate() {
@@ -2822,6 +2877,9 @@ addLayer("t", { // Trees layer
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
         let row = layers[resettingLayer].row;
+
+        let keptUpgrades = [];
+        if(getClickableState('n', 11)) keptUpgrades.push(13, 14)
         
         let keep = [];
         if(layers[resettingLayer].row <= 1) keep.push("upgrades"), keep.push("buyables"), keep.push("milestones")
@@ -2829,6 +2887,8 @@ addLayer("t", { // Trees layer
         if(resettingLayer==='e' && hasAchievement('e', 11)) keep.push("milestones")
         if(hasUpgrade('n', 44)&&row<=3) keep.push("upgrades"), keep.push("milestones")
         layerDataReset(this.layer, keep)
+
+        player.t.upgrades = player.t.upgrades.concat(keptUpgrades)
     },
     onPrestige() {
         if(!hasMilestone('t', 2)) player.t.leaves = new Decimal(0)
@@ -2872,6 +2932,7 @@ addLayer("t", { // Trees layer
                 effect = effect.times(clickableEffect('e', 12))
                 if(hasAchievement('re', 14)) effect = effect.times(2)
                 effect = effect.times(smartUpgradeEffect('g', 53))
+                effect = effect.mul(tmp.c.effect.leaves)
                 return effect
             },
             effectDisplay() {return format(thisUpgradeEffect(this))+"/sec. You have "+format(player.t.leaves)+" Leaves, Dividing Tree Requirements by "+format(player.t.leaves.times(0.01).add(1).pow(100))+"."},
@@ -3154,7 +3215,7 @@ addLayer("t", { // Trees layer
 addLayer("e", { // Ecosystems layer
     name: "ecosystems", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol() {return options.emojiSymbols ? "🌎" : "E"},
-    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
 		points: new Decimal(0),
@@ -3195,7 +3256,6 @@ addLayer("e", { // Ecosystems layer
                 "blank",
                 "upgrades",
             ],
-            unlocked() {return hasMilestone('e', 9) || getClickableState('n', 11)},
         },
         "Ecology": {
             content: [
@@ -3230,8 +3290,9 @@ addLayer("e", { // Ecosystems layer
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-               if(hasAchievement('a', 73)) mult=mult.dividedBy(1.2)
-               return mult
+        if(hasAchievement('a', 73)) mult=mult.dividedBy(1.2)
+        mult = mult.div(smartMilestoneEffect('n', 3, {eco: 1, rec: 1}).eco)
+        return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
@@ -3261,6 +3322,7 @@ addLayer("e", { // Ecosystems layer
         if(hasUpgrade('n', 74) && row<=3) return
 
         let keep = [];
+        if(hasUpgrade('c', 34) && (resettingLayer == 'c' || row <= 3)) keep.push("points", "milestones", "achievements")
         layerDataReset(this.layer, keep)
     },
     hotkeys: [
@@ -3353,6 +3415,7 @@ addLayer("e", { // Ecosystems layer
                 effect = effect.times(smartUpgradeEffect('w', 113))
                 effect = effect.times(smartMilestoneEffect('re', 2))
                 effect = effect.times(smartUpgradeEffect('e', 23))
+                effect = effect.mul(smartUpgradeEffect('c', 22))
                 return effect
                 },
             done() {return player.e.points.gte(5)},
@@ -3533,7 +3596,9 @@ addLayer("re", { // Reclaimed ecosystems layer
     branches: ['z', 'g', 'e'],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-               return mult
+        mult = mult.div(smartMilestoneEffect('n', 3, {eco: 1, rec: 1}).rec)
+        if(hasMilestone('n', 5)) mult = mult.div(1.5)
+        return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
@@ -3870,13 +3935,14 @@ addLayer("n", { // Natural disasters layer
                 player.p.points = player.p.points.sub(diff).max(10).min(player.p.points)
             }
         }
-        if(inChallenge('n', 12)) {
+        if(inChallenge('n', 12) || hasMilestone('n', 4)) {
             gain = tmp.n.magGain
             player.n.mag = getLogisticAmount(player.n.mag, gain, 0.1, diff).max(player.n.mag)
         }
-        if(inChallenge('n', 13)) {
+        if(inChallenge('n', 13) || hasMilestone('n', 4)) {
             gain = player.p.points.max(1).log(10)
             gain = gain.mul(smartUpgradeEffect('n', 72))
+            gain = gain.mul(smartUpgradeEffect('c', 35))
             player.n.energy = player.n.energy.max(gain)
         }
 
@@ -3933,9 +3999,31 @@ addLayer("n", { // Natural disasters layer
         },
         2: {
             requirementDescription: "e1.650e9 Points",
-            effectDescription: "Coming Soon...",
+            effectDescription: "Unlock Conservation Sites",
             unlocked() {return hasUpgrade('n', 74)},
             done() {return hasUpgrade('n', 74) && player.points.gte("e1.65e9")},
+        },
+        3: {
+            requirementDescription: "e1.000e10 Points",
+            effectDescription() {return "Reclaimed Ecosystems divide ecosystem cost and their own at a reduced rate<br>Currently: ÷"+format(this.effect.eco())+" Ecosystem cost and ÷"+format(this.effect.rec())+" Reclaimed Ecosystem cost"},
+            effect: {
+                eco() {return player.re.points.add(1)},
+                rec() {return player.re.points.add(1).ln().add(1)},
+            },
+            unlocked() {return hasUpgrade('n', 74)},
+            done() {return hasUpgrade('n', 74) && player.points.gte("e1e10")},
+        },
+        4: {
+            requirementDescription: "120 Ecosystems",
+            effectDescription() {return "You gain extra point magnitude and energy outside of their challenges and uncap Saguaro"},
+            unlocked() {return hasUpgrade('n', 74)},
+            done() {return hasUpgrade('n', 74) && player.e.points.gte(120)},
+        },
+        5: {
+            requirementDescription: "20 Reclaimed Ecosystems",
+            effectDescription() {return "Divide Reclaimed Ecosystem cost by 1.5"},
+            unlocked() {return hasUpgrade('n', 74)},
+            done() {return hasUpgrade('n', 74) && player.re.points.gte(20)},
         },
     },
     upgrades: {

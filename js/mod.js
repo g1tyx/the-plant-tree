@@ -3,7 +3,7 @@ let modInfo = {
 	id: "thenonymous-theplanttree17586745",
 	author: "thenonymous",
 	pointsName: "Plant Points",
-	modFiles: ["layers.js", "tree.js"],
+	modFiles: ["layers.js", "layers2.js", "tree.js"],
 
 	discordName: "The Plant Tree Discussion",
 	discordLink: "https://discord.com/channels/762036407719428096/1106927101300453467",
@@ -13,11 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "9.1",
-	name: "Natural Disasters",
+	num: "10",
+	name: "Conservation Sites",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
+    <h3>v10</h3><br>
+        Conservation Sites - Added with 15 Upgrades, 4 Milestones and 3 Buyables.<br>
+        Natural Disasters - Added 3 Milestones.<br>
+        Research - Added 1 Milestones.<br><br>
     <h3>v9.1</h3><br>
         General - Added Savebank and did some bugfixes.<br><br>
     <h2>v9</h2><br>
@@ -67,7 +71,7 @@ let changelog = `<h1>Version History:</h1><br><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
 
-let winText = `Congratulations! You have beaten this game, but the princess is in another tree!`
+let winText = `Congratulations! You have beaten this game, so go play some other incremental game for 5 hours. This game should be updated by then.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -119,6 +123,10 @@ function getPointGen() {
     gain=gain.times(smartUpgradeEffect('r', 101))
     gain=gain.times(smartUpgradeEffect('t', 111))
     gain = gain.mul(smartMilestoneEffect('r', 1))
+    gain = gain.mul(tmp.c.effect.points)
+    gain = gain.mul(smartUpgradeEffect('c', 22))
+    gain = gain.mul(smartUpgradeEffect('c', 23))
+    gain = gain.mul(smartMilestoneEffect('r', 3))
 
         // Disasters
     gain = gain.mul(smartUpgradeEffect('n', 12))
@@ -130,6 +138,7 @@ function getPointGen() {
 
     // Powers
     if(hasUpgrade('n', 74)) gain = gain.pow(1.1)
+    gain = gain.pow(smartUpgradeEffect('c', 25))
 
     // Challenges
     if(inChallenge('t', 11)) gain=gain.pow(new Decimal(1).minus(new Decimal(challengeCompletions('t', 11)).add(1).dividedBy(10)))
@@ -169,7 +178,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('n', 2)
+	return hasMilestone('c', 3)
 }
 
 
