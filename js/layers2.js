@@ -51,6 +51,7 @@ addLayer("c", { // Ecosystems layer
     branches: ['e', 're', 'z', 'g'],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        mult = mult.div(smartUpgradeEffect('c', 45))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -71,11 +72,15 @@ addLayer("c", { // Ecosystems layer
         if(hasUpgrade('c', 31)) {
             clickClickable('r', 11)
         }
+        if(hasMilestone('c', 6) && tmp.r.minigameScore.lt(244140625)) {
+            clickClickable('r', Math.floor(Math.random()*6)+11)
+        }
     },
     conservationGain() {
         let gain = player.c.points.mul(player.c.points.sub(1).pow_base(2))
         gain = gain.mul(buyableEffect('c', 12))
         gain = gain.pow(buyableEffect('c', 13))
+        gain = gain.pow(smartUpgradeEffect('c', 54))
         gain = gain.mul(buyableEffect('c', 11))
 
         gain = gain.mul(smartUpgradeEffect('c', 11))
@@ -84,6 +89,9 @@ addLayer("c", { // Ecosystems layer
         gain = gain.mul(smartUpgradeEffect('c', 15))
         gain = gain.mul(smartUpgradeEffect('c', 33))
         gain = gain.mul(smartUpgradeEffect('c', 34))
+        gain = gain.mul(smartMilestoneEffect('n', 101))
+        gain = gain.mul(smartUpgradeEffect('c', 42))
+        gain = gain.mul(smartUpgradeEffect('c', 44))
         return gain
     },
     displayRow: 2,
@@ -135,8 +143,36 @@ addLayer("c", { // Ecosystems layer
         },
         3: {
             requirementDescription: "5 Conservation Sites",
-            effectDescription: "Coming Soon...",
+            effectDescription: "Unlock Bugs in the Natural Disasters layer",
             done() {return player.c.points.gte(5)},
+        },
+        4: {
+            requirementDescription: "6 Conservation Sites",
+            effectDescription: "Autobuy Wildlife Upgrades and the second Ecosystem Ability is always on",
+            done() {return player.c.points.gte(6)},
+            unlocked() {return hasMilestone('c', 3)},
+            toggles: [["w", "autoUpgrade"]],
+        },
+        5: {
+            requirementDescription: "8 Conservation Sites",
+            effectDescription: "Autobuy Ecosystems and they reset nothing",
+            done() {return player.c.points.gte(8)},
+            unlocked() {return hasMilestone('c', 3)},
+            toggles: [["e", "autoReset"]],
+        },
+        6: {
+            requirementDescription: "9 Conservation Sites",
+            effectDescription: "Click a random research minigame clickable every tick until the research minigame is finished and automatically buy tree upgrades",
+            done() {return player.c.points.gte(9)},
+            unlocked() {return hasMilestone('c', 3)},
+            toggles: [["t", "autoUpgrade"]],
+        },
+        7: {
+            requirementDescription: "10 Conservation Sites",
+            effectDescription: "Autobuy upgrades of Ecosystems and Natural Disasters",
+            done() {return player.c.points.gte(10)},
+            unlocked() {return hasMilestone('c', 3)},
+            toggles: [["e", "autoUpgrade"], ["n", "autoUpgrade"]],
         },
     },
     clickables: {
@@ -356,6 +392,123 @@ addLayer("c", { // Ecosystems layer
             currencyInternalName: "conservation",
             currencyDisplayName: "conservation",
             unlocked() {return hasUpgrade('c', 25)},
+        },
+        41: {
+            title: "Conservation Downgrade",
+            description: "Divide Reclaimed Ecosystems costs based on Conservation",
+            cost: new Decimal("1.11e70"),
+            effect() {
+                return player.c.conservation.add(1).log(10).add(1).root(2)
+            },
+            effectDisplay() {return "÷"+format(this.effect())},
+            tooltip: "sqrt log10 (Conservation)",
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 35)},
+        },
+        42: {
+            title: "Conservation Upgrade",
+            description: "Multiply Conservation gain by Reclaimed Ecosystems",
+            cost: new Decimal("5e84"),
+            effect() {
+                return player.re.points.add(1)
+            },
+            effectDisplay() {return "x"+format(this.effect())},
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 35)},
+        },
+        43: {
+            title: "Death.",
+            description: "Multiply Butterfly gain based on Conservation",
+            cost: new Decimal("1.3e98"),
+            effect() {
+                return player.c.conservation.add(1).log(10).add(1).root(2)
+            },
+            effectDisplay() {return "x"+format(this.effect())},
+            tooltip: "sqrt log10 (Conservation)",
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 35)},
+        },
+        44: {
+            title: "Life,",
+            description: "Multiply Conservation gain by Butterflies",
+            cost: new Decimal("4.8e100"),
+            effect() {
+                return player.n.butterflies.add(1)
+            },
+            effectDisplay() {return "x"+format(this.effect())},
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 35)},
+        },
+        45: {
+            title: "20. Profit",
+            description: "Divide Conservation Site requirements based on the product of your bugs",
+            cost: new Decimal("1.28e109"),
+            effect() {
+                return player.n.butterflies.add(1).mul(player.n.spiders.add(1)).mul(player.n.bees.add(1)).log(10).add(1).root(10)
+            },
+            effectDisplay() {return "÷"+format(this.effect())},
+            tooltip: "10rt log10 (Product)",
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 35)},
+        },
+        51: {
+            title: "Inflation I",
+            description: "You can generate bees when not in 'Bug Infestation'",
+            cost: new Decimal("1.9e116"),
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 45)},
+        },
+        52: {
+            title: "Inflation II",
+            description: "You can generate spiders when not in 'Bug Infestation'",
+            cost: new Decimal("1e119"),
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 45)},
+        },
+        53: {
+            title: "Inflation III",
+            description: "You can generate butterflies when not in 'Bug Infestation'",
+            cost: new Decimal("9e127"),
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 45)},
+        },
+        54: {
+            title: "Inflation IV",
+            description: "Square base conservation gain",
+            cost: new Decimal("3.35e135"),
+            effect() {
+                return 2
+            },
+            effectDisplay() {return "^"+format(this.effect())},
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 45)},
+        },
+        55: {
+            title: "Inflation MMVIII",
+            description: "Double 'Recycling' Limit but superscaling intensifies",
+            cost: new Decimal("2.7e194"),
+            currencyLayer: 'c',
+            currencyInternalName: "conservation",
+            currencyDisplayName: "conservation",
+            unlocked() {return hasUpgrade('c', 45)},
         },
     },
     buyables: {

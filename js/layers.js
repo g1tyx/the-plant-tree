@@ -191,6 +191,18 @@ addLayer("a", { // Achievements layer
                 'background-color': tmp.c.color,
             }},
         },
+        53: {
+            title: "Bugs",
+            display: "Layer Finsihed",
+            canClick: true,
+            onClick() {
+                if(!confirm("Your current progress will not be saved!")) return;
+                importSave("eyJ0YWIiOiJvcHRpb25zLXRhYiIsIm5hdlRhYiI6InRyZWUtdGFiIiwidGltZSI6MTcwNjQ1MzIyODgyMSwibm90aWZ5Ijp7fSwidmVyc2lvblR5cGUiOiJ0aGVub255bW91cy10aGVwbGFudHRyZWUxNzU4Njc0NSIsInZlcnNpb24iOiIxMCIsInRpbWVQbGF5ZWQiOjg2NTQxLjgxMzQyMTY3NTEyLCJrZWVwR29pbmciOnRydWUsImhhc05hTiI6dHJ1ZSwicG9pbnRzIjoiZWUyNS41NDI3MDE0MDc3NjczMzIiLCJzdWJ0YWJzIjp7ImNoYW5nZWxvZy10YWIiOnt9LCJwIjp7Im1haW5UYWJzIjoiVHJlZXMifSwiYSI6eyJtYWluVGFicyI6IlRpbWUgQ29udHJvbCJ9LCJlIjp7Im1haW5UYWJzIjoiRWNvbG9neSJ9LCJ3Ijp7Im1haW5UYWJzIjoiTWFpbiJ9LCJyIjp7Im1haW5UYWJzIjoiTWFpbiJ9LCJuIjp7Im1haW5UYWJzIjoiQnVncyJ9LCJjIjp7Im1haW5UYWJzIjoiQ29uc2VydmF0aW9uIn19LCJsYXN0U2FmZVRhYiI6ImMiLCJpbmZvYm94ZXMiOnsiYSI6eyJwbGFudEhlbHAiOmZhbHNlLCJnYXJkZW5IZWxwIjpmYWxzZSwiem9uZUhlbHAiOmZhbHNlLCJ3aWxkbGlmZUhlbHAiOmZhbHNlLCJyZXNlYXJjaEhlbHAiOmZhbHNlLCJ0cmVlSGVscCI6ZmFsc2V9fSwiaW5mby10YWIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo4NjU0MS44MTM0MjE2NzUxMiwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJvcHRpb25zLXRhYiI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjg2NTQxLjgxMzQyMTY3NTEyLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sImNoYW5nZWxvZy10YWIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo4NjU0MS44MTM0MjE2NzUxMiwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJhIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiI/IiwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjg2NTQxLjgxMzQyMTY3NTEyLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOiIiLCIxMiI6IiIsIjEzIjoiIiwiMTQiOiIiLCIyMSI6IiIsIjIyIjoiIiwiMjMiOiIiLCIzMSI6IiIsIjMyIjoiIiwiMzMiOiIiLCI0MSI6IiIsIjQyIjoiIiwiNDMiOiIiLCI1MSI6IiIsIjUyIjoiIn0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOlsiMCJdLCJsYXN0TWlsZXN0b25lIjoiMCIsImFjaGlldmVtZW50cyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjE1IiwiMjEiLCIyMiIsIjM1IiwiMjQiLCIyMyIsIjI1IiwiMzEiLCIzMiIsIjMzIiwiMzQiLCI0MSIsIjQyIiwiNDQiLCI0MyIsIjQ1IiwiNTEiLCI1MiIsIjUzIiwiNTQiLCI1NSIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiNjUiLCI3MSIsIjcyIiwiNzMiLCI3NCIsIjc1IiwiODEiLCI4MiIsIjgzIiwiODQiLCI4NSIsIjkxIiwiOTIiLCI5MyIsIjk0IiwiOTUiLCIxMDEiLCIxMDIiLCIxMDMiLCIxMDQiLCIxMDUiLCIxMDYiLCIxMTEiLCIxMTIiLCIxMTMiLCIxMTUiLCIxMTQiXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwicGxheWVyTmFtZSI6IlBsYXllciIsImZwcyI6MTguODYxNjgyMDUzNzc2OTk1fSwicCI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMi44MDA5MjI0NTc3NTUyOTg1ZTI5IiwiYmVzdCI6IjIuODAwOTIyNDU3NzU1Mjk4NWUyOSIsInRvdGFsIjoiMi44MDA5MjI0NTc3NTUyOTg1ZTI5IiwicmVzZXRUaW1lIjoyMDYuMTI0MDAwMDAwMDAyMTYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMTAwMDAwMDAwMSIsIjEyIjoiMS43NDQ1MDE3NjE2MDQ1NjI2ZTI1IiwiMTMiOiIyMDAifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjIxIiwiMjIiLCIyMyIsIjI0IiwiMzEiLCIzMiIsIjMzIiwiMzQiLCI0MSIsIjQyIiwiNDMiLCI0NCIsIjUxIiwiNTIiLCI1MyIsIjU0IiwiNjEiLCI2MiIsIjYzIiwiNjQiLCI3MSIsIjcyIiwiNzMiLCI3NCIsIjgxIiwiODIiXSwibWlsZXN0b25lcyI6WyIwIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sImciOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjQ4MzE3OCIsImJlc3QiOiI0ODMxNzgiLCJ0b3RhbCI6IjQ4MzE3OCIsInJlc2V0VGltZSI6MjA2LjEyNDAwMDAwMDAwMjE2LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6Ijk2NjE1LjYiLCIxMiI6Ijk2NjE1LjYiLCIxMyI6IjMyMjA1LjIiLCIyMSI6IjQ4MjM3LjgifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjIxIiwiMjIiLCIyMyIsIjI0IiwiMzEiLCIzMiIsIjMzIiwiMzQiLCI0MSIsIjQyIiwiNDMiLCI0NCIsIjUxIiwiNTIiLCI1MyIsIjU0Il0sIm1pbGVzdG9uZXMiOlsiMCIsIjEiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsfSwieiI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiNDg3IiwiYmVzdCI6IjQ4NyIsInRvdGFsIjoiNDg3IiwicmVzZXRUaW1lIjoyMDYuMTI0MDAwMDAwMDAyMTYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzExLDEyLDEzLDE0XSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCIsIjUiLCI2IiwiNyIsIjgiLCI5IiwiMTAiLCIxMSJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7IjExIjozLCIxMiI6MywiMjEiOjMsIjIyIjozfSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJ3Ijp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiJlZTE2LjQxODYzMzk4NDI4NTMyNSIsImxhcmdlIjoiMWUyNjE5MDU2ODIzOTY5NTk4IiwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjM1NS4yOTEwMDAwMDAwMDUzLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjUwIiwiMjEiOiIwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsiMTEiLCIyMSIsIjEyIiwiMjIiLCIzMSIsIjgxIiwiMTMiLCIyMyIsIjMyIiwiNDEiLCI0MiIsIjgyIiwiMTQiLCIyNCIsIjMzIiwiNDMiLCI1MSIsIjUyIiwiNTMiLCI4MyIsIjkxIiwiOTIiLCI5MyIsIjM0IiwiNDQiLCI1NCIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiODQiLCI5NCIsIjEwMSIsIjEwMiIsIjEwMyIsIjEwNCIsIjcxIiwiNzIiLCI3MyIsIjc0IiwiMTExIiwiMTEyIiwiMTEzIiwiMTE0Il0sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGwsImZpc2giOiI0LjY5NDUyMzI2MjExMzcxODVlMjciLCJhdXRvVXBncmFkZSI6dHJ1ZSwiY2FuQnV5MTE0Ijp0cnVlfSwiciI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiNDEzMTg2NTczMjA2IiwiYmVzdCI6IjQxMzE4NjU3MzIwNiIsInRvdGFsIjoiNDEzMTg2NTczMjA2IiwicmVzZXRUaW1lIjoyMDYuMTI0MDAwMDAwMDAyMTYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMjA2NTkzMjg2NjAzIiwiMTIiOiIxMzc3Mjg4NTc3MzQiLCIxMyI6IjIwNjU5MzI4NjYwMiIsIjIxIjoiODI2MzczMTQ2NDEiLCIyMiI6IjUzNjM3IiwiMjMiOiI2ODg2NDQyODg2NiIsIjMxIjoiNDEzMTg2NTczMTkiLCIzMiI6IjEwMzI5NjY0MzI5NSIsIjMzIjoiNDU5MDk2MTkyNDEiLCI0MSI6IjQxMzE4NjU3MzExIiwiNDIiOiI4MjYzNzMxNDU1IiwiNDMiOiI0MTMxODY1NzMxMSJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7IjExIjp0cnVlLCIxMiI6IiIsIjEzIjoiIiwiMTQiOiIiLCIxNSI6IiIsIjE2IjoiIiwiMjEiOiIiLCIyMiI6dHJ1ZSwiMjMiOnRydWUsIjI0Ijp0cnVlLCIyNSI6dHJ1ZSwiMjYiOnRydWUsIjMxIjoiIiwiMzIiOnRydWUsIjMzIjp0cnVlLCIzNCI6dHJ1ZSwiMzUiOnRydWUsIjM2Ijp0cnVlLCI0MSI6IiIsIjQyIjp0cnVlLCI0MyI6dHJ1ZSwiNDQiOnRydWUsIjQ1Ijp0cnVlLCI0NiI6dHJ1ZSwiNTEiOiIiLCI1MiI6dHJ1ZSwiNTMiOnRydWUsIjU0Ijp0cnVlLCI1NSI6dHJ1ZSwiNTYiOnRydWUsIjYxIjoiIiwiNjIiOnRydWUsIjYzIjp0cnVlLCI2NCI6dHJ1ZSwiNjUiOnRydWUsIjY2Ijp0cnVlfSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTQsMTEsMTMsMTIsMTUsMjUsMjQsMjMsMjIsMjEsMzMsMzEsMzIsMTQsMTQsMzQsMzUsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTRdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwicmVzZXRUaW1lcyI6MCwicmVzZWFyY2hlcnMiOiI2LjE2OTk3MjE0MTUzNzUwMWU3OTAzNTQ0NzM3MTYifSwidCI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMS44MDQ4MjU2MzMxMjc5MzY5ZTI1IiwiYmVzdCI6IjEuODA0ODI1NjMzMTI3OTM2OWUyNSIsInRvdGFsIjoiMS44MDQ4MjU2MzMxMjc5MzY5ZTI1IiwibGVhdmVzIjoiMWU1MCIsInJlc2V0VGltZSI6MjA2LjEyNDAwMDAwMDAwMjE2LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjMwIiwiMTIiOiIzMCIsIjEzIjoiMzAifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzEzLDE0LCIxMSIsIjIxIiwiMzEiLCI0MSIsIjUxIiwiNjEiLCIxMiIsIjEzIiwiMTQiLCIzMiIsIjMzIiwiNDIiLCI0MyIsIjQ0IiwiNzEiLCI4MiIsIjgxIiwiNzMiLCI4MyIsIjcyIiwiOTEiLDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LCIxMzEiLCIxMjEiLDEzLDE0LCIxMTEiLCIxMDEiLDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0LDEzLDE0XSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJidWxrIjpmYWxzZSwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJhdXRvVXBncmFkZSI6dHJ1ZX0sImUiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjM0MSIsImVjb2xvZ3kiOiIxLjQzNTYxNDQyNzQ0NzM3OTRlMjczIiwiYmVzdCI6IjM0MSIsInRvdGFsIjoiMzc4IiwiY29vbGRvd24iOiItMzMxLjc5MjAwMDAwMDAwNSIsImxhc3RBYmlsaXR5IjoxMSwiYXV0b0FiaWxpdHkiOmZhbHNlLCJyZXNldFRpbWUiOjMzMS43OTIwMDAwMDAwMDUsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMTE4In0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOnRydWUsIjEyIjp0cnVlfSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMjEiLCIyMiIsIjIzIiwiMjQiXSwibWlsZXN0b25lcyI6WyIwIiwiMyIsIjUiLCI3IiwiOSIsIjIiLCI0IiwiNiIsIjgiLCIxIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjE1IiwiMjEiLCIyMiIsIjIzIiwiMjQiLCIyNSJdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGwsImF1dG9SZXNldCI6dHJ1ZSwiYXV0b1VwZ3JhZGUiOnRydWV9LCJyZSI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiNzYiLCJiZXN0IjoiNzYiLCJ0b3RhbCI6Ijc2IiwicmVzZXRUaW1lIjoyMDYuMTI0MDAwMDAwMDAyMTYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOlsiMCIsIjEiLCIyIiwiMyIsIjQiXSwibGFzdE1pbGVzdG9uZSI6IjQiLCJhY2hpZXZlbWVudHMiOlsiMjQiLCIxMSIsIjEyIiwiMTMiLCIxNCIsIjE1IiwiMTYiLCIyMSIsIjIyIiwiMjMiXSwiY2hhbGxlbmdlcyI6eyIxMSI6MywiMTIiOjMsIjIxIjozfSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJuIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIwIiwiYmVzdCI6IjAiLCJ0b3RhbCI6IjAiLCJhc2giOiI3LjY5NDE3MjQ0MDM2NjcyMmU0NCIsInNvaWwiOiI0LjI2NTM2OTk1MzI1NzUzNWUyMyIsIm1hZyI6IjE0MTMwMjk4MjgzNzYwLjc2MiIsImVuZXJneSI6IjgyNC41MjQ0MzA0MDA5MzciLCJyZXNldFRpbWUiOjMzMC45OTMwMDAwMDAwMDQ5LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOnRydWV9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsiMzEiLCIzMiIsMzIsIjExIiwiMTIiLCIxMyIsIjE0IiwiMjEiLCIyMiIsIjIzIiwiMjQiLCI0MSIsIjQyIiwiNDMiLCI0NCIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiNzEiLCI3MiIsIjczIiwiNzQiXSwibWlsZXN0b25lcyI6WyIxMDIiLCIxMDAiLCIxMDEiLCIyIiwiMyIsIjQiLCIwIiwiNSIsIjEiLCI2Il0sImxhc3RNaWxlc3RvbmUiOiI2IiwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6eyIxMSI6MCwiMTIiOjAsIjEzIjowLCIxNCI6MH0sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJwbGFudEJ1ZyI6ZmFsc2UsIndpbGRsaWZlQnVnIjpmYWxzZSwicmVzZWFyY2hCdWciOmZhbHNlLCJiZWVzIjoiMTUzMi41NjIwODQ0NjYwNCIsInNwaWRlcnMiOiIxNTMyLjU2MjA4NDQ2NjA0IiwiYnV0dGVyZmxpZXMiOiI1NDQ1NDAuMzU1NTg4OTQ2OCIsImF1dG9VcGdyYWRlIjp0cnVlfSwiYyI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMTMiLCJjb25zZXJ2YXRpb24iOiIxLjE2ODE1MDMzNjI3MDI1NzJlMjI2IiwiYmVzdCI6IjEzIiwidG90YWwiOiIxMyIsInJlc2V0VGltZSI6MzU1LjI5MTAwMDAwMDAwNTMsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMTY5IiwiMTIiOiIxNjkiLCIxMyI6IjI0In0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOiIifSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTEsMTIsMTMsMTQsMTUsMjEsMjIsMjMsMjQsMjUsMzEsMzIsMzMsMzQsMzUsNDEsNDIsNDMsNDQsNDUsNTEsNTIsNTMsNTQsNTVdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiLCI3Il0sImxhc3RNaWxlc3RvbmUiOiI3IiwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJhdXRvQ2xpY2thYmxlIjpmYWxzZX0sImJsYW5rIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6ODY1NDEuODEzNDIxNjc1MTIsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwidHJlZS10YWIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo4NjU0MS44MTM0MjE2NzUxMiwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJibGFuazIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjoxNjM5OS4zMDIxMjE1MDUxNzgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiZGV2U3BlZWQiOiIxIn0=")
+            },
+            style() {return{
+                'background-color': tmp.n.color,
+            }},
+        },
     },
     achievements: {
         11: {
@@ -498,6 +510,31 @@ addLayer("a", { // Achievements layer
             done() {return hasMilestone('c', 3)},
             tooltip: "Complete the 4th Conservation Milestone",
         },
+        121: {
+            name: "Why did you not do this sooner?",
+            done() {return hasMilestone('n', 100)},
+            tooltip: "Get 1 Bee",
+        },
+        122: {
+            name: "Oh no, these are like rabbits...",
+            done() {return hasMilestone('n', 102)},
+            tooltip: "Get 1 Butterfly",
+        },
+        123: {
+            name: "Is that a tuba's tree reference???",
+            done() {return hasUpgrade('c', 45)},
+            tooltip: "See various levels of inflation",
+        },
+        124: {
+            name: "Challenge? No.",
+            done() {return hasUpgrade('c', 53)},
+            tooltip: "Make it so that there's no reason to go into 'Bug Infestation'",
+        },
+        125: {
+            name: "...So what are we trying to do here?",
+            done() {return hasMilestone('n', 6)},
+            tooltip: "Get 18 septillion trees",
+        },
     },
 }),
 addLayer("p", { // Plants layer
@@ -607,6 +644,7 @@ addLayer("p", { // Plants layer
     directMult() {
         let mult = new Decimal(1)
         if(inChallenge('n', 11)) mult = mult.mul(0.5)
+        if(inChallenge('n', 14) && player.n.plantBug) mult = mult.mul(0.01)
         return mult
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -1505,7 +1543,7 @@ addLayer("w", { // Wildlife layer
     baseAmount() {return player.p.points}, // Get the current amount of baseResource
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     branches: ['p', 'g', 'z'],
-    autoUpgrade() {return hasMilestone('re', 0) && player.w.autoUpgrade},
+    autoUpgrade() {return (hasMilestone('re', 0) || hasMilestone('c', 4)) && player.w.autoUpgrade},
     tooltip() {
         let tooltip = formatWhole(player.w.points)+" Wildlife"
         if(hasUpgrade('e', 14)) tooltip = tooltip + "<br><font size = -1>"+formatWhole(player.w.fish)+" Fish</font>"
@@ -1563,7 +1601,7 @@ addLayer("w", { // Wildlife layer
             player.w.large=getLogisticAmount(player.w.large, player.w.points.pow(0.1).times(upgradeEffect('w', 14)).times(buyableEffect('r', 42)), 0.1, diff)
         }
         player.w.points=getLogisticAmount(player.w.points, gain, upgradeEffect('w', 22).times(hasUpgrade('w', 61) ? 0.02 : 0.095), new Decimal(diff).times(tmp.w.wildlifeSpeed)).max(0)
-        if(isNaN(player.w.points)) player.w.points = new Decimal(0)
+        if(inChallenge('n', 14) && player.n.wildlifeBug) player.w.points = player.w.points.min(gain)
         
         let passiveFish = new Decimal(0)
         if(hasMilestone('z', 10)) passiveFish = passiveFish.add(0.01)
@@ -1597,9 +1635,14 @@ addLayer("w", { // Wildlife layer
         gain = gain.mul(smartUpgradeEffect('c', 11))
         gain = gain.mul(smartUpgradeEffect('c', 22))
         if(hasAchievement('re', 11)) gain = gain.pow(1.1)
+        gain = gain.pow(player.n.bees.add(1).mul(player.n.spiders.add(1)).mul(player.n.butterflies.add(1)).max(1).log(10).add(1))
         
         if(inChallenge('re', 11)) gain = gain.pow(0.01)
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) gain = gain.pow(10)
+        if(inChallenge('n', 14) && player.n.wildlifeBug) gain = gain.max(1).log(10)
+
+        gain=gain.min(gain.div("ee11").root(player.w.points.add(gain).max(0).add(1).log(10).add(1).log(10).div(11).add(1)).mul("ee11"))
+        gain=gain.min(gain.div("ee16").root(player.w.points.add(gain).max(0).add(1).log(10).add(1).log(10).div(16).add(1)).mul("ee16"))
         return gain
     },
     wildlifeSpeed() {
@@ -2098,10 +2141,7 @@ addLayer("r", { // Research layer
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 1) amt = amt.pow(0.01)
         if(inChallenge('re', 11) && challengeCompletions('re', 11) >= 2) amt = amt.pow(10)
         if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
-        if(isNaN(amt)) {
-            amt = new Decimal(0)
-            doReset(this.layer)
-        }
+        if(inChallenge('n', 14) && player.n.researchBug) amt = amt.max(1).log(10)
         return amt
     }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -2813,7 +2853,7 @@ addLayer("t", { // Trees layer
     return base},
     milestonePopups() {return !player.re.best.gte(1)},
     canBuyMax: true,
-    autoUpgrade() {return player.t.autoUpgrade && hasMilestone('re', 1)},
+    autoUpgrade() {return player.t.autoUpgrade && (hasMilestone('re', 1) || hasMilestone('c', 6))},
     autoPrestige() {return hasMilestone('g', 0) && !(hasMilestone('t', 0) && player.t.bulk && getResetGain('t').lt(10))},
     resetsNothing() {return hasMilestone('g', 0)},
     tabFormat: [
@@ -2901,6 +2941,11 @@ addLayer("t", { // Trees layer
     gainExp() { // Calculate the exponent on main currency from bonuses
         let exp = new Decimal(1)
         return exp
+    },
+    directMult() {
+        let mult = new Decimal(1)
+        if(inChallenge('n', 14) && player.n.plantBug) mult = mult.mul(0.01)
+        return mult
     },
     update(diff) {
         player.t.leaves = player.t.leaves.add(smartUpgradeEffect('t', 12, new Decimal(0)).times(diff)).min("1e50")
@@ -3236,6 +3281,9 @@ addLayer("e", { // Ecosystems layer
     exponent: 1.1, // Prestige currency exponent
     base() {return 1.1},
     canBuyMax: true,
+    autoUpgrade() {return player.t.autoUpgrade && hasMilestone('c', 7)},
+    autoPrestige() {return player.e.autoReset},
+    resetsNothing() {return player.e.autoReset},
     tabFormat: {
         "Main": {
             content: [
@@ -3300,10 +3348,10 @@ addLayer("e", { // Ecosystems layer
     update(diff) {
         player.e.cooldown = player.e.cooldown.minus(diff)
         let active = getClickableState('e', 11) && !hasAchievement('e', 15)
-        if(!active) active = getClickableState('e', 12)
+        if(!active) active = getClickableState('e', 12) && !hasMilestone('c', 4)
         if(player.e.cooldown.lte(0) && active) {
             if(!hasAchievement('e', 15)) setClickableState('e', 11, false)
-            setClickableState('e', 12, false)
+            if(!hasMilestone('c', 4)) setClickableState('e', 12, false)
             let cooldown = new Decimal(30)
             if(hasMilestone('e', 4)) cooldown = cooldown.minus(10)
             cooldown = cooldown.dividedBy(smartUpgradeEffect('p', 82))
@@ -3314,6 +3362,9 @@ addLayer("e", { // Ecosystems layer
             tmp.e.clickables[player.e.lastAbility].onClick()
         }
         if(hasMilestone('e', 9)) player.e.ecology = getLogisticAmount(player.e.ecology, milestoneEffect('e', 9), 0.1, diff)
+
+        if(hasAchievement('e', 15)) setClickableState('e', 11, true)
+        if(hasMilestone('c', 4)) setClickableState('e', 12, true)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
     doReset(resettingLayer) {
@@ -3345,7 +3396,7 @@ addLayer("e", { // Ecosystems layer
         },
         12: {
             display() {return "Multiply Leaf Gain by "+format(new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0).pow(hasAchievement('e', 23)?1.75:1))+" (5s).<br>Currently: "+(getClickableState('e', 12) ? "Active":"Inactive")},
-            canClick() {return player.e.cooldown.lte(0)},
+            canClick() {return player.e.cooldown.lte(0) && !hasMilestone('c', 4)},
             unlocked() {return hasMilestone('e', 2)},
             effect() {return getClickableState(this.layer, this.id) ? new Decimal(5).add(hasMilestone('e', 8) ? player.e.points : 0).pow(hasAchievement('e', 23)?1.75:1) : 1},
             onClick() {
@@ -3504,6 +3555,7 @@ addLayer("e", { // Ecosystems layer
             cost(x) {
                 let cost = x.times(100)
                 if(x.gte(50)) cost = cost.pow(x.sub(25).div(25))
+                if(x.gte(100)) cost = cost.pow(x.sub(99))
                 cost = cost.times(smartMilestoneEffect('z', 8))
                 return cost
             },
@@ -3515,7 +3567,11 @@ addLayer("e", { // Ecosystems layer
             unlocked() {return hasUpgrade('e', 13)},
             effect() {return getBuyableAmount('e', 11).pow_base(0.95)},
             tooltip() {return "Currently: x"+format(thisBuyableEffect(this))},
-            purchaseLimit() {return hasUpgrade('w', 104)?100:50},
+            purchaseLimit() {
+                let eff = 50*(hasUpgrade('w', 104)?2:1)
+                if(hasUpgrade('c', 55)) eff = new Decimal(eff).mul(2)
+                return eff
+            },
         },
     },
     achievements: {
@@ -3598,6 +3654,8 @@ addLayer("re", { // Reclaimed ecosystems layer
         mult = new Decimal(1)
         mult = mult.div(smartMilestoneEffect('n', 3, {eco: 1, rec: 1}).rec)
         if(hasMilestone('n', 5)) mult = mult.div(1.5)
+        mult = mult.div(smartMilestoneEffect('n', 100))
+        mult = mult.div(smartUpgradeEffect('c', 41))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -3789,6 +3847,14 @@ addLayer("n", { // Natural disasters layer
         mag: new Decimal(0),
         // Hurricane
         energy: new Decimal(0),
+        // Bugs
+        plantBug: false,
+        wildlifeBug: false,
+        researchBug: false,
+
+        bees: new Decimal(0), // plant & wildlife bugs
+        spiders: new Decimal(0), // plant & research bugs
+        butterflies: new Decimal(0), // wildlife & research bugs
     }},
     color: "#555555",
     requires: new Decimal(600000),
@@ -3802,6 +3868,7 @@ addLayer("n", { // Natural disasters layer
     canBuyMax: true,
     type: "static",
     prestigeNotify() {return false},
+    autoUpgrade() {return player.t.autoUpgrade && hasMilestone('c', 7)},
     branches: [],
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= layers[this.layer].row) return;
@@ -3825,7 +3892,7 @@ addLayer("n", { // Natural disasters layer
             unlocked() {return true},
             content: [
                 ["display-text", function() {
-                    return "Once you press this button, the leaves effect will be log10'ed and all previous progress will be reset but you will unlock the world of natural disasters.<br>This is how you will be able to progress."
+                    return "Once you press this button, the leaves effect will be log10'ed and all previous progress will be reset but you will unlock the world of natural disasters.<br>Row 1 & 2 layers and research buyables will be automated<br>This is how you will be able to progress."
                 }],
                 "blank",
                 ["clickable", [11]],
@@ -3918,10 +3985,98 @@ addLayer("n", { // Natural disasters layer
                 "blank",
             ],
         },
+        Bugs: {
+            unlocked() {return getClickableState('n', 11) && hasMilestone('c', 3)},
+            content: [
+                ["display-text", function() {
+                    return `
+                    You will gain a different bug for each pair of bugs enabled, starting at <h2>1e13</h2> points and each bug amount is capped at 60s of production.<br>
+                    Each bug nerfs you in a different way when it is enabled and you are in the challenge and point gain is log10ed.<br>
+                    Your gained bugs raise wildlife gain to the log10 of the product of their amounts.
+                    `
+                }],
+                "blank",
+                ["display-text", function() {
+                    return "You have "+format(player.n.bees)+" bees (pw)<br>You have "+format(player.n.spiders)+" spiders (pr)<br>You have "+format(player.n.butterflies)+" butterflies (wr)<br><br>Raising wildlife gain to ^"+format(player.n.bees.add(1).mul(player.n.spiders.add(1)).mul(player.n.butterflies.add(1)).max(1).log(10).add(1))
+                }],
+                function() {
+                    return hasMilestone('n', 100) ?
+                        [
+                            "display-text", 
+                            "Dividing Reclaimed Ecosystems cost by ÷"+format(milestoneEffect('n', 100)),
+                        ] : undefined
+                },
+                function() {
+                    return hasMilestone('n', 101) ?
+                        [
+                            "display-text", 
+                            "Multiplying Conservation gain by x"+format(milestoneEffect('n', 101)),
+                        ] : undefined
+                },
+                function() {
+                    return hasMilestone('n', 102) ?
+                        [
+                            "display-text", 
+                            "Multiplying butterfly gain by x"+format(milestoneEffect('n', 102)),
+                        ] : undefined
+                },
+                "blank",
+                ["display-text", function() {
+                    return "Base gain: "+format(player.points.max(10).log(10).sub(13).max(0).add(1).log(10))+"/s<br>Base cap: "+format(player.points.max(10).log(10).sub(13).max(0).add(1).log(10).mul(60))
+                }],
+                ["row",[
+                    function() {return inChallenge('n', 14) ? ["display-text", `[${player.n.plantBug}]`] : ["toggle", ["n", "plantBug"]]},
+                    "blank",
+                    ["display-text", "Toggle a bug which reduces plant and tree gain (p)"],
+                ]],
+                ["row",[
+                    function() {return inChallenge('n', 14) ? ["display-text", `[${player.n.wildlifeBug}]`] : ["toggle", ["n", "wildlifeBug"]]},
+                    "blank",
+                    ["display-text", "Toggle a bug which reduces wildlife gain and caps wildlife at it's gain/sec (w)"],
+                ]],
+                ["row",[
+                    function() {return inChallenge('n', 14) ? ["display-text", `[${player.n.researchBug}]`] : ["toggle", ["n", "researchBug"]]},
+                    "blank",
+                    ["display-text", "Toggle a bug which reduces research gain (r)"],
+                ]],
+                ["display-text", function() {
+                    return "Currently: "+(player.n.plantBug?"p":"")+(player.n.wildlifeBug?"w":"")+(player.n.researchBug?"r":"")
+                }],
+                "blank",
+                ["challenge", [14]],
+                "blank",
+                ["milestones", [100, 101, 102]],
+                "blank",
+            ],
+        },
     },
     onPrestige() {
         player.n.ash = new Decimal(0)
         player.n.soil = new Decimal(0)
+    },
+    automate() {
+        if(getClickableState('n', 11)) {
+            buyMaxBuyable('p', 11)
+            buyMaxBuyable('p', 12)
+            buyBuyable('p', 13)
+
+            buyMaxBuyable('g', 11)
+            buyMaxBuyable('g', 12)
+            buyMaxBuyable('g', 13)
+            buyMaxBuyable('g', 21)
+
+            buyBuyable('w', 11)
+
+            buyMaxBuyable('r', 11)
+            buyMaxBuyable('r', 12)
+            buyMaxBuyable('r', 13)
+            buyMaxBuyable('r', 21)
+            buyMaxBuyable('r', 22)
+            buyMaxBuyable('r', 23)
+            buyMaxBuyable('r', 31)
+            buyMaxBuyable('r', 32)
+            buyMaxBuyable('r', 33)
+        }
     },
     update(diff) {
         let gain = new Decimal(0)
@@ -3944,6 +4099,23 @@ addLayer("n", { // Natural disasters layer
             gain = gain.mul(smartUpgradeEffect('n', 72))
             gain = gain.mul(smartUpgradeEffect('c', 35))
             player.n.energy = player.n.energy.max(gain)
+        }
+        let mult = player.points.max(10).log(10).sub(13).max(0).add(1).log(10)
+        if(inChallenge('n', 14) || hasUpgrade('c', 51)) {
+            gain = ((player.n.plantBug && player.n.wildlifeBug) || hasUpgrade('c', 51)) ? mult : new Decimal(0)
+            player.n.bees = player.n.bees.add(gain.mul(diff)).min(gain.mul(60)).max(player.n.bees)
+        }
+        if(inChallenge('n', 14) || hasUpgrade('c', 52)) {
+            gain = ((player.n.plantBug && player.n.researchBug) || hasUpgrade('c', 52)) ? mult : new Decimal(0)
+            player.n.spiders = player.n.spiders.add(gain.mul(diff)).min(gain.mul(60)).max(player.n.spiders)
+        }
+        if(inChallenge('n', 14) || hasUpgrade('c', 53)) {
+            gain = ((player.n.wildlifeBug && player.n.researchBug) || hasUpgrade('c', 53)) ? mult : new Decimal(0)
+
+            gain = gain.mul(smartMilestoneEffect('n', 102))
+            gain = gain.mul(smartUpgradeEffect('c', 43))
+
+            player.n.butterflies = player.n.butterflies.add(gain.mul(diff)).min(gain.mul(60)).max(player.n.butterflies)
         }
 
     },
@@ -3977,6 +4149,14 @@ addLayer("n", { // Natural disasters layer
         },
         13: {
             name: "Hurricane",
+            fullDisplay: " ",
+            canComplete: false,
+            style() {return{
+                'height': '150px',
+            }}
+        },
+        14: {
+            name: "Bug Infestation",
             fullDisplay: " ",
             canComplete: false,
             style() {return{
@@ -4024,6 +4204,34 @@ addLayer("n", { // Natural disasters layer
             effectDescription() {return "Divide Reclaimed Ecosystem cost by 1.5"},
             unlocked() {return hasUpgrade('n', 74)},
             done() {return hasUpgrade('n', 74) && player.re.points.gte(20)},
+        },
+        6: {
+            requirementDescription: "1.80e25 Trees",
+            effectDescription() {return "Coming soon..."},
+            unlocked() {return hasMilestone('c', 3)},
+            done() {return player.t.points.gte("1.8e25")},
+        },
+        
+        100: {
+            requirementDescription: "1 Bee",
+            effectDescription() {return "Add another bug effect which divides Reclaimed Ecosystems costs which is primarily affected by bees<br>Currently: ÷"+format(milestoneEffect(this.layer, this.id))},
+            unlocked() {return hasMilestone('c', 3)},
+            done() {return hasMilestone('c', 3) && player.n.bees.gte(1)},
+            effect() {return player.n.bees.add(1).pow(3).mul(player.n.spiders.add(1)).mul(player.n.butterflies.add(1)).log(10).max(1)},
+        },
+        101: {
+            requirementDescription: "1 Spider",
+            effectDescription() {return "Add another bug effect which multiplies conservation gain which is primarily affected by spiders<br>Currently: x"+format(milestoneEffect(this.layer, this.id))},
+            unlocked() {return hasMilestone('c', 3)},
+            done() {return hasMilestone('c', 3) && player.n.spiders.gte(1)},
+            effect() {return player.n.spiders.add(1).pow(3).mul(player.n.bees.add(1)).mul(player.n.butterflies.add(1)).log(10).max(1)},
+        },
+        102: {
+            requirementDescription: "1 Butterfly",
+            effectDescription() {return "Add another bug effect which multiplies butterfly gain which is primarily affected by butterflies<br>Currently: x"+format(milestoneEffect(this.layer, this.id))},
+            unlocked() {return hasMilestone('c', 3)},
+            done() {return hasMilestone('c', 3) && player.n.butterflies.gte(1)},
+            effect() {return player.n.butterflies.add(1).pow(3).mul(player.n.bees.add(1)).mul(player.n.spiders.add(1)).log(10).max(1)},
         },
     },
     upgrades: {

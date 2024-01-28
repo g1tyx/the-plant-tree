@@ -13,11 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "10",
-	name: "Conservation Sites",
+	num: "11",
+	name: "Bugs",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
+    <h3>v11</h3><br>
+        Bugs - Added with 3 Resources and 3 Milestones.<br>
+        Conservation Sites - Added 10 Upgrades and 4 Milestones.<br>
+        Natural Disasters - Added Bugs and 1 Milestone.<br><br>
     <h3>v10</h3><br>
         Conservation Sites - Added with 15 Upgrades, 4 Milestones and 3 Buyables.<br>
         Natural Disasters - Added 3 Milestones.<br>
@@ -151,16 +155,19 @@ function getPointGen() {
         if(inChallenge('n', 11)) gain = gain.pow(0.75).min(gain)
         if(inChallenge('n', 12)) gain = gain.div(gain.add(player.points).pow(0.75))
         if(inChallenge('n', 13)) gain = gain.max(1).log(10).max(gain.root(100))
+        if(inChallenge('n', 14)) gain = gain.max(1).log(10)
 
     // Total Point Gain
     gain = gain.mul(smartUpgradeEffect('n', 63))
     
     // Softcaps
     if(gain.gte(new Decimal("1.80e308"))) gain=gain.dividedBy(new Decimal("1.80e308")).pow(0.95).times(new Decimal("1.80e308"))
+    gain=gain.min(gain.div("ee16").root(player.points.add(gain).max(0).add(1).log(10).add(1).log(10).div(16).add(1)).mul("ee16"))
 
 
     // Bugfixes
     if(gain.lt(0)) return new Decimal(0)
+    if(!msReady) return new Decimal (0)
 	return gain
 }
 
@@ -172,13 +179,14 @@ function addedPlayerData() { return {
 var displayThings = [
     function() {return "Press CTRL to See Specific Values"},
     function() {return "TPS: "+formatWhole(player.a.fps)},
+    function() {return player.points.gte("e1e16")?"You've gone too far. You're even past ee16 points. Points are sqrt'ed past this point and this gets worse the more points you have.":null},
     //function() {return hasUpgrade('g', 54) ? "<a v-bind:style={color: #00AAFF} href=https://raw.githack.com/THENONYMOUS/The-Random-Tree/plant-tree-extreme/index.html>Extreme Mode</a>" : ""}
 ]
 
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('c', 3)
+	return hasMilestone('n', 6)
 }
 
 
