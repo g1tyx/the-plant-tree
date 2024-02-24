@@ -27,7 +27,7 @@ addLayer("a", { // Achievements layer
         },
         "Savebank": {
             content: [
-                ["clickables", [2, 3, 4, 5]],
+                ["clickables", [2, 3, 4, 5, 6]],
             ],
         },
         "Time Control": {
@@ -201,6 +201,18 @@ addLayer("a", { // Achievements layer
             },
             style() {return{
                 'background-color': tmp.n.color,
+            }},
+        },
+        61: {
+            title: "Mountains",
+            display: "Layer Finsihed",
+            canClick: true,
+            onClick() {
+                if(!confirm("Your current progress will not be saved!")) return;
+                importSave("eyJ0YWIiOiJvcHRpb25zLXRhYiIsIm5hdlRhYiI6InRyZWUtdGFiIiwidGltZSI6MTcwODc5MTQ1NDQzNywibm90aWZ5Ijp7fSwidmVyc2lvblR5cGUiOiJ0aGVub255bW91cy10aGVwbGFudHRyZWUxNzU4Njc0NSIsInZlcnNpb24iOiIxMSIsInRpbWVQbGF5ZWQiOjkxOTU5Ljg5ODQyMTc2NTI2LCJrZWVwR29pbmciOnRydWUsImhhc05hTiI6dHJ1ZSwicG9pbnRzIjoiZWUzOC4wMDAwOTgxMDM3MDkwNyIsInN1YnRhYnMiOnsiY2hhbmdlbG9nLXRhYiI6e30sInAiOnsibWFpblRhYnMiOiJUcmVlcyJ9LCJhIjp7Im1haW5UYWJzIjoiVGltZSBDb250cm9sIn0sImUiOnsibWFpblRhYnMiOiJNYWluIn0sInciOnsibWFpblRhYnMiOiJNYWluIn0sInIiOnsibWFpblRhYnMiOiJNaW5pZ2FtZSJ9LCJuIjp7Im1haW5UYWJzIjoiTWFpbiJ9LCJjIjp7Im1haW5UYWJzIjoiQ29uc2VydmF0aW9uIn0sIm0iOnsibWFpblRhYnMiOiJNb3VudGFpbnMifX0sImxhc3RTYWZlVGFiIjoibiIsImluZm9ib3hlcyI6eyJhIjp7InBsYW50SGVscCI6ZmFsc2UsImdhcmRlbkhlbHAiOmZhbHNlLCJ6b25lSGVscCI6ZmFsc2UsIndpbGRsaWZlSGVscCI6ZmFsc2UsInJlc2VhcmNoSGVscCI6ZmFsc2UsInRyZWVIZWxwIjpmYWxzZX19LCJpbmZvLXRhYiI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjkxOTU5Ljg5ODQyMTc2NTI2LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sIm9wdGlvbnMtdGFiIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6OTE5NTkuODk4NDIxNzY1MjYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiY2hhbmdlbG9nLXRhYiI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjkxOTU5Ljg5ODQyMTc2NTI2LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sImEiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6Ij8iLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6OTE5NTkuODk4NDIxNzY1MjYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6IiIsIjEyIjoiIiwiMTMiOiIiLCIxNCI6IiIsIjIxIjoiIiwiMjIiOiIiLCIyMyI6IiIsIjMxIjoiIiwiMzIiOiIiLCIzMyI6IiIsIjQxIjoiIiwiNDIiOiIiLCI0MyI6IiIsIjUxIjoiIiwiNTIiOiIiLCI1MyI6IiIsIjYxIjoiIn0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOlsiMCJdLCJsYXN0TWlsZXN0b25lIjoiMCIsImFjaGlldmVtZW50cyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjE1IiwiMjEiLCIyMiIsIjM1IiwiMjQiLCIyMyIsIjI1IiwiMzEiLCIzMiIsIjMzIiwiMzQiLCI0MSIsIjQyIiwiNDQiLCI0MyIsIjQ1IiwiNTEiLCI1MiIsIjUzIiwiNTQiLCI1NSIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiNjUiLCI3MSIsIjcyIiwiNzMiLCI3NCIsIjc1IiwiODEiLCI4MiIsIjgzIiwiODQiLCI4NSIsIjkxIiwiOTIiLCI5MyIsIjk0IiwiOTUiLCIxMDEiLCIxMDIiLCIxMDMiLCIxMDQiLCIxMDUiLCIxMDYiLCIxMTEiLCIxMTIiLCIxMTMiLCIxMTUiLCIxMTQiLCIxMjEiLCIxMjIiLCIxMjMiLCIxMjQiLCIxMjUiXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwicGxheWVyTmFtZSI6IlBsYXllciIsImZwcyI6MTkuNDQzOTA2NDI4NDY0MDF9LCJwIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIyLjQxMDQ5NTgyNzgzMjE0NjRlNDQiLCJiZXN0IjoiMi40MTA0OTU4Mjc4MzIxNDY0ZTQ0IiwidG90YWwiOiIyLjQxMDQ5NTgyNzgzNTIyMjZlNDQiLCJyZXNldFRpbWUiOjYyNy42NTg5OTk5OTk5OTksImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMTAwMDAwMDAwMSIsIjEyIjoiNS4wMDExMjk1ODgyNjgyODZlMzciLCIxMyI6IjIwMCJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMjEiLCIyMiIsIjIzIiwiMjQiLCIzMSIsIjMyIiwiMzMiLCIzNCIsIjQxIiwiNDIiLCI0MyIsIjQ0IiwiNTEiLCI1MiIsIjUzIiwiNTQiLCI2MSIsIjYyIiwiNjMiLCI2NCIsIjcxIiwiNzIiLCI3MyIsIjc0IiwiODEiLCI4MiJdLCJtaWxlc3RvbmVzIjpbIjAiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsfSwiZyI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMzU5MzgzNjAiLCJiZXN0IjoiMzU5MzgzNjAiLCJ0b3RhbCI6IjM2MDAwMjQ4IiwicmVzZXRUaW1lIjo2MzYuMjAwOTk5OTk5OTk5MSwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiI3MTg3NjUyIiwiMTIiOiI3MTg3NjUyIiwiMTMiOiIyMzk1ODg0IiwiMjEiOiIzNTkzNzU2In0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsiMTEiLCIxMiIsIjEzIiwiMTQiLCIyMSIsIjIyIiwiMjMiLCIyNCIsIjMxIiwiMzIiLCIzMyIsIjM0IiwiNDEiLCI0MiIsIjQzIiwiNDQiLCI1MSIsIjUyIiwiNTMiLCI1NCJdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sInoiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjY3MSIsImJlc3QiOiI2NzEiLCJ0b3RhbCI6IjgwMiIsInJlc2V0VGltZSI6NjM2LjIwMDk5OTk5OTk5OTEsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzExLDEyLDEzLDE0XSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCIsIjUiLCI2IiwiNyIsIjgiLCI5IiwiMTAiLCIxMSJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7IjExIjozLCIxMiI6MywiMjEiOjMsIjIyIjozfSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJ3Ijp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiJlZTIzLjg3Njc2MDczNzY4OTU1IiwibGFyZ2UiOiJlZTIyLjg3NDY3OTA2MTg1ODcyIiwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjY3MC43OTYwMDAwMDAwMDQxLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjUwIiwiMjEiOiIwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsiMTEiLCIyMSIsIjEyIiwiMjIiLCIzMSIsIjgxIiwiOTEiLCI5MiIsIjEzIiwiMjMiLCIzMiIsIjQxIiwiNDIiLCI4MiIsIjE0IiwiMjQiLCIzMyIsIjQzIiwiNTEiLCI1MiIsIjUzIiwiODMiLCI5MyIsIjk0IiwiMTAxIiwiMTAyIiwiMzQiLCI0NCIsIjU0IiwiNjEiLCI2MiIsIjYzIiwiNjQiLCI4NCIsIjEwMyIsIjEwNCIsIjcxIiwiNzIiLCI3MyIsIjc0IiwiMTExIiwiMTEyIiwiMTEzIiwiMTE0Il0sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGwsImZpc2giOiI0LjE0NTgzNDY3MTc1OTk0NGU0MSIsImF1dG9VcGdyYWRlIjp0cnVlLCJjYW5CdXkxMTQiOnRydWV9LCJyIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiI0LjEwNjA2MTI5OTAyMDI2NmUxOCIsImJlc3QiOiI0LjEwNjA2MTI5OTAyMDI2NmUxOCIsInRvdGFsIjoiNC4xMDYwNjEyOTkwMjAyNjZlMTgiLCJyZXNldFRpbWUiOjYzNi4yMDA5OTk5OTk5OTkxLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjIuMDUzMDMwNjQ5NTEwMTMyNWUxOCIsIjEyIjoiMS4zNjg2ODcwOTk2NzM0MjE1ZTE4IiwiMTMiOiIyLjA1MzAzMDY0OTUxMDEzMjVlMTgiLCIyMSI6IjguMjEyMTIyNTk4MDQwNTMzZTE3IiwiMjIiOiIzOTkzMTAyIiwiMjMiOiI2Ljg0MzQzNTQ5ODM2NzEwNmUxNyIsIjMxIjoiNC4xMDYwNjEyOTkwMjAyNjZlMTciLCIzMiI6IjEuMDI2NTE1MzI0NzU1MDY2MmUxOCIsIjMzIjoiNC41NjIyOTAzMzIyNDQ3MzdlMTciLCI0MSI6IjQuMTA2MDYxMjk5MDIwMjY2ZTE3IiwiNDIiOiI4LjIxMjEyMjU5ODA0MDUzM2UxNiIsIjQzIjoiNC4xMDYwNjEyOTkwMjAyNjZlMTcifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6dHJ1ZSwiMTIiOiIiLCIxMyI6IiIsIjE0IjoiIiwiMTUiOiIiLCIxNiI6IiIsIjIxIjoiIiwiMjIiOnRydWUsIjIzIjp0cnVlLCIyNCI6dHJ1ZSwiMjUiOnRydWUsIjI2Ijp0cnVlLCIzMSI6IiIsIjMyIjp0cnVlLCIzMyI6dHJ1ZSwiMzQiOnRydWUsIjM1Ijp0cnVlLCIzNiI6dHJ1ZSwiNDEiOiIiLCI0MiI6dHJ1ZSwiNDMiOnRydWUsIjQ0Ijp0cnVlLCI0NSI6dHJ1ZSwiNDYiOnRydWUsIjUxIjoiIiwiNTIiOnRydWUsIjUzIjp0cnVlLCI1NCI6dHJ1ZSwiNTUiOnRydWUsIjU2Ijp0cnVlLCI2MSI6IiIsIjYyIjp0cnVlLCI2MyI6dHJ1ZSwiNjQiOnRydWUsIjY1Ijp0cnVlLCI2NiI6dHJ1ZX0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzE0LDExLDEzLDEyLDE1LDI1LDI0LDIzLDIyLDIxLDMzLDMxLDMyLDE0LDE0LDM0LDM1LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0LDE0XSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsInJlc2V0VGltZXMiOjAsInJlc2VhcmNoZXJzIjoiZWUxOS4wNzA1MzYxNDA3Mzk5NjQifSwidCI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMS4wNzkxMDY1NjgwOTQyMzAyZTM5IiwiYmVzdCI6IjEuMDc5MTA2NTY4MDk0MjMwMmUzOSIsInRvdGFsIjoiMS4wNzkxMDY1NjgwOTQyNDc4ZTM5IiwibGVhdmVzIjoiMi44OTQwMzc2OTQ3OTcxMTRlNjYiLCJyZXNldFRpbWUiOjYzNi4yMDA5OTk5OTk5OTkxLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjMwIiwiMTIiOiIzMCIsIjEzIjoiMzAifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzEzLDE0LCIxMSIsIjIxIiwiMzEiLCI0MSIsIjUxIiwiNjEiLCIxMiIsIjEzIiwiMTQiLCIzMiIsIjMzIiwiNDIiLCI0MyIsIjQ0IiwiNzEiLCI4MiIsIjgxIiwiNzMiLCI4MyIsIjcyIiwiOTEiLDEzLDE0LCIxMzEiLDEzLDE0LCIxMjEiLCIxMTEiLCIxMDEiXSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJidWxrIjpmYWxzZSwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJhdXRvVXBncmFkZSI6dHJ1ZX0sImUiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjExODMiLCJlY29sb2d5IjoiMS43NTYzNTkzOTI3MjU4NzgzZTUxMiIsImJlc3QiOiIxMTgzIiwidG90YWwiOiI3NjYiLCJjb29sZG93biI6IjQuOTc2MDAwMDAwMDAwMDA0IiwibGFzdEFiaWxpdHkiOjExLCJhdXRvQWJpbGl0eSI6dHJ1ZSwicmVzZXRUaW1lIjo2MzYuODUwOTk5OTk5OTk5MywiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiIxMjAifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6dHJ1ZSwiMTIiOnRydWV9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsiMTEiLCIxMiIsIjEzIiwiMTQiLCIyMSIsIjIyIiwiMjMiLCIyNCJdLCJtaWxlc3RvbmVzIjpbIjAiLCIzIiwiNSIsIjciLCI5IiwiMiIsIjQiLCI2IiwiOCIsIjEiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMTUiLCIyMSIsIjIyIiwiMjMiLCIyNCIsIjI1Il0sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbCwiYXV0b1Jlc2V0Ijp0cnVlLCJhdXRvVXBncmFkZSI6dHJ1ZX0sInJlIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIxMjgiLCJiZXN0IjoiMTI4IiwidG90YWwiOiIxMjgiLCJyZXNldFRpbWUiOjYzNi44NTA5OTk5OTk5OTkzLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiLCI0Il0sImxhc3RNaWxlc3RvbmUiOiI0IiwiYWNoaWV2ZW1lbnRzIjpbIjI0IiwiMTEiLCIxMiIsIjEzIiwiMTQiLCIxNSIsIjE2IiwiMjEiLCIyMiIsIjIzIl0sImNoYWxsZW5nZXMiOnsiMTEiOjMsIjEyIjozLCIyMSI6M30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJhdXRvUmVzZXQiOnRydWV9LCJuIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIwIiwiYmVzdCI6IjAiLCJ0b3RhbCI6IjAiLCJhc2giOiIxLjI5MzE2NjgyMDY2MTA1NTZlNjUiLCJzb2lsIjoiMS4xMzQ2MDc2Njk4MjQyNTg2ZTMzIiwibWFnIjoiMi4yMDg5Mzg5NzQ3NjEyOTllMTkiLCJlbmVyZ3kiOiI3NTQ0OS41ODA4NTMwMTc3MiIsInJlc2V0VGltZSI6NjM2LjIwMDk5OTk5OTk5OTEsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6dHJ1ZX0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WyIzMSIsIjMyIiwiMTEiLCIxMiIsIjEzIiwiMTQiLCIyMSIsIjIyIiwiMjMiLCIyNCIsIjQxIiwiNDIiLCI0MyIsIjQ0IiwiNjEiLCI2MiIsIjYzIiwiNjQiLCI3MSIsIjcyIiwiNzMiLCI3NCJdLCJtaWxlc3RvbmVzIjpbIjEwMiIsIjEwMCIsIjEwMSIsIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiLCI3Il0sImxhc3RNaWxlc3RvbmUiOiI3IiwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6eyIxMSI6MCwiMTIiOjAsIjEzIjowLCIxNCI6MH0sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJwbGFudEJ1ZyI6ZmFsc2UsIndpbGRsaWZlQnVnIjpmYWxzZSwicmVzZWFyY2hCdWciOmZhbHNlLCJiZWVzIjoiMjI4MC4wMDU4ODYyMjI1NDQiLCJzcGlkZXJzIjoiMjI4MC4wMDU4ODYyMjI1NDQiLCJidXR0ZXJmbGllcyI6IjExNDc5OTEuMDkwMDg1MjkzNiIsImF1dG9VcGdyYWRlIjp0cnVlfSwiYyI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMTYiLCJjb25zZXJ2YXRpb24iOiIxLjA0NzczNTEwOTQxMDExNzNlNDA4IiwiYmVzdCI6IjE2IiwidG90YWwiOiIxNiIsInJlc2V0VGltZSI6NjcwLjc5NjAwMDAwMDAwNDEsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMjc3IiwiMTIiOiIyNzciLCIxMyI6IjM1In0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOiIifSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTEsMTIsMTMsMTQsMTUsMjEsMjIsMjMsMjQsMjUsMzEsMzIsMzMsMzQsMzUsNDEsNDIsNDMsNDQsNDUsNTEsNTIsNTMsNTQsNTVdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiLCI3IiwiOCJdLCJsYXN0TWlsZXN0b25lIjoiOCIsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbCwiYXV0b0NsaWNrYWJsZSI6ZmFsc2V9LCJtIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIxMDAxIiwiYmVzdCI6IjEwMDEiLCJ0b3RhbCI6IjMzMjIiLCJyZXNldFRpbWUiOjYzNi4yMDA5OTk5OTk5OTkxLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjI1IiwiMTIiOiIxNSIsIjEzIjoiOSJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTEsMTIsMTMsMjEsMjIsMjMsMzEsMzIsMzNdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJjb29sZG93biI6Ii02NS4xMTE4NjA5OTk5OTk4NSJ9LCJibGFuayI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjkxOTU5Ljg5ODQyMTc2NTI2LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sInRyZWUtdGFiIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6OTE5NTkuODk4NDIxNzY1MjYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiYmxhbmsyIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6MTYzOTkuMzAyMTIxNTA1MTc4LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sImRldlNwZWVkIjoiMSJ9")
+            },
+            style() {return{
+                'background-color': tmp.m.color,
             }},
         },
     },
@@ -535,6 +547,32 @@ addLayer("a", { // Achievements layer
             done() {return hasMilestone('n', 6)},
             tooltip: "Get 18 septillion trees",
         },
+
+        131: {
+            name: "Prologue",
+            done() {return player.m.points.gte(1)},
+            tooltip: "Get 1 Mountain",
+        },
+        132: {
+            name: "Pyramid?",
+            done() {return hasUpgrade('m', 31)},
+            tooltip: "Get 'Mountain Mountain'",
+        },
+        133: {
+            name: "HMMMM",
+            done() {return tmp.m.totalBuyables.gte(1)},
+            tooltip: "Get a mountain buyable",
+        },
+        134: {
+            name: "We can't lose, right?",
+            done() {return player.c.conservation.gte("1.80e308")},
+            tooltip: "Reach 1.80e308 conservation",
+        },
+        135: {
+            name: "Farewell",
+            done() {return hasMilestone('n', 7)},
+            tooltip: "Reach e1.000e38 points",
+        },
     },
 }),
 addLayer("p", { // Plants layer
@@ -645,6 +683,7 @@ addLayer("p", { // Plants layer
         let mult = new Decimal(1)
         if(inChallenge('n', 11)) mult = mult.mul(0.5)
         if(inChallenge('n', 14) && player.n.plantBug) mult = mult.mul(0.01)
+        mult = mult.mul(tmp.m.effect.main)
         return mult
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -1014,6 +1053,7 @@ addLayer("g", { // Gardens layer
     baseResource: "plants", // Name of resource prestige is based on
     baseAmount() {
         let amt = player.p.points
+        amt = amt.pow(smartUpgradeEffect('m', 32))
         if(inChallenge('n', 12)) amt = amt.div(amt.add(1).log(10).add(1))
         return amt
     }, // Get the current amount of baseResource
@@ -1054,6 +1094,11 @@ addLayer("g", { // Gardens layer
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
+    },
+    directMult() {
+        let mult = new Decimal(1)
+        if(hasUpgrade('m', 13)) mult = mult.mul(tmp.m.effect.main)
+        return mult
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -1330,7 +1375,11 @@ addLayer("z", { // Zones layer
         total: new Decimal(0),
     }},
     color: "#00AAFF",
-    requires: new Decimal(250), // Can be a function that takes requirement increases into account
+    requires() {
+        let req = new Decimal(250)
+        req = req.div(smartMilestoneEffect('m', 4))
+        return req
+    }, // Can be a function that takes requirement increases into account
     resource: "zones", // Name of prestige currency
     baseResource: "plants", // Name of resource prestige is based on
     baseAmount() {
@@ -2086,6 +2135,7 @@ addLayer("w", { // Wildlife layer
                 gain = gain.times(smartUpgradeEffect('r', 34))
                 gain = gain.times(smartUpgradeEffect('w', 103))
                 gain = gain.mul(smartMilestoneEffect('r', 2))
+                gain = gain.mul(smartMilestoneEffect('m', 6))
                 return gain
             },
         },
@@ -2229,6 +2279,11 @@ addLayer("r", { // Research layer
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
+    },
+    directMult() {
+        let mult = new Decimal(1)
+        if(hasUpgrade('m', 12)) mult = mult.mul(tmp.m.effect.main)
+        return mult
     },
     row: "side", // Row the layer is in on the tree (0 is the first row)
     layerShown(){return hasUpgrade('w', 64)||player.r.best.gte(1)||player.e.best.gte(1)},   
@@ -2945,10 +3000,13 @@ addLayer("t", { // Trees layer
     directMult() {
         let mult = new Decimal(1)
         if(inChallenge('n', 14) && player.n.plantBug) mult = mult.mul(0.01)
+        if(hasUpgrade('m', 11)) mult = mult.mul(tmp.m.effect.main)
         return mult
     },
     update(diff) {
-        player.t.leaves = player.t.leaves.add(smartUpgradeEffect('t', 12, new Decimal(0)).times(diff)).min("1e50")
+        let cap = new Decimal("1e50")
+        cap = cap.mul(buyableEffect('m', 13))
+        player.t.leaves = player.t.leaves.add(smartUpgradeEffect('t', 12, new Decimal(0)).times(diff)).min(cap)
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -3273,10 +3331,18 @@ addLayer("e", { // Ecosystems layer
         autoAbility: false,
     }},
     color: "#11FF99",
-    requires: new Decimal("1.6e6"), // Can be a function that takes requirement increases into account
+    requires() {
+        let req = new Decimal("1.6e6")
+        req = req.div(smartMilestoneEffect('m', 4))
+        return req
+    }, // Can be a function that takes requirement increases into account
     resource: "Ecosystems", // Name of prestige currency
     baseResource: "plants", // Name of resource prestige is based on
-    baseAmount() {return player.p.points}, // Get the current amount of baseResource
+    baseAmount() {
+        let amt = player.p.points
+        amt = amt.pow(smartUpgradeEffect('m', 33))
+        return amt
+    }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.1, // Prestige currency exponent
     base() {return 1.1},
@@ -3467,6 +3533,7 @@ addLayer("e", { // Ecosystems layer
                 effect = effect.times(smartMilestoneEffect('re', 2))
                 effect = effect.times(smartUpgradeEffect('e', 23))
                 effect = effect.mul(smartUpgradeEffect('c', 22))
+                effect = effect.mul(buyableEffect('m', 12))
                 return effect
                 },
             done() {return player.e.points.gte(5)},
@@ -3569,7 +3636,7 @@ addLayer("e", { // Ecosystems layer
             tooltip() {return "Currently: x"+format(thisBuyableEffect(this))},
             purchaseLimit() {
                 let eff = 50*(hasUpgrade('w', 104)?2:1)
-                if(hasUpgrade('c', 55)) eff = new Decimal(eff).mul(2)
+                if(hasUpgrade('c', 55)) eff = new Decimal(eff).mul(1.2)
                 return eff
             },
         },
@@ -3639,7 +3706,11 @@ addLayer("re", { // Reclaimed ecosystems layer
         total: new Decimal(0),
     }},
     color: "#FF0055",
-    requires: new Decimal(600000),
+    requires() {
+        let req = new Decimal(600000)
+        req = req.div(smartMilestoneEffect('m', 4))
+        return req
+    },
     resource: "Reclaimed Ecosystems", // Name of prestige currency
     baseResource: "trees", // Name of resource prestige is based on
     baseAmount() {return player.t.points}, // Get the current amount of baseResource
@@ -3648,6 +3719,8 @@ addLayer("re", { // Reclaimed ecosystems layer
     base() {let base = new Decimal(2)
     return base},
     canBuyMax: true,
+    autoPrestige() {return player.re.autoReset},
+    resetsNothing() {return player.re.autoReset},
     type: "static",
     branches: ['z', 'g', 'e'],
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -4098,11 +4171,15 @@ addLayer("n", { // Natural disasters layer
             gain = player.p.points.max(1).log(10)
             gain = gain.mul(smartUpgradeEffect('n', 72))
             gain = gain.mul(smartUpgradeEffect('c', 35))
+            gain = gain.mul(smartMilestoneEffect('m', 5))
             player.n.energy = player.n.energy.max(gain)
         }
         let mult = player.points.max(10).log(10).sub(13).max(0).add(1).log(10)
         if(inChallenge('n', 14) || hasUpgrade('c', 51)) {
             gain = ((player.n.plantBug && player.n.wildlifeBug) || hasUpgrade('c', 51)) ? mult : new Decimal(0)
+            
+            //gain = gain.mul(smartMilestoneEffect('m', 5))
+
             player.n.bees = player.n.bees.add(gain.mul(diff)).min(gain.mul(60)).max(player.n.bees)
         }
         if(inChallenge('n', 14) || hasUpgrade('c', 52)) {
@@ -4207,9 +4284,15 @@ addLayer("n", { // Natural disasters layer
         },
         6: {
             requirementDescription: "1.80e25 Trees",
-            effectDescription() {return "Coming soon..."},
+            effectDescription() {return "Unlock Mountains"},
             unlocked() {return hasMilestone('c', 3)},
             done() {return player.t.points.gte("1.8e25")},
+        },
+        7: {
+            requirementDescription: "e1.000e38 Points",
+            effectDescription() {return "Coming Soon..."},
+            unlocked() {return hasMilestone('n', 6)},
+            done() {return player.points.gte("ee38")},
         },
         
         100: {

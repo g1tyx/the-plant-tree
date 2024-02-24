@@ -92,6 +92,8 @@ addLayer("c", { // Ecosystems layer
         gain = gain.mul(smartMilestoneEffect('n', 101))
         gain = gain.mul(smartUpgradeEffect('c', 42))
         gain = gain.mul(smartUpgradeEffect('c', 44))
+        gain = gain.mul(smartUpgradeEffect('m', 22))
+        gain = gain.mul(buyableEffect('m', 11))
         return gain
     },
     displayRow: 2,
@@ -173,6 +175,13 @@ addLayer("c", { // Ecosystems layer
             done() {return player.c.points.gte(10)},
             unlocked() {return hasMilestone('c', 3)},
             toggles: [["e", "autoUpgrade"], ["n", "autoUpgrade"]],
+        },
+        8: {
+            requirementDescription: "15 Conservation Sites",
+            effectDescription: "Autobuy Reclaimed Ecosystems and they reset nothing",
+            done() {return player.c.points.gte(15)},
+            unlocked() {return hasMilestone('c', 3)},
+            toggles: [["re", "autoReset"]],
         },
     },
     clickables: {
@@ -503,7 +512,7 @@ addLayer("c", { // Ecosystems layer
         },
         55: {
             title: "Inflation MMVIII",
-            description: "Double 'Recycling' Limit but superscaling intensifies",
+            description: "Increase 'Recycling' Limit but superscaling intensifies",
             cost: new Decimal("2.7e194"),
             currencyLayer: 'c',
             currencyInternalName: "conservation",
@@ -585,6 +594,412 @@ addLayer("c", { // Ecosystems layer
                 addBuyables(this.layer, this.id, 1)
             },
             canAfford() {return player.c.conservation.gte(this.cost())},
+        },
+    },
+})
+addLayer("m", { // Plants layer
+    name: "Mountains", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol() {return options.emojiSymbols ? "⛰" : "M"},
+    position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: true,
+		points: new Decimal(0),
+        best: new Decimal(0),
+        total: new Decimal(0),
+        resetTime: 0,
+        cooldown: new Decimal(0),
+    }},
+    color: "#55AA55",
+    requires() {return new Decimal("1e1e25")}, // Can be a function that takes requirement increases into account
+    resource: "mountains", // Name of prestige currency
+    baseResource: "points", // Name of resource prestige is based on
+    baseAmount() {
+        let amt = player.points.max(0)
+        return amt
+    }, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent() {
+        let exponent = new Decimal(2)
+        return exponent
+    }, // Prestige currency exponent
+    base() {let base = new Decimal("1e1e26")
+    return base},
+    canBuyMax: true,
+    autoPrestige() {return hasMilestone('m', 3)},
+    resetsNothing() {return hasMilestone('m', 3)},
+    branches: ['g', 'z', 'w'],
+    tooltip() {
+        let tooltip = formatWhole(player.m.points)+" Mountains"
+        return tooltip
+    },
+    tabFormat: {
+        "Mountains": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "blank",
+                "blank",
+                ["milestones", [0, 1, 2, 3]],
+                "blank",
+                function() {return hasMilestone('m', 3) ? ["bar", "cooldown"] : null},
+                "blank",
+                "buyables",
+                "blank",
+                "blank",
+                "upgrades",
+            ],
+        },
+        "Buyable Milestones": {
+            content: [
+                "main-display",
+                "prestige-button",
+                ["display-text", function() {
+                    return "You have a total of "+formatWhole(tmp.m.totalBuyables)+" mountain buyables.<br>Costs for mountain buyables increase drastically every 25 levels."
+                }],
+                "blank",
+                "blank",
+                ["milestones", [4, 5, 6]],
+                "blank",
+                function() {return hasMilestone('m', 3) ? ["bar", "cooldown"] : null},
+                "blank",
+                "buyables",
+                "blank",
+            ],
+            unlocked() {return hasMilestone('m', 3)},
+        },
+    },
+    effectDescription() {return "Directly multiplying Plants by "+format(tmp[this.layer].effect.main)},
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= layers[this.layer].row) return;
+        let row = layers[resettingLayer].row;
+        
+        let keep = [];
+        if(row <= 4) keep.push("upgrades", "milestones", "buyables")
+        layerDataReset(this.layer, keep)
+    },
+    update(diff) {
+        let speed = player.m.points.div(1000)
+        player.m.cooldown = player.m.cooldown.sub(speed.mul(diff))
+    },
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        let exp = new Decimal(1)
+        exp = exp.mul(smartUpgradeEffect('m', 31))
+        return exp
+    },
+    directMult() {
+        let mult = new Decimal(1)
+        return mult
+    },
+
+    getResetGain() {
+        let gain = tmp.m.baseAmount.div(tmp.m.requires)
+        .div(tmp.m.gainMult)
+        .log(tmp.m.base)
+        .mul(tmp.m.gainExp)
+        .root(tmp.m.exponent)
+        .mul(tmp.m.directMult)
+
+        gain = gain.min(new Decimal(50).mul(gain.div(50).root(3)))
+        .min(1000)
+
+        return gain.floor().sub(player.m.points).add(1).max(0)
+    },
+    getNextAt() {
+		let cost = player.m.points.add((tmp.m.baseAmount.gte(tmp.m.nextAt))?tmp.m.resetGain:0)
+
+        // Implement the softcap
+        if(cost.gte(50)) cost = cost.div(50).pow(3).mul(50)
+
+        cost = cost.div(tmp.m.directMult)
+		cost = tmp.m.base.pow(cost.pow(tmp.m.exponent).div(tmp.m.gainExp)).mul(tmp.m.gainMult)
+		cost = cost.max(1).mul(tmp.m.requires)
+		return cost;
+    },
+
+    row: 0, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "m", description: "M: Reset for Mountains", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    effect: {
+        main() {
+            let eff = player.m.points
+            .add(smartUpgradeEffect('m', 23, 0))
+            .add(1).log(10).add(1).pow(4).log(10).add(1).pow(3)
+            eff = eff.min(new Decimal(12).mul(eff.div(12).pow(0.1)))
+            return eff
+        }
+    },
+    totalBuyables() {
+        let amt = new Decimal(0)
+        for (id in tmp.m.buyables) amt = amt.add(getBuyableAmount('m', id))
+        return amt
+    },
+    layerShown(){return hasMilestone('n', 6)},
+    bars: {
+        cooldown: {
+            direction: RIGHT,
+            width: 600,
+            height: 50,
+            instant: true,
+            progress() {return player.m.cooldown.max(0)},
+            fillStyle() {return{
+                'background-color': tmp.m.color
+            }},
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "1 Mountain",
+            effectDescription: "Unlock the first row of Mountain Upgrades",
+            done() {return player.m.points.gte(1)},
+        },
+        1: {
+            requirementDescription: "2 Mountains",
+            effectDescription: "Unlock the second row of Mountain Upgrades",
+            done() {return player.m.points.gte(2)},
+        },
+        2: {
+            requirementDescription: "4 Mountains",
+            effectDescription: "Unlock the third row of Mountain Upgrades",
+            done() {return player.m.points.gte(4)},
+        },
+        3: {
+            requirementDescription: "13 Mountains",
+            effectDescription: "Unlock mountain buyables and mountains are auto-bought",
+            done() {return player.m.points.gte(13)},
+        },
+        
+        4: {
+            requirementDescription: "3 Mountain buyables",
+            effectDescription: "Divide ecosystems, zones and reclaimed ecosystems requirement by total mountain buyables",
+            done() {return tmp.m.totalBuyables.gte(3)},
+            effect() {return tmp.m.totalBuyables.add(1)},
+        },
+        5: {
+            requirementDescription: "10 Mountain buyables",
+            effectDescription: "Multiply hurricane energy gain by total mountain buyables",
+            done() {return tmp.m.totalBuyables.gte(10)},
+            effect() {return tmp.m.totalBuyables.add(1)},
+        },
+        6: {
+            requirementDescription: "30 Mountain buyables",
+            effectDescription: "Multiply fish gain by total mountain buyables",
+            done() {return tmp.m.totalBuyables.gte(30)},
+            effect() {return tmp.m.totalBuyables.add(1)},
+        },
+    },
+    buyables: {
+        11: {
+            amount() {return getBuyableAmount(this.layer, this.id)},
+            title: "Base",
+            display() {
+                let desc = "Multiply conservation gain by log10 conservation<br>"
+                desc += "Cost: "+format(this.cost())+" mountains<br>"
+                desc += "Amount: "+format(this.amount())+"<br>"
+                desc += "Effect: ×"+format(this.effect())+" conservation<br>"
+                return desc
+            },
+            cost() {
+                let cost = this.amount().pow(1.1).pow_base(1.1).mul(13)
+
+                cost = cost.pow(this.amount().div(25).floor().pow_base(2))
+
+                return cost.ceil()
+            },
+            effect() {
+                let base = player.c.conservation.add(1).log(10).add(1)
+                let effect = this.amount().pow_base(base)
+                return effect
+            },
+            buy() {
+                player.m.points = player.m.points.sub(this.cost()).max(0)
+                player.m.cooldown = new Decimal(1)
+                addBuyables(this.layer, this.id, 1)
+            },
+            buyMax() {
+                let max = player.m.points.div(13).log(1.1).root(1.1)
+                setBuyableAmount(this.layer, this.id, max.max(this.amount()))
+            },
+            canAfford() {return player.m.points.gte(this.cost()) && player.m.cooldown.lte(0)},
+            unlocked() {return hasMilestone('m', 3)},
+        },
+        12: {
+            amount() {return getBuyableAmount(this.layer, this.id)},
+            title: "Climb",
+            display() {
+                let desc = "Multiply ecology gain by log10 ecology<br>"
+                desc += "Cost: "+format(this.cost())+" mountains<br>"
+                desc += "Amount: "+format(this.amount())+"<br>"
+                desc += "Effect: ×"+format(this.effect())+" ecology<br>"
+                return desc
+            },
+            cost() {
+                let cost = this.amount().pow(1.2).pow_base(1.2).mul(13)
+
+                cost = cost.pow(this.amount().div(25).floor().pow_base(2))
+
+                return cost.ceil()
+            },
+            effect() {
+                let base = player.e.ecology.add(1).log(10).add(1)
+                let effect = this.amount().pow_base(base)
+                return effect
+            },
+            buy() {
+                player.m.points = player.m.points.sub(this.cost()).max(0)
+                player.m.cooldown = new Decimal(1)
+                addBuyables(this.layer, this.id, 1)
+            },
+            buyMax() {
+                let max = player.m.points.div(13).log(1.2).root(1.2)
+                setBuyableAmount(this.layer, this.id, max.max(this.amount()))
+            },
+            canAfford() {return player.m.points.gte(this.cost()) && player.m.cooldown.lte(0)},
+            unlocked() {return hasMilestone('m', 3)},
+        },
+        13: {
+            amount() {return getBuyableAmount(this.layer, this.id)},
+            title: "Summit",
+            display() {
+                let desc = "Multiply leaf cap by log10 leaves<br>"
+                desc += "Cost: "+format(this.cost())+" mountains<br>"
+                desc += "Amount: "+format(this.amount())+"<br>"
+                desc += "Effect: ×"+format(this.effect())+" leaves<br>"
+                return desc
+            },
+            cost() {
+                let cost = this.amount().pow(1.3).pow_base(1.3).mul(13)
+
+                cost = cost.pow(this.amount().div(25).floor().pow_base(2))
+
+                return cost.ceil()
+            },
+            effect() {
+                let base = player.t.leaves.add(1).log(10).add(1)
+                let effect = this.amount().pow_base(base)
+                return effect
+            },
+            buy() {
+                player.m.points = player.m.points.sub(this.cost()).max(0)
+                player.m.cooldown = new Decimal(1)
+                addBuyables(this.layer, this.id, 1)
+            },
+            buyMax() {
+                let max = player.m.points.div(13).log(1.3).root(1.3)
+                setBuyableAmount(this.layer, this.id, max.max(this.amount()))
+            },
+            canAfford() {return player.m.points.gte(this.cost()) && player.m.cooldown.lte(0)},
+            unlocked() {return hasMilestone('m', 3)},
+        },
+    },
+    upgrades: {
+        11: {
+            title: "Mountain Trees",
+            description: "Mountain effect also affects Trees",
+            cost: new Decimal("1e3.848501e25"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 0)},
+        },
+        12: {
+            title: "Mountain Research",
+            description: "Mountain effect also affects Research",
+            cost: new Decimal("1e3.857501e25"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 0)},
+        },
+        13: {
+            title: "Mountain Gardens",
+            description: "Mountain effect also affects Gardens",
+            cost: new Decimal("1e1.070501e26"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 0)},
+        },
+        21: {
+            title: "Mountain Points",
+            description: "Mountain effect also raises Points at a reduced rate",
+            cost: new Decimal("1e1.783501e26"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 1)},
+            effect() {
+                return tmp.m.effect.main.log(5).add(1).root(5)
+            },
+            effectDisplay() {return "^"+format(upgradeEffect(this.layer, this.id))},
+            tooltip: "5rt log5 (effect)"
+        },
+        22: {
+            title: "Mountain Conservation",
+            description: "Mountain effect also multiplies Conservation at an increased rate",
+            cost: new Decimal("1e2.499501e26"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 1)},
+            effect() {
+                return tmp.m.effect.main.pow_base(10)
+            },
+            effectDisplay() {return "x"+format(upgradeEffect(this.layer, this.id))},
+            tooltip: "10 ^ (effect)"
+        },
+        23: {
+            title: "Upgrade Mountain",
+            description: "Mountain upgrades increase effective mountains for effect",
+            cost: new Decimal("1e2.509501e26"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 1)},
+            effect() {
+                return new Decimal(player.m.upgrades.length).div(4)
+            },
+            effectDisplay() {return "+"+format(upgradeEffect(this.layer, this.id))},
+            tooltip: "Upgrades ÷ 4"
+        },
+        31: {
+            title: "Mountain Mountain",
+            description: "Mountains root mountain requirement",
+            cost: new Decimal("1e1.446501e27"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 2)},
+            effect() {
+                let eff = player.m.points.add(1).log(10).add(1)
+                eff = eff.min(new Decimal(2).mul(eff.div(2).pow(0.1)))
+                return eff
+            },
+            effectDisplay() {return format(upgradeEffect(this.layer, this.id))+"rt"},
+            tooltip: "log10 (Mountains)"
+        },
+        32: {
+            title: "Mountain Gardeners",
+            description: "Mountains raise plants as perceived by gardens",
+            cost: new Decimal("1e1.954501e27"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 2)},
+            effect() {
+                return player.m.points.add(1).log(10).add(1).log(10).add(1)
+            },
+            effectDisplay() {return "^"+format(upgradeEffect(this.layer, this.id))},
+            tooltip: "log10^2 (Mountains)"
+        },
+        33: {
+            title: "Mountain Ecosystem Searchers",
+            description: "Mountains raise plants as perceived by ecosystems",
+            cost: new Decimal("1e2.379501e27"),
+            currencyInternalName: "points",
+            currencyDisplayName: "points",
+            unlocked() {return hasMilestone('m', 2)},
+            effect() {
+                return player.m.points.add(1).log(4).add(1).log(4).add(1)
+            },
+            effectDisplay() {return "^"+format(upgradeEffect(this.layer, this.id))},
+            tooltip: "log4^2 (Mountains)"
         },
     },
 })
