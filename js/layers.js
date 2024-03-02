@@ -1,6 +1,6 @@
 addLayer("a", { // Achievements layer
     name: "achievements", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol() {return options.emojiSymbols ? "🏆" : "A"},
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -10,6 +10,7 @@ addLayer("a", { // Achievements layer
     }},
     color: "#FFFF00",
     resource: "Useless Paperclips", // Name of prestige currency
+    tooltip: "Achievements",
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     row: "side", // Row the layer is in on the tree (0 is the first row)
     layerShown(){return true},
@@ -21,13 +22,15 @@ addLayer("a", { // Achievements layer
     tabFormat: {
         "Achievements": {
             content: [
-                "achievements",
+                ["achievements", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]],
                 "blank",
                 ],
         },
         "Savebank": {
             content: [
                 ["clickables", [2, 3, 4, 5, 6]],
+                "blank",
+                ["clickables", [7]],
             ],
         },
         "Time Control": {
@@ -213,6 +216,18 @@ addLayer("a", { // Achievements layer
             },
             style() {return{
                 'background-color': tmp.m.color,
+            }},
+        },
+        71: {
+            title: "Quests",
+            display: "Layer Finsihed",
+            canClick: true,
+            onClick() {
+                if(!confirm("Your current progress will not be saved!")) return;
+                importSave("eyJ0YWIiOiJvcHRpb25zLXRhYiIsIm5hdlRhYiI6IlQxIiwidGltZSI6MTcwOTM4NjE5MzAzMywibm90aWZ5Ijp7fSwidmVyc2lvblR5cGUiOiJ0aGVub255bW91cy10aGVwbGFudHRyZWUxNzU4Njc0NSIsInZlcnNpb24iOiIxMy0iLCJ0aW1lUGxheWVkIjo5MzI3MS42NDQ0MjE3ODA2OSwia2VlcEdvaW5nIjp0cnVlLCJoYXNOYU4iOnRydWUsInBvaW50cyI6ImVlMzguMDAwMDk4MTAzNzA5MDciLCJzdWJ0YWJzIjp7ImNoYW5nZWxvZy10YWIiOnt9LCJwIjp7Im1haW5UYWJzIjoiVHJlZXMifSwiYSI6eyJtYWluVGFicyI6IlRpbWUgQ29udHJvbCJ9LCJlIjp7Im1haW5UYWJzIjoiTWFpbiJ9LCJ3Ijp7Im1haW5UYWJzIjoiTWFpbiJ9LCJyIjp7Im1haW5UYWJzIjoiTWluaWdhbWUifSwibiI6eyJtYWluVGFicyI6Ik1haW4ifSwiYyI6eyJtYWluVGFicyI6IkNvbnNlcnZhdGlvbiJ9LCJtIjp7Im1haW5UYWJzIjoiTW91bnRhaW5zIn0sInEiOnsibWFpblRhYnMiOiJRdWVzdHMifSwibmF2Ijp7Im1haW5UYWJzIjoiTmF2aWdhdGlvbiJ9fSwibGFzdFNhZmVUYWIiOiJxIiwic1BvaW50cyI6IjAiLCJpbmZvYm94ZXMiOnsiYSI6eyJwbGFudEhlbHAiOmZhbHNlLCJnYXJkZW5IZWxwIjpmYWxzZSwiem9uZUhlbHAiOmZhbHNlLCJ3aWxkbGlmZUhlbHAiOmZhbHNlLCJyZXNlYXJjaEhlbHAiOmZhbHNlLCJ0cmVlSGVscCI6ZmFsc2V9fSwiaW5mby10YWIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo5MzI3MS42NDQ0MjE3ODA2OSwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJvcHRpb25zLXRhYiI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjkzMjcxLjY0NDQyMTc4MDY5LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sImNoYW5nZWxvZy10YWIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjo5MzI3MS42NDQ0MjE3ODA2OSwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJhIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiI/IiwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjkzMjcxLjY0NDQyMTc4MDY5LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOiIiLCIxMiI6IiIsIjEzIjoiIiwiMTQiOiIiLCIyMSI6IiIsIjIyIjoiIiwiMjMiOiIiLCIzMSI6IiIsIjMyIjoiIiwiMzMiOiIiLCI0MSI6IiIsIjQyIjoiIiwiNDMiOiIiLCI1MSI6IiIsIjUyIjoiIiwiNTMiOiIiLCI2MSI6IiIsIjcxIjoiIn0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOlsiMCJdLCJsYXN0TWlsZXN0b25lIjoiMCIsImFjaGlldmVtZW50cyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjE1IiwiMjEiLCIyMiIsIjM1IiwiMjQiLCIyMyIsIjI1IiwiMzEiLCIzMiIsIjMzIiwiMzQiLCI0MSIsIjQyIiwiNDQiLCI0MyIsIjQ1IiwiNTEiLCI1MiIsIjUzIiwiNTQiLCI1NSIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiNjUiLCI3MSIsIjcyIiwiNzMiLCI3NCIsIjc1IiwiODEiLCI4MiIsIjgzIiwiODQiLCI4NSIsIjkxIiwiOTIiLCI5MyIsIjk0IiwiOTUiLCIxMDEiLCIxMDIiLCIxMDMiLCIxMDQiLCIxMDUiLCIxMDYiLCIxMTEiLCIxMTIiLCIxMTMiLCIxMTUiLCIxMTQiLCIxMjEiLCIxMjIiLCIxMjMiLCIxMjQiLCIxMjUiLCIxMzEiLCIxMzIiLCIxMzMiLCIxMzQiLCIxMzUiXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwicGxheWVyTmFtZSI6IlBsYXllciIsImZwcyI6MjAuMDA0MzM5MDA2MTM3NDh9LCJwIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIyLjc2OTMwODQ3NzU3MjMxZTQ0IiwiYmVzdCI6IjIuNzY5MzA4NDc3NTcyMzFlNDQiLCJ0b3RhbCI6IjIuNzY5MzA4NDc3NTc1ODQ0ZTQ0IiwicmVzZXRUaW1lIjoxOTM5LjQwNDk5OTk5OTkyNzQsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMTAwMDAwMDAwMSIsIjEyIjoiNS4wMDExMjk1ODgyOTc2NmUzNyIsIjEzIjoiMjAwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsiMTEiLCIxMiIsIjEzIiwiMTQiLCIyMSIsIjIyIiwiMjMiLCIyNCIsIjMxIiwiMzIiLCIzMyIsIjM0IiwiNDEiLCI0MiIsIjQzIiwiNDQiLCI1MSIsIjUyIiwiNTMiLCI1NCIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiNzEiLCI3MiIsIjczIiwiNzQiLCI4MSIsIjgyIl0sIm1pbGVzdG9uZXMiOlsiMCJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJnIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIzNzYxNzY3MSIsImJlc3QiOiIzNzYxNzY3MSIsInRvdGFsIjoiMzc2Nzk1NTkiLCJyZXNldFRpbWUiOjE5NDcuOTQ2OTk5OTk5OTI3LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6Ijc1MjM1MTQuMiIsIjEyIjoiNzUyMzUxNC4yIiwiMTMiOiIyNTA3ODM4LjA2NjY2NjY2NjQiLCIyMSI6IjM3NjE2ODcuMSJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMjEiLCIyMiIsIjIzIiwiMjQiLCIzMSIsIjMyIiwiMzMiLCIzNCIsIjQxIiwiNDIiLCI0MyIsIjQ0IiwiNTEiLCI1MiIsIjUzIiwiNTQiXSwibWlsZXN0b25lcyI6WyIwIiwiMSJdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGx9LCJ6Ijp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiI2NzciLCJiZXN0IjoiNjc3IiwidG90YWwiOiIyMTM2IiwicmVzZXRUaW1lIjoxOTQ3Ljk0Njk5OTk5OTkyNywiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTEsMTIsMTMsMTRdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiLCI3IiwiOCIsIjkiLCIxMCIsIjExIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnsiMTEiOjMsIjEyIjozLCIyMSI6MywiMjIiOjN9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbH0sInciOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6ImVlMjUuODY5MjAyMzQ0MDU4MjIzIiwibGFyZ2UiOiJlZTI0Ljg2ODM2Mzg3NDY0MjU2IiwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjE5ODIuNTQxOTk5OTk5OTMyOCwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiI1MCIsIjIxIjoiMCJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbIjExIiwiMjEiLCIxMiIsIjIyIiwiMzEiLCI4MSIsIjkxIiwiOTIiLCIxMyIsIjIzIiwiMzIiLCI0MSIsIjQyIiwiODIiLCIxNCIsIjI0IiwiMzMiLCI0MyIsIjUxIiwiNTIiLCI1MyIsIjgzIiwiOTMiLCI5NCIsIjEwMSIsIjEwMiIsIjM0IiwiNDQiLCI1NCIsIjYxIiwiNjIiLCI2MyIsIjY0IiwiODQiLCIxMDMiLCIxMDQiLCI3MSIsIjcyIiwiNzMiLCI3NCIsIjExMSIsIjExMiIsIjExMyIsIjExNCJdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJmaXNoIjoiNC4xMzM0OTgwNjMzNzAwODFlNDQiLCJhdXRvVXBncmFkZSI6dHJ1ZSwiY2FuQnV5MTE0Ijp0cnVlfSwiciI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMS4zOTUzODU1NTQxMjY1NjcyZTIwIiwiYmVzdCI6IjEuMzk1Mzg1NTU0MTI2NTY3MmUyMCIsInRvdGFsIjoiMS4zOTUzODU1NTQxMjY1NjcyZTIwIiwicmVzZXRUaW1lIjoxOTQ3Ljk0Njk5OTk5OTkyNywiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiI2Ljk3NjkyNzc3MDYzMjgzNmUxOSIsIjEyIjoiNC42NTEyODUxODA0MjE4ODllMTkiLCIxMyI6IjYuOTc2OTI3NzcwNjMyODM2ZTE5IiwiMjEiOiIyLjc5MDc3MTEwODI1MzEzNWUxOSIsIjIyIjoiNDE3OTY5MiIsIjIzIjoiMi4zMjU2NDI1OTAyMTA5NDQzZTE5IiwiMzEiOiIxLjM5NTM4NTU1NDEyNjU2NzJlMTkiLCIzMiI6IjMuNDg4NDYzODg1MzE2NDE3ZTE5IiwiMzMiOiIxLjU1MDQyODM5MzQ3Mzk2MjRlMTkiLCI0MSI6IjEuMzk1Mzg1NTU0MTI2NTY3MmUxOSIsIjQyIjoiMi43OTA3NzExMDgyNTMxMzVlMTgiLCI0MyI6IjEuMzk1Mzg1NTU0MTI2NTY3MmUxOSJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7IjExIjp0cnVlLCIxMiI6IiIsIjEzIjoiIiwiMTQiOiIiLCIxNSI6IiIsIjE2IjoiIiwiMjEiOiIiLCIyMiI6dHJ1ZSwiMjMiOnRydWUsIjI0Ijp0cnVlLCIyNSI6dHJ1ZSwiMjYiOnRydWUsIjMxIjoiIiwiMzIiOnRydWUsIjMzIjp0cnVlLCIzNCI6dHJ1ZSwiMzUiOnRydWUsIjM2Ijp0cnVlLCI0MSI6IiIsIjQyIjp0cnVlLCI0MyI6dHJ1ZSwiNDQiOnRydWUsIjQ1Ijp0cnVlLCI0NiI6dHJ1ZSwiNTEiOiIiLCI1MiI6dHJ1ZSwiNTMiOnRydWUsIjU0Ijp0cnVlLCI1NSI6dHJ1ZSwiNTYiOnRydWUsIjYxIjoiIiwiNjIiOnRydWUsIjYzIjp0cnVlLCI2NCI6dHJ1ZSwiNjUiOnRydWUsIjY2Ijp0cnVlfSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbMTQsMTEsMTMsMTIsMTUsMjUsMjQsMjMsMjIsMjEsMzMsMzEsMzIsMTQsMTQsMzQsMzUsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTQsMTRdLCJtaWxlc3RvbmVzIjpbIjAiLCIxIiwiMiIsIjMiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwicmVzZXRUaW1lcyI6MCwicmVzZWFyY2hlcnMiOiJlZTIwLjYzODk5OTg0NjY0MTc1In0sInQiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjEuMDc5MjIwNjAxNzU5NDcyM2UzOSIsImJlc3QiOiIxLjA3OTIyMDYwMTc1OTQ3MjNlMzkiLCJ0b3RhbCI6IjEuMDc5MjIwNjAxNzU5NDg5OWUzOSIsImxlYXZlcyI6IjIuODk0MDM3Njk0Nzk3MTE0ZTY2IiwicmVzZXRUaW1lIjoxOTQ3Ljk0Njk5OTk5OTkyNywiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiIzMCIsIjEyIjoiMzAiLCIxMyI6IjMwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOlsxMywxNCwiMTEiLCIyMSIsIjMxIiwiNDEiLCI1MSIsIjYxIiwiMTIiLCIxMyIsIjE0IiwiMzIiLCIzMyIsIjQyIiwiNDMiLCI0NCIsIjcxIiwiODIiLCI4MSIsIjczIiwiODMiLCI3MiIsIjkxIiwxMywxNCwiMTMxIiwxMywxNCwiMTIxIiwiMTExIiwiMTAxIl0sIm1pbGVzdG9uZXMiOlsiMCIsIjEiLCIyIiwiMyIsIjQiXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYnVsayI6ZmFsc2UsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbCwiYXV0b1VwZ3JhZGUiOnRydWV9LCJlIjp7InVubG9ja2VkIjp0cnVlLCJwb2ludHMiOiIxMTg1IiwiZWNvbG9neSI6IjQuNTA3MDQ1NTY5NzM1OTE3ZTUxNCIsImJlc3QiOiIxMTg1IiwidG90YWwiOiI3NjgiLCJjb29sZG93biI6IjAuNjUxMDAwMDAwMDAwMDAwNSIsImxhc3RBYmlsaXR5IjoxMSwiYXV0b0FiaWxpdHkiOnRydWUsInJlc2V0VGltZSI6MTk0OC41OTY5OTk5OTk5MjcsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7IjExIjoiMTIwIn0sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnsiMTEiOnRydWUsIjEyIjp0cnVlfSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbIjExIiwiMTIiLCIxMyIsIjE0IiwiMjEiLCIyMiIsIjIzIiwiMjQiXSwibWlsZXN0b25lcyI6WyIwIiwiMyIsIjUiLCI3IiwiOSIsIjIiLCI0IiwiNiIsIjgiLCIxIl0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6WyIxMSIsIjEyIiwiMTMiLCIxNCIsIjE1IiwiMjEiLCIyMiIsIjIzIiwiMjQiLCIyNSJdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGwsImF1dG9SZXNldCI6dHJ1ZSwiYXV0b1VwZ3JhZGUiOnRydWV9LCJyZSI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMTI4IiwiYmVzdCI6IjEyOCIsInRvdGFsIjoiMTI4IiwicmVzZXRUaW1lIjoxOTQ4LjU5Njk5OTk5OTkyNywiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCJdLCJsYXN0TWlsZXN0b25lIjoiNCIsImFjaGlldmVtZW50cyI6WyIyNCIsIjExIiwiMTIiLCIxMyIsIjE0IiwiMTUiLCIxNiIsIjIxIiwiMjIiLCIyMyJdLCJjaGFsbGVuZ2VzIjp7IjExIjozLCIxMiI6MywiMjEiOjN9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbCwiYXV0b1Jlc2V0Ijp0cnVlfSwibiI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMCIsImJlc3QiOiIwIiwidG90YWwiOiIwIiwiYXNoIjoiOC42ODM3ODUyMTkzNzY0NjJlNjYiLCJzb2lsIjoiMi41OTg0NTk3NzE3NTE4NTc2ZTM1IiwibWFnIjoiMi4zOTI0ODgwNTQ4NjIwODUzZTE5IiwiZW5lcmd5IjoiNzU1NTIuMDMxMjY5ODAwOSIsInJlc2V0VGltZSI6MTk0Ny45NDY5OTk5OTk5MjcsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6dHJ1ZX0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WyIzMSIsIjMyIiwiMTEiLCIxMiIsIjEzIiwiMTQiLCIyMSIsIjIyIiwiMjMiLCIyNCIsIjQxIiwiNDIiLCI0MyIsIjQ0IiwiNjEiLCI2MiIsIjYzIiwiNjQiLCI3MSIsIjcyIiwiNzMiLCI3NCJdLCJtaWxlc3RvbmVzIjpbIjEwMiIsIjEwMCIsIjEwMSIsIjAiLCIxIiwiMiIsIjMiLCI0IiwiNSIsIjYiLCI3Il0sImxhc3RNaWxlc3RvbmUiOiI3IiwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6eyIxMSI6MCwiMTIiOjAsIjEzIjowLCIxNCI6MH0sImdyaWQiOnt9LCJwcmV2VGFiIjoiIiwiYWN0aXZlQ2hhbGxlbmdlIjpudWxsLCJwbGFudEJ1ZyI6ZmFsc2UsIndpbGRsaWZlQnVnIjpmYWxzZSwicmVzZWFyY2hCdWciOmZhbHNlLCJiZWVzIjoiMjI4MC4wMDU4ODYyMjI1NDQiLCJzcGlkZXJzIjoiMjI4MC4wMDU4ODYyMjI1NDQiLCJidXR0ZXJmbGllcyI6IjExNTEwMjEuNjA5ODMxMTk0NCIsImF1dG9VcGdyYWRlIjp0cnVlfSwiYyI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMTYiLCJjb25zZXJ2YXRpb24iOiIxLjE2OTM1NDU2MDI4NTE4NDdlNDEwIiwiYmVzdCI6IjE2IiwidG90YWwiOiIxNiIsInJlc2V0VGltZSI6MTk4Mi41NDE5OTk5OTk5MzI4LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjI3NyIsIjEyIjoiMjc3IiwiMTMiOiIzNSJ9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7IjExIjoiIn0sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzExLDEyLDEzLDE0LDE1LDIxLDIyLDIzLDI0LDI1LDMxLDMyLDMzLDM0LDM1LDQxLDQyLDQzLDQ0LDQ1LDUxLDUyLDUzLDU0LDU1XSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCIsIjUiLCI2IiwiNyIsIjgiXSwibGFzdE1pbGVzdG9uZSI6IjgiLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIiLCJhY3RpdmVDaGFsbGVuZ2UiOm51bGwsImF1dG9DbGlja2FibGUiOmZhbHNlfSwibSI6eyJ1bmxvY2tlZCI6dHJ1ZSwicG9pbnRzIjoiMTAwMSIsImJlc3QiOiIxMDAxIiwidG90YWwiOiIzMzIyIiwicmVzZXRUaW1lIjoxOTQ3Ljk0Njk5OTk5OTkyNywiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnsiMTEiOiIyNSIsIjEyIjoiMTUiLCIxMyI6IjkifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6WzExLDEyLDEzLDIxLDIyLDIzLDMxLDMyLDMzXSwibWlsZXN0b25lcyI6WyIwIiwiMSIsIjIiLCIzIiwiNCIsIjUiLCI2Il0sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiIsImFjdGl2ZUNoYWxsZW5nZSI6bnVsbCwiY29vbGRvd24iOiItMTM3OC4xNjk2MDcwMDAxMjU2In0sInEiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjYiLCJ0b2tlbnMiOiIxLjM5NDcxODc0OTk5OTk5OTgiLCJxdWVzdHMiOnsiY29tcG9zdCI6IjIiLCJnYXJkZW4iOiIyIiwiYmVla2VlcGluZyI6IjIifSwiY29tcG9zdCI6IjAiLCJjb21wb3N0TGV2ZWwiOiIwIiwiaG9uZXkiOiIwIiwicmVzZXRUaW1lIjoyLjc1NDk5OTk5OTk5OTk5OSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6eyIxMSI6IjAiLCIxMiI6IjAiLCIxMyI6IjAiLCIyMSI6IjAiLCIzMSI6IjAiLCIzMiI6IjAiLCI0MSI6IjAiLCI0MiI6IjAiLCI0MyI6IjAifSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOlsiMCJdLCJsYXN0TWlsZXN0b25lIjoiMCIsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJuYXYiOnsidW5sb2NrZWQiOnRydWUsInBvaW50cyI6IjAiLCJiZXN0IjoiMCIsInRvdGFsIjoiMCIsInJlc2V0VGltZSI6MTMxMS43NDU5OTk5OTk5NzYsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6eyIxMSI6IiIsIjIxIjoiIiwiMjIiOiIifSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJibGFuayI6eyJ1bmxvY2tlZCI6dHJ1ZSwidG90YWwiOiIwIiwiYmVzdCI6IjAiLCJyZXNldFRpbWUiOjkzMjcxLjY0NDQyMTc4MDY5LCJmb3JjZVRvb2x0aXAiOmZhbHNlLCJidXlhYmxlcyI6e30sIm5vUmVzcGVjQ29uZmlybSI6ZmFsc2UsImNsaWNrYWJsZXMiOnt9LCJzcGVudE9uQnV5YWJsZXMiOiIwIiwidXBncmFkZXMiOltdLCJtaWxlc3RvbmVzIjpbXSwibGFzdE1pbGVzdG9uZSI6bnVsbCwiYWNoaWV2ZW1lbnRzIjpbXSwiY2hhbGxlbmdlcyI6e30sImdyaWQiOnt9LCJwcmV2VGFiIjoiIn0sInRyZWUtdGFiIjp7InVubG9ja2VkIjp0cnVlLCJ0b3RhbCI6IjAiLCJiZXN0IjoiMCIsInJlc2V0VGltZSI6OTMyNzEuNjQ0NDIxNzgwNjksImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiVDEiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjoxMzExLjc0NTk5OTk5OTk3NiwiZm9yY2VUb29sdGlwIjpmYWxzZSwiYnV5YWJsZXMiOnt9LCJub1Jlc3BlY0NvbmZpcm0iOmZhbHNlLCJjbGlja2FibGVzIjp7fSwic3BlbnRPbkJ1eWFibGVzIjoiMCIsInVwZ3JhZGVzIjpbXSwibWlsZXN0b25lcyI6W10sImxhc3RNaWxlc3RvbmUiOm51bGwsImFjaGlldmVtZW50cyI6W10sImNoYWxsZW5nZXMiOnt9LCJncmlkIjp7fSwicHJldlRhYiI6IiJ9LCJibGFuazIiOnsidW5sb2NrZWQiOnRydWUsInRvdGFsIjoiMCIsImJlc3QiOiIwIiwicmVzZXRUaW1lIjoxNjM5OS4zMDIxMjE1MDUxNzgsImZvcmNlVG9vbHRpcCI6ZmFsc2UsImJ1eWFibGVzIjp7fSwibm9SZXNwZWNDb25maXJtIjpmYWxzZSwiY2xpY2thYmxlcyI6e30sInNwZW50T25CdXlhYmxlcyI6IjAiLCJ1cGdyYWRlcyI6W10sIm1pbGVzdG9uZXMiOltdLCJsYXN0TWlsZXN0b25lIjpudWxsLCJhY2hpZXZlbWVudHMiOltdLCJjaGFsbGVuZ2VzIjp7fSwiZ3JpZCI6e30sInByZXZUYWIiOiIifSwiZGV2U3BlZWQiOiIxIn0=")
+            },
+            style() {return{
+                'background-color': tmp.q.color,
             }},
         },
     },
@@ -577,7 +592,7 @@ addLayer("a", { // Achievements layer
 }),
 addLayer("p", { // Plants layer
     name: "plants", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol() {return options.emojiSymbols ? "🪴" : "P"},
+    symbol() {return options.emojiSymbols ? "🌴" : "P"},
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -586,6 +601,7 @@ addLayer("p", { // Plants layer
         total: new Decimal(0),
         resetTime: 0,
     }},
+    tree: "tree-tab",
     color: "#27B000",
     requires() {return 10}, // Can be a function that takes requirement increases into account
     resource: "plants", // Name of prestige currency
@@ -1047,6 +1063,7 @@ addLayer("g", { // Gardens layer
         best: new Decimal(0),
         total: new Decimal(0),
     }},
+    tree: "tree-tab",
     color: "#FF8800",
     requires: new Decimal(50), // Can be a function that takes requirement increases into account
     resource: "gardens", // Name of prestige currency
@@ -1102,7 +1119,7 @@ addLayer("g", { // Gardens layer
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "g", description: "G: Reset for Gardens", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+        {layer: 'g', key: "g", description: "G: Reset for Gardens", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
     layerShown(){return hasUpgrade('p', 24)||player.g.best.gte(1) || hasMilestone('e', 7)},
 
@@ -1374,6 +1391,7 @@ addLayer("z", { // Zones layer
         best: new Decimal(0),
         total: new Decimal(0),
     }},
+    tree: "tree-tab",
     color: "#00AAFF",
     requires() {
         let req = new Decimal(250)
@@ -1421,7 +1439,7 @@ addLayer("z", { // Zones layer
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "z", description: "Z: Reset for Zones", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+        {layer: 'z', key: "z", description: "Z: Reset for Zones", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
     layerShown(){return hasUpgrade('g', 24)||player.z.best.gte(1) || hasMilestone('e', 7)},
 
@@ -1586,6 +1604,7 @@ addLayer("w", { // Wildlife layer
         fish: new Decimal(0),
         canBuy114: false
     }},
+    tree: "tree-tab",
     color: "#0088AA",
     resource: "wildlife", // Name of prestige currency
     baseResource: "plants", // Name of resource prestige is based on
@@ -2153,6 +2172,7 @@ addLayer("r", { // Research layer
         total: new Decimal(0),
         resetTime: 0,
     }},
+    tree: "tree-tab",
     color: "#CCCCCC",
     requires() {
         let req = new Decimal(1)
@@ -2888,6 +2908,7 @@ addLayer("t", { // Trees layer
         leaves: new Decimal(0),
         resetTime: 0,
     }},
+    tree: "tree-tab",
     color: "#278000",
     requires() {
         let req = new Decimal("1e2700")
@@ -3010,7 +3031,7 @@ addLayer("t", { // Trees layer
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "t", description: "T: Reset for Trees", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return hasUpgrade('r', 25)}},
+        {layer: 't', key: "t", description: "T: Reset for Trees", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return hasUpgrade('r', 25)}},
     ],
     layerShown(){return false},
     upgrades: {
@@ -3330,6 +3351,7 @@ addLayer("e", { // Ecosystems layer
         lastAbility: 11,
         autoAbility: false,
     }},
+    tree: "tree-tab",
     color: "#11FF99",
     requires() {
         let req = new Decimal("1.6e6")
@@ -3443,7 +3465,7 @@ addLayer("e", { // Ecosystems layer
         layerDataReset(this.layer, keep)
     },
     hotkeys: [
-        {key: "e", description: "E: Reset for Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+        {layer: 'e', key: "e", description: "E: Reset for Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
     prestigeNotify() {return (canReset('e') || player.e.cooldown.lte(0)) && player.e.unlocked},
     layerShown(){return hasUpgrade('t', 91)||player.e.best.gte(1)},
@@ -3697,7 +3719,7 @@ addLayer("e", { // Ecosystems layer
 }),
 addLayer("re", { // Reclaimed ecosystems layer
     name: "reclamation", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol() {return options.emojiSymbols ? "🪹" : "Re"},
+    symbol() {return options.emojiSymbols ? "⛺" : "Re"},
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
@@ -3705,6 +3727,7 @@ addLayer("re", { // Reclaimed ecosystems layer
         best: new Decimal(0),
         total: new Decimal(0),
     }},
+    tree: "tree-tab",
     color: "#FF0055",
     requires() {
         let req = new Decimal(600000)
@@ -3750,7 +3773,7 @@ addLayer("re", { // Reclaimed ecosystems layer
         "blank",
     ],
     hotkeys: [
-        {key: "r", description: "R: Reset for Reclaimed Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+        {layer: 're', key: "r", description: "R: Reset for Reclaimed Ecosystems", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
     ],
     layerShown(){return hasUpgrade('z', 14)||player.re.best.gte(1)},
     
@@ -3929,6 +3952,7 @@ addLayer("n", { // Natural disasters layer
         spiders: new Decimal(0), // plant & research bugs
         butterflies: new Decimal(0), // wildlife & research bugs
     }},
+    tree: "tree-tab",
     color: "#555555",
     requires: new Decimal(600000),
     resource: "Disasters", // Name of prestige currency
@@ -3959,7 +3983,7 @@ addLayer("n", { // Natural disasters layer
     },
     row: 3, // Row the layer is in on the tree (0 is the first row)
     displayRow: "side",
-    tooltip() {return "Current Challenge: "+(player.n.activeChallenge ? tmp.n.challenges[player.n.activeChallenge].name : "None")},
+    tooltip() {return "Natural Disasters<br>Current Challenge: "+(player.n.activeChallenge ? tmp.n.challenges[player.n.activeChallenge].name : "None")},
     tabFormat: {
         Main: {
             unlocked() {return true},
@@ -4290,7 +4314,7 @@ addLayer("n", { // Natural disasters layer
         },
         7: {
             requirementDescription: "e1.000e38 Points",
-            effectDescription() {return "Coming Soon..."},
+            effectDescription() {return "Unlock Navigation. This planet is complete"},
             unlocked() {return hasMilestone('n', 6)},
             done() {return player.points.gte("ee38")},
         },

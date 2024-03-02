@@ -174,6 +174,7 @@ var systemComponents = {
             <tr>
                 <td><button class="opt" onclick="toggleOpt('shortMaxTick'); needsCanvasUpdate = true">Max Tick Length: {{ options.shortMaxTick?"0.5 sec":"1 hour" }}</button></td>
 				<td><button class="opt" onclick="toggleOpt('emojiSymbols'); needsCanvasUpdate = true">Emoji Symbols for Layers: {{ options.emojiSymbols?"ON":"OFF" }}</button></td>
+				<td><button class="opt" onclick="toggleOpt('ctrlHotkey'); needsCanvasUpdate = true">CTRL to see precise numbers: {{ options.ctrlHotkey?"ON":"OFF" }}</button></td>
 			</tr>
         </table>`
     },

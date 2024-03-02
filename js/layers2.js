@@ -8,6 +8,7 @@ addLayer("c", { // Ecosystems layer
         conservation: new Decimal(0),
         best: new Decimal(0),
     }},
+    tree: "tree-tab",
     color: "#FFAA55",
     requires: new Decimal("10"), // Can be a function that takes requirement increases into account
     resource: "Conservation Sites", // Name of prestige currency
@@ -18,6 +19,9 @@ addLayer("c", { // Ecosystems layer
     base() {return 1.2},
     roundUpCost: true,
     canBuyMax: true,
+    prestigeNotify() {
+        return canReset(this.layer) || canBuyBuyable('c', 11) || canBuyBuyable('c', 12) || canBuyBuyable('c', 13)
+    },
     tabFormat: {
         "Main": {
             content: [
@@ -122,7 +126,7 @@ addLayer("c", { // Ecosystems layer
         return desc
     },
     hotkeys: [
-        {key: "c", description: "C: Reset for Conservation Sites", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
+        {layer: 'c', key: "c", description: "C: Reset for Conservation Sites", onPress(){if (canReset(this.layer)) doReset(this.layer)}, unlocked() {return tmp[this.layer].layerShown}},
         {key: "P", onPress(){clickClickable('c', 11)}, unlocked() {return hasMilestone('c', 0)}},
     ],
     layerShown(){return hasMilestone('n', 2)||player.c.best.gte(1)},
@@ -599,7 +603,7 @@ addLayer("c", { // Ecosystems layer
 })
 addLayer("m", { // Plants layer
     name: "Mountains", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol() {return options.emojiSymbols ? "⛰" : "M"},
+    symbol() {return options.emojiSymbols ? "🌄" : "M"},
     position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
@@ -609,6 +613,7 @@ addLayer("m", { // Plants layer
         resetTime: 0,
         cooldown: new Decimal(0),
     }},
+    tree: "tree-tab",
     color: "#55AA55",
     requires() {return new Decimal("1e1e25")}, // Can be a function that takes requirement increases into account
     resource: "mountains", // Name of prestige currency
@@ -722,7 +727,7 @@ addLayer("m", { // Plants layer
 
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "m", description: "M: Reset for Mountains", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {layer: 'm', key: "m", description: "M: Reset for Mountains", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     effect: {
         main() {

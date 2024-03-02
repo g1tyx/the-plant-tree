@@ -41,7 +41,7 @@ function sumValues(x) {
 }
 
 function format(decimal, precision = 2, small) {
-    let prec = precision + ((ctrlDown && new Decimal(decimal) != new Decimal(decimal).floor()) ? 3 : 0)
+    let prec = precision + ((ctrlDown && options.ctrlHotkey && new Decimal(decimal) != new Decimal(decimal).floor()) ? 3 : 0)
     small = small || modInfo.allowSmall
     decimal = new Decimal(decimal)
     if (isNaN(decimal.sign) || isNaN(decimal.layer) || isNaN(decimal.mag)) {

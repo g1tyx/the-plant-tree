@@ -17,7 +17,18 @@ addNode("blank", {
 
 
 addLayer("tree-tab", {
-    tabFormat: [["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}]],
+    tabFormat: [["tree", [
+        ['p', 'w', 'm'],
+        ['z', 'g'],
+        ['re', 'c', 'e'],
+    ]]],
+    previousTab: "",
+    leftTab: true,
+})
+addLayer("T1", {
+    tabFormat: [["tree", [
+        ['q'],
+    ]]],
     previousTab: "",
     leftTab: true,
 })

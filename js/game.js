@@ -129,12 +129,16 @@ function canReset(layer)
 
 function rowReset(row, layer) {
 	for (lr in ROW_LAYERS[row]){
-		if(layers[lr].doReset) {
-			if (!isNaN(row)) Vue.set(player[lr], "activeChallenge", null) // Exit challenges on any row reset on an equal or higher row
-			run(layers[lr].doReset, layers[lr], layer)
+
+		if(!(tmp[layer].tree && tmp[lr].tree) || tmp[layer].tree == tmp[lr].tree) {
+
+			if(layers[lr].doReset) {
+				if (!isNaN(row)) Vue.set(player[lr], "activeChallenge", null) // Exit challenges on any row reset on an equal or higher row
+				run(layers[lr].doReset, layers[lr], layer)
+			}
+			else
+				if(tmp[layer].row > tmp[lr].row && !isNaN(row)) layerDataReset(lr)
 		}
-		else
-			if(tmp[layer].row > tmp[lr].row && !isNaN(row)) layerDataReset(lr)
 	}
 }
 
@@ -150,6 +154,9 @@ function layerDataReset(layer, keep = []) {
 	Vue.set(player[layer], "clickables", getStartClickables(layer))
 	Vue.set(player[layer], "challenges", getStartChallenges(layer))
 	Vue.set(player[layer], "grid", getStartGrid(layer))
+	if(layers[layer].getStartQuests) {
+		Vue.set(player[layer], "quests", layers[layer].getStartQuests)
+	}
 
 	layOver(player[layer], getStartLayerData(layer))
 	player[layer].upgrades = []

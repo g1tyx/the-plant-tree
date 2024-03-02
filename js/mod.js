@@ -3,7 +3,7 @@ let modInfo = {
 	id: "thenonymous-theplanttree17586745",
 	author: "thenonymous",
 	pointsName: "Plant Points",
-	modFiles: ["layers.js", "layers2.js", "tree.js"],
+	modFiles: ["layers.js", "layers2.js", "layersT1.js", "tree.js"],
 
 	discordName: "The Thenonymous Forest",
 	discordLink: "https://discord.gg/ffqTnDRQw8",
@@ -13,11 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "12",
-	name: "Mountains",
+	num: "13-",
+	name: "Interlude",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
+    <h3>v13-</h3><br>
+    Interlude<br>
+        Quests - Added with 3 minigames and a total of 9 buyables.<br>
+        Navigation - Added with 2 clickables.<br>
+        General - Added some extra touches to various parts of the game and improved the Emoji Symbols option.<br><br>
     <h3>v12</h3><br>
     Mountains<br>
         Mountains - Added with 5 Milestones, 9 Upgrades and 3 Buyables.<br>
@@ -184,7 +189,7 @@ function getPointGen() {
     gain=gain.min(gain.div("ee16").root(gain.max(0).add(1).log(10).add(1).log(10).div(16).add(1)).mul("ee16"))
     gain=gain.min(gain.div("e3.16e27").root(gain.max(0).add(1).log(10).add(1).log(10).div(27.5).add(1)).mul("e3.16e27"))
     gain=gain.min(gain.div("e1e28").root(gain.max(0).add(1).log(10).add(1).log(10).div(28).add(1)).mul("e1e28"))
-    gain=gain.min(gain.div("e1e38").root(gain.max(0).add(1).log(10).add(1).log(10).div(28).add(1).pow(10)).mul("e1e38"))
+    gain=gain.min(gain.div("e1e38").root(gain.max(0).add(1).log(10).add(1).log(10).div(38).add(1).pow(100)).mul("e1e38"))
 
 
     // Bugfixes
@@ -195,11 +200,11 @@ function getPointGen() {
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
+    sPoints: new Decimal(0)
 }}
 
 // Display extra things at the top of the page
 var displayThings = [
-    function() {return "Press CTRL to See Specific Values"},
     function() {return "TPS: "+formatWhole(player.a.fps)},
     function() {return player.points.gte("e1e16")?"You're starting to have trouble storing all of these points. Points are softcapped more the more points you have.":null},
     //function() {return hasUpgrade('g', 54) ? "<a v-bind:style={color: #00AAFF} href=https://raw.githack.com/THENONYMOUS/The-Random-Tree/plant-tree-extreme/index.html>Extreme Mode</a>" : ""}
@@ -208,7 +213,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('n', 7)
+	return hasMilestone('q', 0)
 }
 
 

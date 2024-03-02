@@ -15,7 +15,8 @@ function getStartOptions() {
 		oldStyle: false,
 		tooltipForcing: true,
         shortMaxTick: false,
-        emojiSymbols: false,
+        emojiSymbols: true,
+        ctrlHotkey: true,
 	}
 }
 
