@@ -13,11 +13,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "13-",
+	num: "13.1-",
 	name: "Interlude",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
+    <h3>v13.1-</h3><br>
+    Bugfixing<br>
+        Bugs - Fixed 2 display errors.<br>
     <h3>v13-</h3><br>
     Interlude<br>
         Quests - Added with 3 minigames and a total of 9 buyables.<br>
@@ -189,7 +192,7 @@ function getPointGen() {
     gain=gain.min(gain.div("ee16").root(gain.max(0).add(1).log(10).add(1).log(10).div(16).add(1)).mul("ee16"))
     gain=gain.min(gain.div("e3.16e27").root(gain.max(0).add(1).log(10).add(1).log(10).div(27.5).add(1)).mul("e3.16e27"))
     gain=gain.min(gain.div("e1e28").root(gain.max(0).add(1).log(10).add(1).log(10).div(28).add(1)).mul("e1e28"))
-    gain=gain.min(gain.div("e1e38").root(gain.max(0).add(1).log(10).add(1).log(10).div(38).add(1).pow(100)).mul("e1e38"))
+    gain=gain.min("e1e38")
 
 
     // Bugfixes

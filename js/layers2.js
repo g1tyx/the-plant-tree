@@ -622,7 +622,7 @@ addLayer("m", { // Plants layer
         let amt = player.points.max(0)
         return amt
     }, // Get the current amount of baseResource
-    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent() {
         let exponent = new Decimal(2)
         return exponent
@@ -714,7 +714,7 @@ addLayer("m", { // Plants layer
         return gain.floor().sub(player.m.points).add(1).max(0)
     },
     getNextAt() {
-		let cost = player.m.points.add((tmp.m.baseAmount.gte(tmp.m.nextAt))?tmp.m.resetGain:0)
+		let cost = player.m.points//.add(tmp.m.baseAmount.gte(tmp.m.nextAt)?tmp.m.resetGain:0)
 
         // Implement the softcap
         if(cost.gte(50)) cost = cost.div(50).pow(3).mul(50)
@@ -724,6 +724,13 @@ addLayer("m", { // Plants layer
 		cost = cost.max(1).mul(tmp.m.requires)
 		return cost;
     },
+    prestigeButtonText() {
+        return "Reset for +"+formatWhole(getResetGain('m'))+" mountains<br><br>Next: "+format(tmp.m.baseAmount)+" / "+format(tmp.m.getNextAt)+" points"
+    },
+    canReset() {
+        return tmp.m.getResetGain.gte(1)
+    },
+    prestigeNotify() {return tmp.m.getResetGain.gte(1)},
 
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
