@@ -119,9 +119,11 @@ addLayer("q", { // Quests layer
         let gain = new Decimal(0.1)
         gain = gain.add(getBuyableAmount('q', 32).div(50))
         gain = gain.mul(player.q.compostLevel.pow_base(1.2))
+        gain = gain.mul(buyableEffect('q', 43))
 
         gain = gain.mul(buyableEffect('q', 11))
         gain = gain.mul(buyableEffect('q', 12))
+        gain = gain.mul(buyableEffect('q', 13))
         return gain
     },
     compostGain() {
@@ -162,7 +164,7 @@ addLayer("q", { // Quests layer
     milestones: {
         0: {
             requirementDescription: "6 Quests",
-            effectDescription: "Coming soon...",
+            effectDescription: "Explore other terrestrial planets",
             done() {return player.q.points.gte(6)},
         },
     },
@@ -465,11 +467,11 @@ addLayer("nav", { // Navigation layer
                 player.navTab = 'tree-tab'
             },
         },
-        22: {
-            title: "???",
+        31: {
+            title: "Solar System",
             canClick: true,
             onClick() {
-                alert("???")
+                player.navTab = 'solar-system'
             },
             unlocked() {return hasMilestone('q', 0)},
         },

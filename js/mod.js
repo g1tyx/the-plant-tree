@@ -3,7 +3,7 @@ let modInfo = {
 	id: "thenonymous-theplanttree17586745",
 	author: "thenonymous",
 	pointsName: "Plant Points",
-	modFiles: ["layers.js", "layers2.js", "layersT1.js", "tree.js"],
+	modFiles: ["layers.js", "layers2.js", "layersT1.js", "layersPlanets.js", "tree.js"],
 
 	discordName: "The Thenonymous Forest",
 	discordLink: "https://discord.gg/ffqTnDRQw8",
@@ -13,12 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "13.1-",
-	name: "Interlude",
+	num: "14",
+	name: "Solar System",
 }
 
 let changelog = `<h1>Version History:</h1><br><br>
-    <h3>v13.1-</h3><br>
+    <h3>v14</h3><br>
+    Solar System<br>
+        Solar research - Added with 7 milestones.<br>
+        Mercury, Venus, Earth, Mars - Added with 3 sections each.<br>
+            Venus - Synced with previous progress.<br>
+            Earth - Market.<br>
+    <h3>v13.1 -</h3><br>
     Bugfixing<br>
         Bugs - Fixed 2 display errors.<br>
     <h3>v13-</h3><br>
@@ -101,7 +107,7 @@ let changelog = `<h1>Version History:</h1><br><br>
 		Plants - Added with 12 Upgrades and 2 Buyables.<br>
 		Gardens - Added with 8 Upgrades.`
 
-let winText = `Congratulations! You have beaten this game, so go play some other incremental game for 5 hours. This game should be updated by then.`
+let winText = `Congratulations! You have beaten The Plant Tree... so far.<br><br>Thanks to all of the people who have helped motivate this project, and to you for making it this far.<br>`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -216,7 +222,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return hasMilestone('q', 0)
+	return hasMilestone('sr', 6)
 }
 
 
@@ -286,4 +292,26 @@ function getLogisticTimeConstant(current, gain, loss){
         if (current.eq(gain.div(loss))) return Infinity
         if (current.gt(gain.div(loss))) return current.times(loss).sub(gain).ln().div(-1).div(loss)
         return current.times(loss).sub(gain).times(-1).ln().div(-1).div(loss)
+}
+
+// Solar System Funcs
+
+function getDistance(posA, posB) {
+    vertDist = posA[0].sub(posB[0])
+    horDist = posA[1].sub(posB[1])
+
+    dist = vertDist.pow(2).add(horDist.pow(2)).root(2)
+
+    return dist
+}
+
+function transferResources(layerA, layerB) {
+
+    for (key in player[layerA].shipLoad) {
+        player[layerB].resources[key] = player[layerB].resources[key].add(player[layerA].shipLoad[key])
+        player[layerA].shipLoad[key] = new Decimal(0)
+    }
+
+    player[layerA].resources.rockets = player[layerA].resources.rockets.sub(1)
+    player[layerB].resources.rockets = player[layerB].resources.rockets.add(1)
 }

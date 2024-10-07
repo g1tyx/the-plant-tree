@@ -32,3 +32,13 @@ addLayer("T1", {
     previousTab: "",
     leftTab: true,
 })
+addLayer("solar-system", {
+    tabFormat: [["tree", [
+        ['me'],
+        ['ve'],
+        ['ea'],
+        ['ma'],
+    ]]],
+    previousTab: "",
+    leftTab: true,
+})
