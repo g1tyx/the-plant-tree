@@ -8,7 +8,7 @@ const defaultGlow = "#ff0000"
 
 
 function layerShown(layer){
-    return tmp[layer].layerShown;
+    return tmp[layer].layerShown && (tmp[layer].tree || player.navTab) == player.navTab;
 }
 
 var LAYERS = Object.keys(layers);
@@ -22,7 +22,7 @@ function updateHotkeys()
     hotkeys = {};
     for (layer in layers){
         hk = layers[layer].hotkeys
-        if (hk){
+        if (hk && layers[layer].tree == player.navTab){
             for (id in hk){
 				hotkeys[hk[id].key] = hk[id]
                 hotkeys[hk[id].key].layer = layer
